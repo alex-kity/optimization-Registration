@@ -1,39 +1,51 @@
-# cloudcomparepoint
+CloudCompare
+============
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+Homepage: https://cloudcompare.org
 
-#### 软件架构
-软件架构说明
+[![GitHub release](https://img.shields.io/github/release/cloudcompare/trunk.svg)](https://github.com/cloudcompare/trunk/releases)
+
+- [![Build Status](https://travis-ci.org/CloudCompare/CloudCompare.svg?branch=master)](https://travis-ci.org/CloudCompare/CloudCompare) Linux
+- [![Build](https://github.com/CloudCompare/CloudCompare/workflows/Build/badge.svg?branch=master)](https://github.com/CloudCompare/CloudCompare/actions?query=workflow%3ABuild+branch%3Amaster) Windows & MacOS
+- [![Releases](https://coderelease.io/badge/CloudCompare/CloudCompare)](https://coderelease.io/github/repository/CloudCompare/CloudCompare)
+
+Introduction
+------------
+
+CloudCompare is a 3D point cloud (and triangular mesh) processing software.
+It was originally designed to perform comparison between two 3D points clouds
+(such as the ones obtained with a laser scanner) or between a point cloud and a
+triangular mesh. It relies on an octree structure that is highly optimized for
+this particular use-case. It was also meant to deal with huge point
+clouds (typically more than 10 million points, and up to 120 million with 2 GB
+of memory).
+
+More on CloudCompare [here](http://en.wikipedia.org/wiki/CloudCompare)
+
+Compilation
+-----------
+
+Supports: Windows, Linux, and macOS
+
+Refer to the [BUILD.md file](BUILD.md) for up-to-date information.
+
+Basically, you have to:
+- clone this repository
+- install mandatory dependencies (OpenGL,  etc.) and optional ones if you really need them
+(mainly to support particular file formats, or for some plugins)
+- launch CMake (from the trunk root)
+- enjoy!
 
 
-#### 安装教程
+Contributing to CloudCompare
+----------------------------
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+If you want to help us improve CloudCompare or create a new plugin you can start by reading this [guide](CONTRIBUTING.md)
 
-#### 使用说明
+Supporting the project
+----------------------
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+If you want to help us in another way, you can make donations via [donorbox](https://donorbox.org/support-cloudcompare)
+Thanks!
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+<a href='https://donorbox.org/support-cloudcompare' target="_blank"><img src="https://d1iczxrky3cnb2.cloudfront.net/button-medium-blue.png"></a>
