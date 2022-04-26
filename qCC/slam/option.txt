@@ -1,0 +1,846 @@
+
+一、File——文件
+
+1.1 Open——打开
+
+      功能描述：打开点云、图像和矢量文件等。
+
+1.2 Save——保存
+
+      功能描述：保存点云、图像和矢量文件等。
+
+1.3 Primitive factory——原始工厂
+
+1.4 3D mouse——3D鼠标
+
+（1）Enable——激活
+
+1.5 Close all——全部关闭
+
+      功能描述：关闭所有打开的文件。
+
+1.6 Quit——退出
+
+      功能描述：退出程序。
+
+二、Edit——编辑
+
+2.1 Colors——颜色
+
+（1）Set unique——单一色
+
+功能描述：点云赋单一颜色。
+
+（2）Colorize——着色
+
+功能描述：将当前颜色乘指定的颜色，对点云进行赋色。如果实体没有颜色，则此方法等同于Set unique。
+
+（3）Levels——层次
+
+功能描述：编辑颜色直方图。
+
+（4）Height Ramp——高程渐变
+
+功能描述：根据主方向（X、Y、Z）颜色渐变。
+
+（5）Convert to grey scale——转换为灰度
+
+功能描述：颜色变为灰度。
+
+（6）Convert to Scalar field——所选字段
+
+功能描述：将当前RGB字段转为一个或多个字段：
+
+（7）Interpolate from another entity——依据其它实体着色
+
+功能描述：依据另一个实体对所选实体进行赋色。
+
+（8）Clear——清除颜色（慎用）
+
+功能描述：清除所选实体的颜色字段。
+
+2.2 Normals——法向量
+
+（1）Compute——计算法向量
+
+功能描述：在所选实体上计算法向量。
+
+（2）Invert——法向量求逆
+
+功能描述：法向求逆。
+
+（3）Orient normals——法向量定向
+
+①With Minimum Spanning Tree——最小生成树方法
+
+功能描述：利用最小生成树方法求法向。
+
+②With Fast Marching——快速进行法
+
+功能描述：利用快速进行法求法向。
+
+（4）Convert to——转换为
+
+①HSV colors——HSV颜色
+
+功能描述：将法向转换为HSV颜色。H =倾角方向，S =倾角，V = 1。
+
+②Dip/Dip direction SFs——倾角/倾斜方向 SF
+
+功能描述：将法向转为两个标量字段。
+
+（5）Clear——清除
+
+功能描述：清除所选实体的法向（慎用）。
+
+2.3 Octree——八叉树
+
+（1）Compute——计算法向量
+
+功能描述：所选实体计算八叉树。
+
+（2）Resample——重采样
+
+功能描述：点云重采样，保留八叉树每个格网点云的重心。
+
+2.4 Mesh——网格
+
+（1）Delaunay2.5D(XY plane)——2.5D Delaunay三角剖分（XY平面）
+
+功能描述：在点云上计算2.5D Delaunay三角剖分。
+
+（2）Delaunay2.5D(best fitting plane)——2.5D Delaunay三角剖分（最佳拟合平面）
+
+功能描述：通过最佳拟合平面，计算2.5D Delaunay三角剖分
+
+（3）Convert texture/material to REB——转换纹理/材料到RGB
+
+功能描述：将所选网格的网格材质或纹理信息转为每个顶点的RGB字段。
+
+（4）Sample Points——采样点
+
+功能描述：在网格上随机采样。
+
+（5）Smooth(Laplacian)——平滑（拉普拉斯算子）
+
+功能描述：利用拉普拉斯算子平滑。
+
+（6）Subdivide——细化
+
+功能描述：细化网格。
+
+（7）Measure surface——表面积测量
+
+功能描述：计算表面积，结果输出到控制台。
+
+（8）Measure volume——体积测量
+
+功能描述：计算体积，结果输出到控制台。
+
+（9）Flag vertices by type——标记顶点
+
+功能描述：网格质量检验。用（标量值）标记每个网格顶点，0 =正常。1 =边界，2 =非流形。每种顶点数量（以及每个SF值的含义）输出到控制台。
+
+（10）Scalar Field——标量场
+
+①Smooth——平滑
+
+功能描述：细节虚化。
+
+②Enhance——增强
+
+功能描述：细节增强。
+
+2.5 Sensors——传感器
+
+（1）Edit——编辑
+
+功能描述：修改所选传感器的参数。
+
+（2）TLS/GBL
+
+①Create——创建
+
+功能描述：创建附加到所选点云的“基于地面的激光雷达”（TLS/GBL）传感器实体。
+
+②Create/show depth buffer——创建/显示深度图
+
+功能描述：显示所选地面激光雷达传感器的深度图。
+
+③Export depth buffer——导出深度图
+
+功能描述：导出深度图像。
+
+④Compute points visibility（with depth buffer）——计算可见性
+
+功能描述：利用深度图像计算点的可见性。
+
+（3）Camera——相机
+
+①Create——创建
+
+功能描述：创建相机传感器。
+
+②Project Uncertainty——项目不稳定性
+
+功能描述：显示所选地面激光雷达传感器的深度图。
+
+③Compute points visibility（with octree）——计算可见性
+
+功能描述：利用八叉树计算点的可见性。
+
+（4）View from sensor——从传感器查看
+
+功能描述：更改当前3D视图相机设置，以匹配所选传感器设置。
+
+（5）Compute Ranges——计算范围
+
+功能描述：计算相对于传感器，所有点的距离。
+
+（6）Compute Scattering Angles——计算散射角
+
+功能描述：计算相对于所选传感器，所有点（具有法线）的散射角。
+
+2.6 Scalar fields——标量场
+
+（1）Show histogram——显示统计直方图
+
+功能描述：显示当前字段的统计直方图。
+
+（2）Compute stat. params——计算统计分布参数
+
+功能描述：计算统计参2数。
+
+（3）Gradient——梯度
+
+功能描述：计算字段的梯度。
+
+（4）Gaussian filter——高斯滤波
+
+功能描述：通过高斯滤波对所选字段进行平滑。
+
+（5）Bilateral filter——双边滤波
+
+功能描述：通过双边滤波对所选字段进行平滑。
+
+（6）Filter By Value——值滤波
+
+功能描述：通过阈值筛选点云。
+
+（7）Convert to RGB——转为 RGB
+
+功能描述：所选字段转为RGB。
+
+（8）Convert to random RGB——转为随机RGB
+
+功能描述：将所选实体的所选字段，转为随机颜色。
+
+（9）Rename——重命名
+
+功能描述：重命名所选字段。
+
+（10）Add constant SF——添加字段SF
+
+功能描述：添加新字段。
+
+（11）Add point indexes as SF——添加点索引为SF
+
+功能描述：点的索引号作为新字段。
+
+（12）Export coordinate(s) to SF(s)——输出坐标为SF
+
+功能描述：输出坐标（X、Y、Z）作为新字段。
+
+（13）Set SF as coordinate(s)——设置SF为坐标
+
+功能描述：将所选字段替代坐标（X、Y、Z）
+
+（14）Arithmetic——算术运算
+
+功能描述：两个字段进行加减乘除运算。
+
+（15）Color Scales Manager——色带管理器
+
+功能描述：创建和管理色带。
+
+（16）Delete——删除
+
+功能描述：删除字段。
+
+（17）Delete all(!)——删除所有（慎用）
+
+功能描述：删除所有字段（慎用）。
+
+2.7 Clone——复制
+
+功能描述：复制点云。
+
+2.8 Merge——合并
+
+功能描述：合并多组点云。
+
+2.9 Subsample——抽稀
+
+功能描述：抽稀点云。
+
+2.10 Apply transformation——应用变换矩阵
+
+功能描述：应用矩阵平移和旋转点云坐标。
+
+2.11 Multiply/Scale——缩放坐标
+
+功能描述：缩放点云的坐标。
+
+2.12 Translate/rotate——平移/旋转
+
+功能描述：平移和旋转点云。
+
+2.13 Segment——分割
+
+功能描述：框选或多边形选择分割实体。
+
+2.14 Crop——裁剪
+
+功能描述：用于裁剪3D框内的一个或多个云。
+
+2.15 Edit global shift and scale——编辑全局的平移缩放因子
+
+功能描述：编辑全局的平移缩放因子。
+
+2.16 Toggle(recursive)——转换（递归）
+
+（1）Activation(not recursive)——激活（不递归）
+
+（2）Visibility——可视化
+
+（3）Colors——颜色
+
+（4）Normals——法向
+
+（5）SF——SF
+
+（6）Materials/textures——材料/纹理
+
+（7）3D name——3D名称
+
+2.17 Delete——删除
+
+功能描述：删除所选实体。
+
+三、Tools——工具
+
+3.1 Clean——去噪
+
+（1）SOR filter——SOR滤波
+
+功能描述：SOR滤除离群点。
+
+（2）Noise filter ——噪声滤除
+
+功能描述：拟合平面，去噪。
+
+3.2 Projection——投影
+
+（1）Unroll——展开
+
+功能描述：将点云从圆柱形（或圆锥形）“展开”到平面上。
+
+（2）Rasterize(and contour plot)——栅格化（等值线图）
+
+功能描述：点云栅格化。
+
+（3）Contour plot(polylines) to mesh——等高（线）图格网化
+
+功能描述：等值线转为格网。
+
+（4）Export coordinates(s) to SF(s)——输出坐标到SF
+
+功能描述：将坐标（X、Y、Z）输出为字段。
+
+3.3 Registration——拼接/配准
+
+（1）Match bounding-box centers——匹配包围盒中心
+
+功能描述：使所选实体的包围盒中心在同一位置。
+
+（2）Match scales——比例匹配
+
+功能描述：将所选实体匹配比例。
+
+（3）Align(point pairs picking)——粗配准（选取点对）
+
+功能描述：通过点云进行粗配准。
+
+（4）Fine registration(ICP)——精配准（ICP）
+
+功能描述：精确配准点云。
+
+3.4 Distances——距离
+
+（1）Cloud/Cloud Dist.——点/点 距离
+
+功能描述：计算点云之间的距离。
+
+（2）Cloud/Mesh Dist.——点/面 距离
+
+功能描述：计算点云/网格的距离。
+
+（3）Closest Point set——最近点集
+
+功能描述：计算相对另一点云的最近点集。
+
+3.5 Volume——体积
+
+（1）Compute 2.5D volume——计算2.5D体积
+
+功能描述：计算体积。
+
+3.6 Statistics——统计
+
+（1）Local Statistical test——局部统计检验
+
+功能描述：根据所选字段的本地统计“行为”对点云进行分段/过滤。
+
+（2）Compute stat. params(active SF)——计算统计参数（所选SF）
+
+功能描述：计算所选字段的统计模型参数。
+
+3.7 Segmentation——分割
+
+（1）Label Connected Comp.——标记连接的组件
+
+功能描述：将所选点云分割成以最小距离分隔的较小部分。每个部分是连接的组件（即一组“连接”点）。
+
+（2）Cross Section——横截面
+
+功能描述：自定义所选点云的剪切框。
+
+（3）Extract sections——提取截面
+
+功能描述：绘制或导入折线，提取截面和轮廓。
+
+3.8 Fit——拟合
+
+（1）Plane——平面
+
+功能描述：拟合平面。
+
+（2）Sphere——球
+
+功能描述：拟合球面。
+
+（3）2D polygon(facet)——平面多边形
+
+功能描述：拟合平面多边形。
+
+（4）2.5D quadric——2.5D 二次曲面
+
+功能描述：拟合二次曲面。
+
+3.9 Other——其他
+
+（1）Density——密度
+
+功能描述：计算点云密度。
+
+（2）Curvature——曲率
+
+功能描述：计算点云曲率。
+
+（3）Roughness——粗糙度
+
+功能描述：计算点云粗糙度。
+
+（4）Remove duplicate points——移除重复点
+
+功能描述：删除重复点。
+
+3.10 Level——水平（3点-XOY）
+
+功能描述：选三点拟合平面，作为水平面。
+
+3.11 Point picking——选点
+
+功能描述：选点，展示点的信息，两点距离等。
+
+3.12 Point list picking——选点（列表）
+
+功能描述：选点。
+
+3.13 Trace Polyline——轨迹折线
+
+功能描述：绘制轨迹线（点）。
+
+3.14 Sand box(research)——沙盒（研究测试用）
+
+（1）Compute Kd-tree——计算八叉树
+
+（2）Bounding box P.C.A fit——包围盒P.C.A拟合
+
+（3）Distance map to best-fie 3D quadric——距离映射到最适合的三维二次曲面
+
+（4）Distance map——深度图像
+
+（5）Auto align clouds——自动拼接点云
+
+（6）SNE test——
+
+（7）CNE test——
+
+（8）Find biggest inner rectangle(2D)——查找最大的内部矩形（2D）
+
+（9）Export cloud(s) info——输出点云信息
+
+（10）Create cloud from selected entities centers——从选择的实体中心创建点云
+
+（11）Compute best registration RMS matrix——计算最佳拼接的RMS矩阵
+
+（12）Enable Visual Debug Traces——启用可视化调试跟踪
+
+四、Display——显示
+
+4.1 Full screen——全屏
+
+功能描述：全屏显示
+
+4.2 Full screen(3D view)——全屏（3D视角）
+
+功能描述：3D视角全屏显示。
+
+4.3 Refresh——刷新
+
+功能描述：刷新。
+
+4.4 Toggle Centered Perspective——切换透视投影-实体中心视图
+
+功能描述：透视投影-实体中心视图之间切换。
+
+4.5 Toggle Viewer Based Perspective——切换透视投影-基于视图视角
+
+功能描述：透视投影-基于视图视角之间切换。
+
+4.6 Lock rotation about vert. axis——锁定垂直轴的旋转
+
+功能描述：锁定垂直轴的旋转。
+
+4.7 Enter bubble-view mode——进入bubble-view模式
+
+功能描述：进入泡沫视角模式。
+
+4.8 Render to File——保存3D视图
+
+功能描述：保存当前3D视图。
+
+4.9 Display settings——显示设置
+
+功能描述：显示设置。
+
+4.10 Camera settings——相机设置
+
+功能描述：相机参数设置。
+
+4.11 Save viewport as object——保存视口对象
+
+功能描述：将当前3D视图参数（摄像机位置和方向，透视状态等）保存为“视口”实体。
+
+4.12 Adjust zoom——调整缩放
+
+功能描述：以非常准确的方式定义当前缩放（例如，为了获得每个像素的非常特定的尺寸）。
+
+4.13 Test Frame Rate——测试帧速率
+
+功能描述：测试帧率。
+
+4.14 Lights——灯光
+
+（1）Toggle Sun Light——切换太阳源
+
+（2）Toggle Custom Light——切换用户光源
+
+4.15 Shaders & filters——着色器和过滤器
+
+（1）Remove filter——移除过滤器
+
+（2）Blur (shader)——
+
+（3）E.D.L.(shader)——
+
+（4）S.S.A.O(shader)——
+
+4.16 Active scalar field——所选字段
+
+（1）Toggle color scale——切换字段
+
+功能描述：切换字段的色带可见性。
+
+（2）Show previous SF——显示前一字段
+
+功能描述：选择前一字段。
+
+（3）Show next SF——显示下一字段
+
+功能描述：选择下一字段。
+
+4.17 Console——控制台
+
+功能描述：输出信息。
+
+4.18 Toolbars——工具栏
+
+（1）Main——主工具栏
+
+（2）Scalar fields——标量场
+
+（3）View——视图
+
+（4）Plugins——插件
+
+（5）GL filters——GL滤波
+
+4.19 Reset all GUI elements positions——重置所有GUI元素位置
+
+功能描述：重置GUI配置。
+
+五、Plugins——插件
+
+六、3D Views——3D视角
+
+6.1 New——新建视图
+
+功能描述：新建3D视图。
+
+6.2 Zoom in——放大
+
+功能描述：放大。
+
+6.3 Zoom out——缩小
+
+功能描述：缩小。
+
+6.4 Close——关闭
+
+功能描述：关闭当前3D视图。
+
+6.4 Close All——关闭所有
+
+功能描述：关闭所有3D视图。
+
+6.6 Tile——平铺视图
+
+功能描述：平铺所有3D视图。
+
+6.7 Cascade——排列视图
+
+功能描述：排列显示3D视图。
+
+6.8 Next——下一视图
+
+功能描述：显示下一3D视图。
+
+6.9 Previous——上一视图
+
+功能描述：显示上一3D视图。
+
+七、Help——帮助
+
+7.1 Help——帮助
+
+功能描述：显示参考文档地址。
+
+7.2 About...——关于
+
+功能描述：软件信息。
+
+7.3 About Plugins...——关于插件
+
+功能描述：插件信息。
+
+ 
+
+ 
+
+主工具栏1
+
+
+
+（1）Open：打开
+
+（2）Save current entity：保存
+
+（3）Point picking(point information, distance between 2 points, angles between 3 points, etc.)：选点（点的信息，两点距离和三点角度等）
+
+（4）Point list picking：选点（列表）
+
+（5）Trace a polyline by point picking：通过拾取点跟踪折线
+
+（6）Clone：复制
+
+（7）Merge multiple clouds：合并点云
+
+（8）Delete：删除
+
+（9）Aligns 2 clouds by picking (at least 4) equivalent points pairs：通过（至少4组）有效点对配准点云
+
+（10）Finely register already (roughly) aligned entities (clouds or meshes)：精确配准已经（大致）对齐的实体（点云或网格）
+
+（11）Subsample a point cloud：点云抽稀
+
+（12）Sample points on a mesh：在网格上采点
+
+（13）Compute cloud/cloud distance：计算点云距离
+
+（14）Compute cloud/mesh distance：计算点云/网格距离
+
+（15）Label connected components：标记连接的组件
+
+（16）Primitive factory：原始工厂
+
+（17）Convert a cloud to 2D raster(and optionally generate the contour plot)：点云栅格化（可选择生成等高线图）
+
+（18）Statistical Outlier Filter(remove the points far from their neighbors)：统计异常值过滤器（删除过远的点）
+
+（19）Segment：分割
+
+（20）Translate/rotate：平移/旋转
+
+（21）Cross Section：横截面
+
+（22）Extract cloud sections along polylines：沿折线提取点云截面
+
+主工具栏2
+
+
+
+（1）Show histogram：统计直方图
+
+（2）Fits a statistical model on the active scalar field：通过所选字段，拟合统计模型
+
+（3）Filter points by value：通过阈值过滤点云
+
+（4）Delete current scalar field：删除当前字段（慎用）
+
+（5）Add constant SF：添加常数SF
+
+（6）Add, substract, multiply or divide two scalar fields：对两个字段进行加减乘除
+
+（7）Open Color Scales Manager dialog：打开色带管理器
+
+主工具栏3
+
+
+
+（1）Change lighting and default materials parameters：显示设置
+
+（2）Camera settings：相机设置
+
+（3）Global Zoom：全局缩放
+
+（4）Pick rotation center：选择旋转中心
+
+（5）Pick three points to make a cloud or mesh ‘level’：选取三点将点云置平
+
+（6）Set current view mode：设置当前视图模式
+
+（7）Set pivot visibility：设置枢轴可见性
+
+（8）Zoom and center on selected entities(Z)：缩放置中
+
+（9）Set top view：俯视图
+
+（10）Set front view：前视图
+
+（11）Set left side view：左视图
+
+（12）Set back view：后视图
+
+（13）Set right side view：右视图
+
+（14）Set bottom view：仰视图
+
+（15）Set view to ‘front’ isometric：前等距视图
+
+（16）Set view to ‘back’ isometric：后等距视图
+
+（17）Enable stereo mode (with red-cyan glasses)：启用立体模式（红蓝眼镜）
+
+ 
+
+ 
+
+ 
+
+工具栏4
+
+
+
+（1）Animation plugin, used to build a movie from a series of views：动画插件，于从一系列视图构建视频
+
+（2）Mesh Boolean Operations(CSG)based on Cork library：基于科克库的网格布尔运算(CSG)
+
+（3）Non-rigid registration (based on the work by Jian and Vemuri) ：非刚性注册（基于Jian和Vemuri的工作）
+
+（4）Hidden Point Removal(Kate et al.)：隐藏点移除（凯特等人）
+
+（5）Multiscale Model to Model Cloud Comparison (M3C2) ：多尺度模型到模型云的比较
+
+（6）PCV(Ambient Occlusion inspired from ShadeVis, Tarini et al.：PCV（受ShadeVis、Tarini等人启发的环境遮挡）
+
+（7）Poisson Surface Reconstructing(Kazhdan et al.)：泊松表面重建（Kazhdan等人）
+
+（8）Efficient RANSAC for Point-Cloud Shape Detection(Schnabel et al 2007)：点云形状检测的高效RANSAC（Schnabel等人，2007年）
+
+工具栏5
+
+
+
+（1）Estimate Normals and Curvature：估计法线和曲率
+
+（2）Smooth using MLS, optionally upsample：使用MLS平滑，可选上采样
+
+工具栏6
+
+
+
+（1）Train classifier：训练分类器
+
+（2）Classify cloud：点云分类
+
+工具栏7
+
+
+
+（1）Remove filter：移除过滤器
+
+（2）Blur(shader)：模糊（着色器）
+
+（3）Eye-dome Lighting OpenGL shader：圆顶形查看照明OpenGL着色器
+
+（4）Screen Space Ambient Occlusion OpenGL shader：屏幕空间环境遮挡OpenGL着色器
+
+工具栏8
+
+
+
+（1）Detect planar facets by fusing Kd-tree cells：融合KD树检测平面刻面
+
+（2）Detect planar facets with Fast Marching：快速检测平面刻面
+
+（3）Exports one or several facets to a shape file：将一个或多个面导出为shp
+
+（4）Exports various information on a set facts(ASCII CSV file)：导出信息（ASCII CSV文件）
+
+（5）Classifies facets based on their orientation (dip & dip direction):根据法向（倾角和倾角方向）分类面
+
+（6）Computes and display a stereogram(+ interactive filtering)：计算并显示立体图（+交互式过滤）
+
+工具栏9
+
+
+
+（1）Loads the 2D profile of a Surface of Revolution (from a dedicated ASCII file)：加载旋转曲面的2D轮廓（从专用ASCII文件）
+
+（2）Computes the radial distances between a cloud and a Surface of Revolution (polyline/profile, cone or cylinder)：计算点云和旋转曲面（折线/轮廓、圆锥体或圆柱体）之间的径向距离
+
+（3）Creates the 2D deviation map(radial distances )from a Surface or Revolution(unroll)：从表面或旋转面（展开）创建2D偏差贴图（径向距离）
+
+ 

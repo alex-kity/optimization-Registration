@@ -3,7 +3,7 @@ set(header_list
    ${header_list}
    ${CMAKE_CURRENT_SOURCE_DIR}/ColorChangeTool.h
    ${CMAKE_CURRENT_SOURCE_DIR}/CSlamLadirDialog.h
-
+   ${CMAKE_CURRENT_SOURCE_DIR}/CGYLCommon.h
    PARENT_SCOPE
 )
 

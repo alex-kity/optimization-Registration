@@ -10076,6 +10076,8 @@ void MainWindow::doActionLoadFile()
     QString currentPath = settings.value(ccPS::CurrentPath(), ccFileUtils::defaultDocPath()).toString();
     QString currentOpenDlgFilter = settings.value(ccPS::SelectedInputFilter(), BinFilter::GetFileFilter()).toString();
 
+
+
     // Add all available file I/O filters (with import capabilities)
     const QStringList filterStrings = FileIOFilter::ImportFilterList();
     const QString &allFilter = filterStrings.at( 0 );
@@ -10105,6 +10107,12 @@ void MainWindow::doActionLoadFile()
     {
         currentOpenDlgFilter.clear(); //this way FileIOFilter will try to guess the file type automatically!
     }
+
+//    std::cout<< "selectedFiles : "<<selectedFiles[0].toStdString()<<std::endl;
+//    ccConsole::Error(tr("selectedFiles : ") + selectedFiles[0] );
+
+//    std::cout<< "currentOpenDlgFilter : "<<currentOpenDlgFilter.toStdString()<<std::endl;
+//    ccConsole::Error(tr("currentOpenDlgFilter : ") + currentOpenDlgFilter );
 
     //load files
     addToDB(selectedFiles, currentOpenDlgFilter);
@@ -11464,7 +11472,7 @@ void MainWindow::on_actionoptimization_triggered()
     updateOverlayDialogsPlacement();
 }
 
-
+#include <iostream>
 #include "slam/CSlamLadirDialog.h"
 void MainWindow::on_actionSetLadirPer_triggered()
 {
@@ -11477,9 +11485,38 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //    if (!m_pSlamLadirDialog)
     //    {
     //自定义对象m_colorDlg传入点云pCloud
-    m_pSlamLadirDialog = new CSlamLadirDialog(qWin);
+    m_pSlamLadirDialog = new CSlamLadirDialog(qWin,this);
     //使得m_colorDlg能够停靠在点云显示窗口的右上角
     registerOverlayDialog(m_pSlamLadirDialog, Qt::TopRightCorner);
+
+    //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
+    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
+
+
+        //Sphere0000
+        ccHObject* newGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+
+        std::cout<<_vec.size()<<std::endl;
+        for (int i = 0;i<_vec.size();i++) {
+            ccGenericPrimitive* primitive = nullptr;
+            ccGLMatrix transMat;
+            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+
+            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
+                            static_cast<PointCoordinateType>(0.3),
+                            static_cast<PointCoordinateType>(0.3));
+            primitive = new ccBox(dims,&transMat);
+            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
+            newGroup->addChild(primitive);
+        }
+        addToDB(newGroup);
+
+    });
+
+    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsResample, this, [=]{doActionResampleWithOctree();} );
+    //    //当DB-Tree为空时，清空点云
+    //    connect(m_ccRoot, &ccDBRoot::dbIsEmpty, m_colorDlg, &ColorChangeTool::onClear);
+
     //    }
     m_pSlamLadirDialog->start();
     updateOverlayDialogsPlacement();
