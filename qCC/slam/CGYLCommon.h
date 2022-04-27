@@ -43,7 +43,8 @@ struct IndexDistLyg_Sorter {
     /** std::pair<IndexType,DistanceType> */
     template <typename PairType>
     inline bool operator()(const PairType &p1, const PairType &p2) const {
-        return p1.second - p2.second<0.001f;
+//        return p1.second - p2.second<0.001f;
+        return p1.second < p2.second;
     }
 };
 

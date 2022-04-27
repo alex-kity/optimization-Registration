@@ -239,16 +239,16 @@ CSlamLadirDialog::~CSlamLadirDialog()
 }
 
 
+#include<Eigen/Eigen>
+//if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
+//           {
+//               lyg::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
+//               Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+//               pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(transformed_cloud, Roi2w);
+//               transformed_cloud->points.clear();
+//               transformed_cloud = cloudRGBAllreult;
 
-if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
-           {
-               lyg::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
-               Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
-               pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(transformed_cloud, Roi2w);
-               transformed_cloud->points.clear();
-               transformed_cloud = cloudRGBAllreult;
-
-           }
+//           }
 
 void CSlamLadirDialog::on_load_path_clicked()
 {

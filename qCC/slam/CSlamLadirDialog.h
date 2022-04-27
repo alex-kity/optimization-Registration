@@ -12,69 +12,6 @@
 #include <math.h>
 
 
-
-
-//#define M_PI (3.141592653589793238462643383279)
-//using namespace std;
-
-//namespace lyg{
-//typedef struct _trajectoryData {
-//    std::string name;
-//    long double time;
-//    float x, y, z;
-//    float roll, pitch, yaw;
-//}trajectoryData, *trajectoryDataPtr;
-
-//}
-
-
-
-///** operator "<" for std::sort() */
-//struct IndexDistLyg_Sorter {
-//    /** std::pair<IndexType,DistanceType> */
-//    template <typename PairType>
-//    inline bool operator()(const PairType &p1, const PairType &p2) const {
-//        return p1.second - p2.second<0.001f;
-//    }
-//};
-
-//class CGYLCommon
-//{
-//public:
-//    CGYLCommon();
-
-//    template <class Type>
-//    Type stringToNum(const string& str)
-//    {
-//        istringstream iss(str);
-//        Type num;
-//        iss >> num;
-//        return num;
-//    }
-//    std::string setALL(std::string s1,int icount);
-//    vector<string> splittoxian(const string &s, const string &seperator);
-//    std::vector<lyg::trajectoryData> readTrajectoryToxian(string fileName, std::map<std::string,lyg::trajectoryData> &trajectorys);
-
-//    static std::vector<double> WGS84toECEF(double latitude, double longitude, double height);
-
-
-
-//};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "CGYLCommon.h"
 
 #include <QDialog>
@@ -94,6 +31,7 @@ public:
     explicit CSlamLadirDialog(QWidget *parent = nullptr, MainWindow *_pMainWindow = nullptr);
     ~CSlamLadirDialog();
 
+    void SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match);
 signals:
     void SignalsLoadPath(QList<QVector3D> _vec);
     void SignalsResample();
@@ -103,11 +41,21 @@ private slots:
 
     void on_pushButton_resample_clicked();
 
+    void on_setpointfile_clicked();
+
+    void on_getcurrentpath_clicked();
+
 private:
     Ui::CSlamLadirDialog *ui;
 
 
     MainWindow * m_pMainWindow = nullptr;
+    QString m_pointDir = nullptr;
+
+    std::vector<lyg::trajectoryData> m_vecs ;
+
+
+    QString m_currentOpenDlgFilter;
 };
 
 #endif // CSLAMLADIRDIALOG_H

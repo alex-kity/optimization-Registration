@@ -22,7 +22,7 @@
      <widget class="QPushButton" name="cloneBtn">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>140</x>
         <y>50</y>
         <width>89</width>
         <height>25</height>
@@ -32,7 +32,7 @@
        <string>克隆</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="currentpath">
+     <widget class="QPushButton" name="getcurrentpath">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -42,7 +42,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>优化当前轨迹</string>
+       <string>获取当前帧数据</string>
       </property>
      </widget>
      <widget class="QPushButton" name="load_path">
