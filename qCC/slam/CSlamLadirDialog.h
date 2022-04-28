@@ -32,6 +32,9 @@ public:
     ~CSlamLadirDialog();
 
     void SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match);
+    void loadpoint(const QString objname, const QStringList& filenames,
+                    QString fileFilter = QString(),
+                    ccGLWindow* destWin = nullptr );
 signals:
     void SignalsLoadPath(QList<QVector3D> _vec);
     void SignalsResample();
@@ -56,6 +59,7 @@ private:
 
 
     QString m_currentOpenDlgFilter;
+    QStringList m_selectedFiles;
 };
 
 #endif // CSLAMLADIRDIALOG_H

@@ -239,16 +239,16 @@ CSlamLadirDialog::~CSlamLadirDialog()
 }
 
 
+#include<Eigen/Eigen>
+//if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
+//           {
+//               lyg::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
+//               Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+//               pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(transformed_cloud, Roi2w);
+//               transformed_cloud->points.clear();
+//               transformed_cloud = cloudRGBAllreult;
 
-if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
-           {
-               lyg::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
-               Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
-               pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(transformed_cloud, Roi2w);
-               transformed_cloud->points.clear();
-               transformed_cloud = cloudRGBAllreult;
-
-           }
+//           }
 
 void CSlamLadirDialog::on_load_path_clicked()
 {
@@ -283,7 +283,7 @@ void CSlamLadirDialog::on_load_path_clicked()
 
 }
 
-QStringList m_selectedFiles;
+
 
 
 void CSlamLadirDialog::on_pushButton_resample_clicked()
@@ -316,27 +316,129 @@ void CSlamLadirDialog::on_setpointfile_clicked()
     if (m_selectedFiles.isEmpty())
         return;
 
-    QStringList selectedFiles;
+    //    QStringList selectedFiles;
 
-    for (int i = 0;i<m_selectedFiles.size();i++) {
-        selectedFiles.push_back(m_pointDir+m_selectedFiles.at(i));
-        qDebug()<<m_selectedFiles.at(i);
-    }
+    //    for (int i = 0;i<m_selectedFiles.size();i++) {
+    //        selectedFiles.push_back(m_pointDir+m_selectedFiles.at(i));
+    //        qDebug()<<m_selectedFiles.at(i);
+    //    }
 
-    //load files
-    m_pMainWindow->addToDB(selectedFiles, m_currentOpenDlgFilter);
+    //    //load files
+
+    ////    loadpoint("obj",selectedFiles, m_currentOpenDlgFilter);
+    //    //    m_pMainWindow->addToDB(selectedFiles, m_currentOpenDlgFilter);
 
 
 }
 
+
+void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filenames,
+                                 QString fileFilter/*=QString()*/,
+                                 ccGLWindow* destWin/*=0*/)
+{
+
+    ccHObject* newGroups = new ccHObject(objname);
+
+
+    //to use the same 'global shift' for multiple files
+    CCVector3d loadCoordinatesShift(0, 0, 0);
+    bool loadCoordinatesTransEnabled = false;
+
+    FileIOFilter::LoadParameters parameters;
+    {
+        parameters.alwaysDisplayLoadDialog = true;
+        parameters.shiftHandlingMode = ccGlobalShiftManager::DIALOG_IF_NECESSARY;
+        parameters.coordinatesShift = &loadCoordinatesShift;
+        parameters.coordinatesShiftEnabled = &loadCoordinatesTransEnabled;
+        parameters.parentWidget = this;
+    }
+
+    bool normalsDisplayedByDefault = ccOptions::Instance().normalsDisplayedByDefault;
+    FileIOFilter::ResetSesionCounter();
+
+    for ( const QString &filename : filenames )
+    {
+        CC_FILE_ERROR result = CC_FERR_NO_ERROR;
+        ccHObject* newGroup = FileIOFilter::LoadFromFile(filename, parameters, result, fileFilter);
+
+        if (newGroup)
+        {
+            if (!normalsDisplayedByDefault)
+            {
+                //disable the normals on all loaded clouds!
+                ccHObject::Container clouds;
+                newGroup->filterChildren(clouds, true, CC_TYPES::POINT_CLOUD);
+                for (ccHObject* cloud : clouds)
+                {
+                    if (cloud)
+                    {
+                        static_cast<ccGenericPointCloud*>(cloud)->showNormals(false);
+                    }
+                }
+            }
+
+            if (destWin)
+            {
+                newGroup->setDisplay_recursive(destWin);
+            }
+
+            newGroups->addChild(newGroup);
+            //            addToDB(newGroup, true, true, false);
+
+            //            m_recentFiles->addFilePath( filename );
+        }
+
+        if (result == CC_FERR_CANCELED_BY_USER)
+        {
+            //stop importing the file if the user has cancelled the current process!
+            break;
+        }
+    }
+
+    m_pMainWindow->addToDB(newGroups, true, true, false);
+
+}
+
+
+
+#include <map>
 void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned>> match)
 {
+    if (m_pointDir == nullptr || m_pointDir.isEmpty())
+    {
+        m_pointDir = nullptr;
+        QMessageBox message_box( QMessageBox::Question,
+                                 tr("warn"),
+                                 tr("please setting the point cloud path"),
+                                 QMessageBox::Yes | QMessageBox::No,
+                                 nullptr );
+
+        if (message_box.exec() == QMessageBox::Yes)
+        {
+            on_setpointfile_clicked();
+        }
+    }
+
+
+    if (m_pointDir.isEmpty())
+    {
+        m_pointDir = nullptr;
+        return;
+    }
+
+
 
     QString strtype = ".pcd";
     // perform
+
+    std::map<QString,QStringList> _showpointlist;
     std::vector<std::pair<unsigned,unsigned>>::iterator iter;
     for(iter = match.begin(); iter!= match.end(); iter++)
     {
+
+        QStringList selectedFilesMatching;
+        QStringList selectedFilesMatched;
+
         if(!m_vecs.empty())
         {
 
@@ -348,67 +450,70 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
                 int icurrent = i;
                 if(icurrent>=0 && icurrent<m_vecs.size())
                 {
+                    selectedFilesMatched.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
                     m_selectedFiles.push_back(m_vecs[icurrent].name.data() + strtype);
                 }
-                //                    else if(icurrent<0)
-                //                    {
-                //                        icurrent = m_vecs.size()+i;
+                //                else if(icurrent<0)
+                //                {
+                //                    icurrent = m_vecs.size()+i;
+                //                    m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
+                //                }
+                //                else if(icurrent>m_vecs.size()){
+                //                    icurrent = m_vecs.size()+(i-m_vecs.size());
+                //                    if(icurrent<m_vecs.size())
                 //                        m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
-                //                    }
-                //                    else if(icurrent>m_vecs.size()){
-                //                        icurrent = m_vecs.size()+(i-m_vecs.size());
-                //                        m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
-                //                    }
+                //                }
             }
 
             //back
+
+
             index = iter->second - 10;
             for (int i = index;i<index+20;i++) {
-                if(i>=0 && i<m_vecs.size())
+
+                int icurrent = i;
+                if(icurrent>=0 && icurrent<m_vecs.size())
                 {
+                    selectedFilesMatching.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
                     m_selectedFiles.push_back(m_vecs[i].name.data() + strtype);
                 }
-                //                    else if(i<0)
-                //                    {
-                //                        m_selectedFiles.push_back(m_pointDir + m_vecs[m_vecs.size()+i].name.data()+ strtype);
-                //                    }
-                //                    else if(i>m_vecs.size()){
-
-                //                        m_selectedFiles.push_back(m_pointDir + m_vecs[m_vecs.size()+(i-m_vecs.size())].name.data()+ strtype);
-                //                    }
+                //                else if(icurrent<0)
+                //                {
+                //                    icurrent = m_vecs.size()+i;
+                //                    m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
+                //                }
+                //                else if(icurrent>m_vecs.size()){
+                //                    icurrent = m_vecs.size()+(i-m_vecs.size());
+                //                    if(icurrent<m_vecs.size())
+                //                        m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
                 //                }
 
 
             }
 
+            _showpointlist["Matching" + QString(QString::fromLocal8Bit(std::to_string(index).c_str()))] = selectedFilesMatching;
+            _showpointlist["Matched" + QString(QString::fromLocal8Bit(std::to_string(index).c_str()))] = selectedFilesMatched;
 
-        }
-
-
-
-        if (m_selectedFiles.isEmpty())
-            return;
-
-
-        for (int i = 0;i<m_selectedFiles.size();i++) {
-            qDebug()<<m_selectedFiles.at(i);
         }
 
     }
 
 
-    ccConsole::Error(QStringLiteral("please setting the point cloud path"));
+    if (m_selectedFiles.isEmpty())
+        return;
 
-    //        QMessageBox message_box( QMessageBox::Question,
-    //                                 tr("warn"),
-    //                                 tr("please setting the point cloud path"),
-    //                                 QMessageBox::Yes | QMessageBox::No,
-    //                                 this );
+    else
+    {
 
-    //        if (message_box.exec() == QMessageBox::No)
-    //        {
+        std::map<QString,QStringList>::iterator iter1;
+        for (iter1 = _showpointlist.begin();iter1 != _showpointlist.end();iter1++)
+        {
+            loadpoint( iter1->first,iter1->second, m_currentOpenDlgFilter);
+        }
 
-    //        }
+        //        loadpoint("Matched",selectedFilesMatched, m_currentOpenDlgFilter);
+        //        loadpoint("Matching",selectedFilesMatching, m_currentOpenDlgFilter);
+    }
 
 }
 
