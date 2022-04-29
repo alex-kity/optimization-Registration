@@ -640,6 +640,9 @@ private:
     /////
     ColorChangeTool *m_colorDlg = nullptr;
 
+    CSlamLadirDialog *m_pSlamLadirDialog = nullptr;
+
+
 };
 
 #endif

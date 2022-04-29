@@ -151,6 +151,11 @@ int main(int argc, char **argv)
         QApplication::processEvents();
     }
 
+    QPixmap pixmap(QString::fromUtf8(":/CC/images/imLogoV2Qt.png"));
+    splash.reset(new QSplashScreen(pixmap, Qt::WindowStaysOnTopHint));
+    splash->show();
+    QApplication::processEvents();
+
     //global structures initialization
     FileIOFilter::InitInternalFilters(); //load all known I/O filters (plugins will come later!)
     ccNormalVectors::GetUniqueInstance(); //force pre-computed normals array initialization

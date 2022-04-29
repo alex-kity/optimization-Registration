@@ -94,3 +94,168 @@
 
     QMessageBox::about(this, QString::fromLocal8Bit("成功"), QString::fromLocal8Bit("这是莫某的开发"));
     return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//cccloud转换成pcl的pointcloud --- rgbget
+
+void CCcloudToPCLcloud(ccPointCloud* m_cloud, PointCloud<pcl::PointXYZRGB>::Ptr pclCloud)博客
+
+{入门
+
+     int num = m_cloud->size();ast
+
+     for (int i = 0; i < num; i++)
+
+     {
+
+          PointXYZRGB pointT;
+
+          pointT.x = (m_cloud->getPoint(i))->x;
+
+          pointT.y = (m_cloud->getPoint(i))->y;
+
+          pointT.z = (m_cloud->getPoint(i))->z;
+
+ 
+
+          if (m_cloud->getPointColor(i)[0] != NULL)
+
+          {
+
+               pointT.r = (m_cloud->getPointColor(i))[0];
+
+               pointT.g = (m_cloud->getPointColor(i))[1];
+
+               pointT.b = (m_cloud->getPointColor(i))[2];
+
+          }
+
+          pclCloud->push_back(pointT);
+
+     }
+
+}
+
+//cccloud转换成pcl的pointcloud no rgb--重载一下这个函数
+
+void CCcloudToPCLcloud(ccPointCloud* m_cloud, PointCloud<pcl::PointXYZ>::Ptr pclCloud)
+
+{
+
+     int num = m_cloud->size();
+
+     for (int i = 0; i < num; i++)
+
+     {
+
+          PointXYZ pointT;
+
+          pointT.x = (m_cloud->getPoint(i))->x;
+
+          pointT.y = (m_cloud->getPoint(i))->y;
+
+          pointT.z = (m_cloud->getPoint(i))->z;
+
+          pclCloud->push_back(pointT);
+
+     }
+
+}
+
+ 
+
+//----------------------pointCloud转ccCloud---------------------
+
+void PCLcloudToCCcloud(PointCloud<pcl::PointXYZRGB>::Ptr pclCloud, ccPointCloud* m_cloud)
+
+{
+
+     int num = pclCloud->points.size();
+
+     m_cloud->reserve(static_cast<unsigned>(num));
+
+     for (int i = 0; i < num; i++)
+
+     {
+
+          CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+
+          m_cloud->addPoint(P11);
+
+ 
+
+          ccColor::Rgb rgb;//定义一个颜色
+
+          if (pclCloud->points[0].r <= 1 && pclCloud->points[0].g <= 1)
+
+          {
+
+               rgb = ccColor::Rgb(pclCloud->points[i].r*255, pclCloud->points[i].g*255, pclCloud->points[i].b*255);
+
+          }
+
+          else
+
+          {
+
+               rgb = ccColor::Rgb(pclCloud->points[i].r, pclCloud->points[i].g, pclCloud->points[i].b);
+
+          }
+
+          m_cloud->resizeTheRGBTable(true);
+
+          m_cloud->setPointColor(i, rgb.rgb);
+
+     }
+
+ 
+
+}
+
+//无色的cccloud ---重载一下这个函数
+
+void PCLcloudToCCcloud(PointCloud<pcl::PointXYZ>::Ptr pclCloud, ccPointCloud* m_cloud)
+
+{
+
+     int num = pclCloud->points.size();
+
+     m_cloud->reserve(static_cast<unsigned>(num));
+
+     for (int i = 0; i < num; i++)
+
+     {
+
+          CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+
+          m_cloud->addPoint(P11);
+
+     }
+
+}

@@ -34,10 +34,12 @@ public:
     void SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match);
     void loadpoint(const QString objname, const QStringList& filenames,
                     QString fileFilter = QString(),
-                    ccGLWindow* destWin = nullptr );
+                   ccGLWindow* destWin = nullptr );
+    void loadpointPCD(const QString objname, const QStringList &filenames);
 signals:
     void SignalsLoadPath(QList<QVector3D> _vec);
     void SignalsResample();
+    void SignalsRegisterPoint();
 
 private slots:
     void on_load_path_clicked();
@@ -47,6 +49,8 @@ private slots:
     void on_setpointfile_clicked();
 
     void on_getcurrentpath_clicked();
+
+    void on_pushButtonpointresi_clicked();
 
 private:
     Ui::CSlamLadirDialog *ui;

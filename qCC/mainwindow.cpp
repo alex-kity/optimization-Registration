@@ -215,11 +215,14 @@ MainWindow::MainWindow()
     setWindowTitle(QStringLiteral("PointCloudSuper v") + ccApp->versionLongStr(false));
 
 
-    QFile qss( "E:/ai/source/build-point-cloud-annotation-tool-master-MSVC2017QT51364-Release/pointresource/Resources/qss/Darcula.qss");
+    QFile qss( "Darcula.qss");
 
     qss.open(QFile::ReadOnly);
     qApp->setStyleSheet(qss.readAll());
     qss.close();
+
+    m_UI->option->show();
+    m_UI->dockWidget_DataBase->show();
 
 
 
@@ -10108,11 +10111,11 @@ void MainWindow::doActionLoadFile()
         currentOpenDlgFilter.clear(); //this way FileIOFilter will try to guess the file type automatically!
     }
 
-//    std::cout<< "selectedFiles : "<<selectedFiles[0].toStdString()<<std::endl;
-//    ccConsole::Error(tr("selectedFiles : ") + selectedFiles[0] );
+    //    std::cout<< "selectedFiles : "<<selectedFiles[0].toStdString()<<std::endl;
+    //    ccConsole::Error(tr("selectedFiles : ") + selectedFiles[0] );
 
-//    std::cout<< "currentOpenDlgFilter : "<<currentOpenDlgFilter.toStdString()<<std::endl;
-//    ccConsole::Error(tr("currentOpenDlgFilter : ") + currentOpenDlgFilter );
+    //    std::cout<< "currentOpenDlgFilter : "<<currentOpenDlgFilter.toStdString()<<std::endl;
+    //    ccConsole::Error(tr("currentOpenDlgFilter : ") + currentOpenDlgFilter );
 
     //load files
     addToDB(selectedFiles, currentOpenDlgFilter);
@@ -11476,49 +11479,60 @@ void MainWindow::on_actionoptimization_triggered()
 #include "slam/CSlamLadirDialog.h"
 void MainWindow::on_actionSetLadirPer_triggered()
 {
-    CSlamLadirDialog *m_pSlamLadirDialog = nullptr;
-    //Qt MDI框架
-    QMdiSubWindow* qWin = m_mdiArea->activeSubWindow();
-    if (!qWin)
-        return;
+    m_UI->option->show();
+    m_UI->dockWidget_DataBase->show();
 
-    //    if (!m_pSlamLadirDialog)
-    //    {
-    //自定义对象m_colorDlg传入点云pCloud
-    m_pSlamLadirDialog = new CSlamLadirDialog(qWin,this);
-    //使得m_colorDlg能够停靠在点云显示窗口的右上角
-    registerOverlayDialog(m_pSlamLadirDialog, Qt::TopRightCorner);
+    if(m_pSlamLadirDialog == nullptr)
+    {
+        //Qt MDI框架
+        QMdiSubWindow* qWin = m_mdiArea->activeSubWindow();
+        if (!qWin)
+            return;
 
-    //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
-    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
+        //    if (!m_pSlamLadirDialog)
+        //    {
+        //自定义对象m_colorDlg传入点云pCloud
+        m_pSlamLadirDialog = new CSlamLadirDialog(this,this);
+        m_UI->verticalLayout_option->addWidget(m_pSlamLadirDialog);
+        m_UI->verticalLayout_option->addStretch(1);
+
+        //使得m_colorDlg能够停靠在点云显示窗口的右上角
+        registerOverlayDialog(m_pSlamLadirDialog, Qt::TopRightCorner);
+
+        //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
+        connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
 
-        //Sphere0000
-        ccHObject* newGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+            //Sphere
+            ccHObject* newGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
 
-        std::cout<<_vec.size()<<std::endl;
-        for (int i = 0;i<_vec.size();i++) {
-            ccGenericPrimitive* primitive = nullptr;
-            ccGLMatrix transMat;
-            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+            std::cout<<_vec.size()<<std::endl;
+            for (int i = 0;i<_vec.size();i++) {
+                ccGenericPrimitive* primitive = nullptr;
+                ccGLMatrix transMat;
+                transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
 
-            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
-                            static_cast<PointCoordinateType>(0.3),
-                            static_cast<PointCoordinateType>(0.3));
-            primitive = new ccBox(dims,&transMat);
-            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
-            newGroup->addChild(primitive);
-        }
-        addToDB(newGroup);
+                CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
+                                static_cast<PointCoordinateType>(0.3),
+                                static_cast<PointCoordinateType>(0.3));
+                primitive = new ccBox(dims,&transMat);
+                //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
+                newGroup->addChild(primitive);
+            }
+            addToDB(newGroup);
 
-    });
+        });
 
-    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsResample, this, [=]{doActionResampleWithOctree();} );
-    //    //当DB-Tree为空时，清空点云
-    //    connect(m_ccRoot, &ccDBRoot::dbIsEmpty, m_colorDlg, &ColorChangeTool::onClear);
+        connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsResample, this, [=]{doActionResampleWithOctree();} );
+        connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsRegisterPoint, this, [=]{activateRegisterPointPairTool();} );
 
-    //    }
-    m_pSlamLadirDialog->start();
-    updateOverlayDialogsPlacement();
+        //    //当DB-Tree为空时，清空点云
+        //    connect(m_ccRoot, &ccDBRoot::dbIsEmpty, m_colorDlg, &ColorChangeTool::onClear);
+
+        //    }
+        m_pSlamLadirDialog->start();
+        updateOverlayDialogsPlacement();
+
+    }
 
 }

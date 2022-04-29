@@ -70,6 +70,10 @@
 #include "utils.h"
 
 
+#include <map>
+#include <QProgressDialog>
+#include<Eigen/Eigen>
+
 using namespace CCCoreLib;
 
 void GetPointData(std::vector<lyg::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
@@ -229,6 +233,7 @@ CSlamLadirDialog::CSlamLadirDialog(QWidget *parent, MainWindow* _pMainWindow ) :
     ui->setupUi(this);
     m_pMainWindow = _pMainWindow;
     m_currentOpenDlgFilter = "Point Cloud Library cloud (*.pcd)";
+    //    connect(ui->pushButtonpointresi,QPushButton::clicked,this,[=]{ emit SignalsRegisterPoint(); });
 
     //    ui->load_path->setEnabled(false);
 }
@@ -239,7 +244,7 @@ CSlamLadirDialog::~CSlamLadirDialog()
 }
 
 
-#include<Eigen/Eigen>
+
 //if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
 //           {
 //               lyg::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
@@ -255,6 +260,7 @@ void CSlamLadirDialog::on_load_path_clicked()
     //get trajectory data
     CGYLCommon _CGYLCommon;
     QString fileName = QFileDialog::getOpenFileName(this,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
+    //            m_recentFiles->addFilePath( fileName );
     std::map<std::string,lyg::trajectoryData> trajectorys;
     m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),trajectorys);
 
@@ -331,6 +337,68 @@ void CSlamLadirDialog::on_setpointfile_clicked()
 
 }
 
+//#include <ccPointCloud.h>
+//#include <pcl/io/pcd_io.h>
+//#include <pcl/io/ply_io.h>
+//#include <pcl/point_types.h>
+//#include <pcl/point_cloud.h>
+
+////cccloud转换成pcl的pointcloud no rgb--重载一下这个函数
+
+
+////无色的cccloud ---重载一下这个函数
+
+//void PCLcloudToCCcloud(pcl::PointCloud<pcl::PointXYZ>::Ptr pclCloud, ccPointCloud* m_cloud)
+
+//{
+
+//    int num = pclCloud->points.size();
+
+//    m_cloud->reserve(static_cast<unsigned>(num));
+
+//    for (int i = 0; i < num; i++)
+
+//    {
+
+//        CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+//        m_cloud->addPoint(P11);
+
+//    }
+
+//}
+
+
+void CSlamLadirDialog::loadpointPCD(const QString objname,	const QStringList& filenames)
+{
+
+    //    pcl::PointCloud<pcl::PointXYZ>::Ptr pclCloudALL(new pcl::PointCloud<pcl::PointXYZ>);
+    //    ccPointCloud* newGroups = new ccPointCloud(objname);
+
+
+    //    for ( const QString &filename : filenames )
+    //    {
+    //        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    //        if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename.toStdString(), *cloud) < 0)
+    //        {
+    //            PCL_ERROR("Could not read file\n");
+    //            continue;
+    //        }
+    //        *pclCloudALL = * pclCloudALL + *cloud;
+
+
+
+    //    }
+
+    //    PCLcloudToCCcloud(pclCloudALL, newGroups);
+
+    //    ccHObject* newGroupname = new ccHObject(objname);
+    //    newGroupname->addChild(newGroupname);
+    //    m_pMainWindow->addToDB(newGroupname, true, true, false);
+
+
+}
+
+
 
 void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filenames,
                                  QString fileFilter/*=QString()*/,
@@ -338,7 +406,7 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
 {
 
     ccHObject* newGroups = new ccHObject(objname);
-
+    std::vector<ccPointCloud*> _vecpointcloud;
 
     //to use the same 'global shift' for multiple files
     CCVector3d loadCoordinatesShift(0, 0, 0);
@@ -382,10 +450,12 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
                 newGroup->setDisplay_recursive(destWin);
             }
 
-            newGroups->addChild(newGroup);
-            //            addToDB(newGroup, true, true, false);
 
-            //            m_recentFiles->addFilePath( filename );
+            newGroups->addChild(newGroup);
+            //            ccPointCloud* firstCloud = new ccPointCloud()
+            //            ccPointCloud* firstCloud = ccHObjectCaster::ToPointCloud(newGroup);
+            //            _vecpointcloud.push_back(firstCloud);
+
         }
 
         if (result == CC_FERR_CANCELED_BY_USER)
@@ -394,14 +464,47 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
             break;
         }
     }
+    //    baseMesh->addChild(baseVertices);
+
+
+
+
+    qDebug()<<"firstCloud";
+    //    ccPointCloud* firstCloud = new ccPointCloud(objname);
+    //    for (unsigned i = 0; i < _vecpointcloud.size(); ++i)
+    //    {
+    //        if(_vecpointcloud[i])
+    //        {
+    //            qDebug()<<"_vecpointcloud is null";
+
+    //            *firstCloud += _vecpointcloud[i];
+    //        }
+    //    }
+    //    if(firstCloud!=nullptr)
+    //        newGroups->addChild(firstCloud);
+
+
+    //    ccHObject* newGroup = nullptr;
+    //    ccPointCloud* firstCloud = nullptr;
+    //    for (unsigned i = 0; i < newGroups->getChildrenNumber(); ++i)
+    //    {
+    //        newGroup = newGroups->getChild(i);
+    //        ccPointCloud* pc = ccHObjectCaster::ToPointCloud(newGroup);
+    //        assert(pc);
+    //        *firstCloud += pc;
+    //    }
+
+    //qDebug()<<"newGroups";
+
+    //    zoomOn(newDataCloud);
+    //    addToDB(newDataCloud);
 
     m_pMainWindow->addToDB(newGroups, true, true, false);
+    //    qDebug()<<"addToDB";
 
 }
 
 
-
-#include <map>
 void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned>> match)
 {
     if (m_pointDir == nullptr || m_pointDir.isEmpty())
@@ -426,6 +529,23 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         return;
     }
 
+
+
+    //创建一个进度对话框
+    QProgressDialog *progressDialog=new QProgressDialog();
+    QFont font("cloudpoint",12);
+    progressDialog->setFont(font);
+    //设置进度对话框采用模态方式进行，即显示进度的同时，其他窗口将不响应输入信号
+    progressDialog->setWindowModality(Qt::WindowModal);
+    //设置进度对话框出现需等待的时间，默认为4s
+    progressDialog->setMinimumDuration(2);
+    //设置进度对话框的窗体标题
+    progressDialog->setWindowTitle(tr("Please Wait"));
+    //设置进度对话框的显示文字信息
+    progressDialog->setLabelText(tr("Compute..."));
+    //设置进度对话框的“取消”按钮的显示文字
+    progressDialog->setCancelButtonText(tr("Cancel"));
+    progressDialog->show();
 
 
     QString strtype = ".pcd";
@@ -453,21 +573,10 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
                     selectedFilesMatched.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
                     m_selectedFiles.push_back(m_vecs[icurrent].name.data() + strtype);
                 }
-                //                else if(icurrent<0)
-                //                {
-                //                    icurrent = m_vecs.size()+i;
-                //                    m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
-                //                }
-                //                else if(icurrent>m_vecs.size()){
-                //                    icurrent = m_vecs.size()+(i-m_vecs.size());
-                //                    if(icurrent<m_vecs.size())
-                //                        m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
-                //                }
+
             }
 
             //back
-
-
             index = iter->second - 10;
             for (int i = index;i<index+20;i++) {
 
@@ -477,17 +586,6 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
                     selectedFilesMatching.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
                     m_selectedFiles.push_back(m_vecs[i].name.data() + strtype);
                 }
-                //                else if(icurrent<0)
-                //                {
-                //                    icurrent = m_vecs.size()+i;
-                //                    m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
-                //                }
-                //                else if(icurrent>m_vecs.size()){
-                //                    icurrent = m_vecs.size()+(i-m_vecs.size());
-                //                    if(icurrent<m_vecs.size())
-                //                        m_selectedFiles.push_back(m_pointDir + m_vecs[icurrent].name.data()+ strtype);
-                //                }
-
 
             }
 
@@ -504,21 +602,43 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
     else
     {
+        int num = _showpointlist.size()+1;
+        progressDialog->setRange(0,num); //设置进度对话框的步进范围
 
+
+        int i = 0;
         std::map<QString,QStringList>::iterator iter1;
         for (iter1 = _showpointlist.begin();iter1 != _showpointlist.end();iter1++)
         {
             loadpoint( iter1->first,iter1->second, m_currentOpenDlgFilter);
+            //            loadpointPCD(iter1->first,iter1->second);
+            progressDialog->setValue(i);
+            if(progressDialog->wasCanceled())
+                return;
+            i++;
         }
+
 
         //        loadpoint("Matched",selectedFilesMatched, m_currentOpenDlgFilter);
         //        loadpoint("Matching",selectedFilesMatching, m_currentOpenDlgFilter);
     }
+
+
+    progressDialog->close();
+    delete progressDialog;
 
 }
 
 
 void CSlamLadirDialog::on_getcurrentpath_clicked()
 {
+
+}
+
+
+
+void CSlamLadirDialog::on_pushButtonpointresi_clicked()
+{
+    emit SignalsRegisterPoint();
 
 }

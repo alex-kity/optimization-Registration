@@ -24,6 +24,27 @@ add_subdirectory( extern/QCustomPlot EXCLUDE_FROM_ALL )
 qt5_wrap_ui( generated_ui_list ${ui_list} )
 qt5_add_resources( generated_qrc_list ${qrc_list} )
 
+
+
+#pcl
+
+#find_package(PCL 1.2 REQUIRED)
+
+#include_directories(${PCL_INCLUDE_DIRS})
+#link_directories(${PCL_LIBRARY_DIRS})
+#add_definitions(${PCL_DEFINITIONS})
+
+#target_link_libraries (octree_search ${PCL_LIBRARIES})
+
+
+
+
+
+
+#target_link_libraries(CHdMap PRIVATE Qt5::Widgets ${CERES_LIBRARIES} ${OpenCV_LIBS}
+#    ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FEATURE_LIBRARIES} ${PCL_LIBRARIES}
+#    )
+
 if( MSVC )
 	# App icon with MSVC
 	set( rc_list images/icon/cc_icon.rc )
@@ -33,7 +54,9 @@ if( MSVC )
 elseif( APPLE )
 	add_executable( ${PROJECT_NAME} MACOSX_BUNDLE ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${txt_list} )
 else()
-	add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list} )
+        add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list}
+
+            )
 endif()
 
 if( WIN32 )
@@ -56,6 +79,7 @@ target_link_libraries( ${PROJECT_NAME}
     CCAppCommon
     QCustomPlot
     Qt5::PrintSupport
+#    ${PCL_LIBRARIES}
 )
 
 if( CCCORELIB_USE_QT_CONCURRENT )
