@@ -173,6 +173,8 @@ public:
 
 	//! Updates the 'Properties' view
 	void updatePropertiesView();
+
+//    void ADDRecently(QString str);
 	
 private slots:
     void on_actionColorChange_triggered();
@@ -184,6 +186,8 @@ private slots:
     void on_actionoptimization_triggered();
 
     void on_actionSetLadirPer_triggered();
+
+    void on_actionShow_triggered();
 
 private:
 	//! Creates a new 3D GL sub-window
@@ -640,7 +644,6 @@ private:
     /////
     ColorChangeTool *m_colorDlg = nullptr;
 
-    CSlamLadirDialog *m_pSlamLadirDialog = nullptr;
 
 
 };

@@ -32,6 +32,9 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -520,6 +523,12 @@
     <addaction name="actionpath"/>
     <addaction name="actionoptimization"/>
    </widget>
+   <widget class="QMenu" name="menuExtend">
+    <property name="title">
+     <string>Extend</string>
+    </property>
+    <addaction name="actionShow"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuTools"/>
@@ -527,6 +536,7 @@
    <addaction name="menu3DViews"/>
    <addaction name="menuHelp"/>
    <addaction name="menuHdMap"/>
+   <addaction name="menuExtend"/>
   </widget>
   <widget class="QDockWidget" name="DockableDBTree">
    <property name="minimumSize">
@@ -534,6 +544,10 @@
      <width>146</width>
      <height>175</height>
     </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(241, 241, 241);
+background-color: rgb(60, 63, 65);</string>
    </property>
    <property name="floating">
     <bool>false</bool>
@@ -756,6 +770,10 @@ QTreeView::branch:open:has-children:has-siblings  {
      <height>164</height>
     </size>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(241, 241, 241);
+background-color: rgb(60, 63, 65);</string>
+   </property>
    <property name="floating">
     <bool>false</bool>
    </property>
@@ -813,7 +831,7 @@ QTreeView::branch:open:has-children:has-siblings  {
    </property>
    <property name="maximumSize">
     <size>
-     <width>150</width>
+     <width>250</width>
      <height>524287</height>
     </size>
    </property>
@@ -3202,6 +3220,11 @@ QTreeView::branch:open:has-children:has-siblings  {
   <action name="actionSetLadirPer">
    <property name="text">
     <string>设置雷达参数</string>
+   </property>
+  </action>
+  <action name="actionShow">
+   <property name="text">
+    <string>ExtendShow</string>
    </property>
   </action>
  </widget>

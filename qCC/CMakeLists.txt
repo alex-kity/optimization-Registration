@@ -1,4 +1,4 @@
-project( CloudCompare VERSION 2.12.0 )
+project( PointCloudSuper VERSION 2.12.0 )
 
 include( CMakePolicies NO_POLICY_SCOPE )
 
@@ -34,16 +34,8 @@ qt5_add_resources( generated_qrc_list ${qrc_list} )
 #link_directories(${PCL_LIBRARY_DIRS})
 #add_definitions(${PCL_DEFINITIONS})
 
-#target_link_libraries (octree_search ${PCL_LIBRARIES})
 
 
-
-
-
-
-#target_link_libraries(CHdMap PRIVATE Qt5::Widgets ${CERES_LIBRARIES} ${OpenCV_LIBS}
-#    ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FEATURE_LIBRARIES} ${PCL_LIBRARIES}
-#    )
 
 if( MSVC )
 	# App icon with MSVC
@@ -55,7 +47,7 @@ elseif( APPLE )
 	add_executable( ${PROJECT_NAME} MACOSX_BUNDLE ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${txt_list} )
 else()
         add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list}
-
+#            ${PCL_LIBRARIES}
             )
 endif()
 

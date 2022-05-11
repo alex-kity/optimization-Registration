@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.10 )
 
-project( CloudCompareProjects )
+project( PointCloudSuper )
 
 # One shouldn't generate the BUILD project directly in the SOURCES folder!
 if ( ${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR} )

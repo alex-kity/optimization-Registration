@@ -26,7 +26,7 @@
 #define M_PI (3.141592653589793238462643383279)
 using namespace std;
 
-namespace lyg{
+namespace lygs{
 typedef struct _trajectoryData {
     std::string name;
     long double time;
@@ -34,7 +34,7 @@ typedef struct _trajectoryData {
     float roll, pitch, yaw;
 }trajectoryData, *trajectoryDataPtr;
 
-}
+
 
 
 
@@ -130,11 +130,11 @@ public:
         return result;
     }
 
-    std::vector<lyg::trajectoryData>  readTrajectoryToxian(string fileName, std::map<string, lyg::trajectoryData> &trajectorys)
+    std::vector<trajectoryData>  readTrajectoryToxian(string fileName, std::map<string, trajectoryData> &trajectorys)
     {
         ifstream myfile(fileName);
 
-        std::vector<lyg::trajectoryData> _trajectoryDatav;
+        std::vector<trajectoryData> _trajectoryDatav;
         if (!myfile.is_open())
         {
             std::cout << "can not open this file:" << fileName << endl;
@@ -148,7 +148,7 @@ public:
             myfile >> temp;
             vector<string> res = splittoxian(temp, ",");
             int i = 0;
-            lyg::trajectoryData para;
+            trajectoryData para;
             string timeStr = res[0];
 
             std::string str = res[i++];
@@ -180,7 +180,7 @@ public:
 
 
 
-
+}
 
 
 

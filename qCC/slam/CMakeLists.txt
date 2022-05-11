@@ -20,3 +20,9 @@ set(ui_list
    ${CMAKE_CURRENT_SOURCE_DIR}/CSlamLadirDialog.ui
    PARENT_SCOPE
 )
+
+set( qrc_list
+	${qrc_list}
+	${CMAKE_CURRENT_SOURCE_DIR}/slam.qrc
+	PARENT_SCOPE
+)

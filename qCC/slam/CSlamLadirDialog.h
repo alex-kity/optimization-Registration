@@ -12,16 +12,20 @@
 #include <math.h>
 
 
-#include "CGYLCommon.h"
 
 #include <QDialog>
 #include <QVector3D>
 
+
 #include "ccOverlayDialog.h"
+
+#include "CGYLCommon.h"
+
 namespace Ui {
 class CSlamLadirDialog;
 }
 
+class ccPointCloud;
 class MainWindow;
 class CSlamLadirDialog :public ccOverlayDialog
 {
@@ -32,10 +36,14 @@ public:
     ~CSlamLadirDialog();
 
     void SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match);
-    void loadpoint(const QString objname, const QStringList& filenames,
+    void loadpoint(const QString objname, const QStringList& filenames, QString dir = "",
                     QString fileFilter = QString(),
                    ccGLWindow* destWin = nullptr );
     void loadpointPCD(const QString objname, const QStringList &filenames);
+    //    void MeragePoint(ccHObject *newGroups);
+    ccPointCloud *changeMat(ccPointCloud *obj, std::string strfilename);
+
+
 signals:
     void SignalsLoadPath(QList<QVector3D> _vec);
     void SignalsResample();
@@ -52,6 +60,12 @@ private slots:
 
     void on_pushButtonpointresi_clicked();
 
+    void on_btnclose_clicked();
+
+    void on_btnAuto_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::CSlamLadirDialog *ui;
 
@@ -59,7 +73,8 @@ private:
     MainWindow * m_pMainWindow = nullptr;
     QString m_pointDir = nullptr;
 
-    std::vector<lyg::trajectoryData> m_vecs ;
+    std::vector<lygs::trajectoryData> m_vecs ;
+    std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
 
 
     QString m_currentOpenDlgFilter;

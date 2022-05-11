@@ -72,11 +72,12 @@
 
 #include <map>
 #include <QProgressDialog>
-#include<Eigen/Eigen>
+
+#include <eigen3/Eigen/Eigen>
 
 using namespace CCCoreLib;
 
-void GetPointData(std::vector<lyg::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
+void GetPointData(std::vector<lygs::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
 {
     float dis = 10.0f;
     int frontToBackfram = 200;
@@ -129,7 +130,7 @@ void GetPointData(std::vector<lyg::trajectoryData> _vecs, std::vector<std::pair<
 
 
             // in order to sort to distance
-            std::sort(IndicesDists.begin(), IndicesDists.end(), IndexDistLyg_Sorter());
+            std::sort(IndicesDists.begin(), IndicesDists.end(), lygs::IndexDistLyg_Sorter());
 
             // perform
             std::vector<std::pair<int, double>>::iterator iter;
@@ -157,11 +158,11 @@ void GetPointData(std::vector<lyg::trajectoryData> _vecs, std::vector<std::pair<
 
 }
 
-void GetPointDataSelf(std::vector<lyg::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
+void GetPointDataSelf(std::vector<lygs::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
 {
     float dis = 10.0f;
     int frontToBackfram = 200;
-    int jumpfram = 15;
+    int jumpfram = 200;
 
     lyg::PointCloud<double> tmpCloud1;
     {
@@ -203,7 +204,7 @@ void GetPointDataSelf(std::vector<lyg::trajectoryData> _vecs, std::vector<std::p
             std::vector<std::pair<uint32_t, double>>::iterator iter;
             for(iter = ret_matches.begin(); iter!=ret_matches.end(); iter++)
             {
-                std::cout<<iter->first<<" sort twopointdistance: "<<iter->second<<std::endl;
+                //                std::cout<<iter->first<<" sort twopointdistance: "<<iter->second<<std::endl;
 
                 if((int)(i-iter->first)>frontToBackfram)
                 {
@@ -247,7 +248,7 @@ CSlamLadirDialog::~CSlamLadirDialog()
 
 //if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
 //           {
-//               lyg::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
+//               lygs::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
 //               Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
 //               pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(transformed_cloud, Roi2w);
 //               transformed_cloud->points.clear();
@@ -255,16 +256,59 @@ CSlamLadirDialog::~CSlamLadirDialog()
 
 //           }
 
+
+
+
+void SqereTrajectory(std::string outfileName,std::vector<string> _vec)
+{
+    //写入
+    ofstream outfile(outfileName);
+    if (!outfile.is_open())
+    {
+        cout << "can not open this file SqereTrajectory:" << outfileName << endl;
+        return ;
+    }
+
+    for(int i = 0;i<_vec.size();i++)
+    {
+        outfile << _vec[i]<<"/n";
+    }
+
+    outfile.close();
+}
+
+
 void CSlamLadirDialog::on_load_path_clicked()
 {
     //get trajectory data
-    CGYLCommon _CGYLCommon;
-    QString fileName = QFileDialog::getOpenFileName(this,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
+    lygs::CGYLCommon _CGYLCommon;
+    //    background-color: rgb(115, 210, 22);
+    QFileDialog _FileDialog;
+    //    _FileDialog.setStyleSheet("background-color: rgb(200, 200, 200)");
+    _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
+    QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
     //            m_recentFiles->addFilePath( fileName );
-    std::map<std::string,lyg::trajectoryData> trajectorys;
-    m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),trajectorys);
+    std::map<std::string,lygs::trajectoryData> trajectorys;
+    m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),g_trajectoryMap);
 
 
+    //    std::vector<string> _vec;
+    //    std::map<std::string,lygs::trajectoryData>::iterator iter;
+    //    for(iter = g_trajectoryMap.begin(); iter!=g_trajectoryMap.end(); iter++)
+    //    {
+    //        std::cout<<iter->first<<" g_trajectoryMap: "<<std::endl;
+
+    //        lygs::trajectoryData lidarSe3 = g_trajectoryMap[iter->first];
+    //        _vec.push_back(lidarSe3.name);
+
+
+    //    }
+    //    SqereTrajectory("/home/alexlyg/file/cclog.txt",_vec);
+
+
+
+
+    //    m_pMainWindow->ADDRecently(fileName);
     //show trajectorydata
     QList<QVector3D> _vec3d;
     QVector3D vec;
@@ -302,7 +346,7 @@ void CSlamLadirDialog::on_setpointfile_clicked()
     //    ui->load_path->setEnabled(true);
     //文件夹路径
     m_pointDir = QFileDialog::getExistingDirectory(
-                this, "choose src Directory",
+                nullptr, "choose src Directory",
                 "/");
 
 
@@ -337,139 +381,54 @@ void CSlamLadirDialog::on_setpointfile_clicked()
 
 }
 
-//#include <ccPointCloud.h>
-//#include <pcl/io/pcd_io.h>
-//#include <pcl/io/ply_io.h>
-//#include <pcl/point_types.h>
-//#include <pcl/point_cloud.h>
-
-////cccloud转换成pcl的pointcloud no rgb--重载一下这个函数
+#include <ccPointCloud.h>
 
 
-////无色的cccloud ---重载一下这个函数
-
-//void PCLcloudToCCcloud(pcl::PointCloud<pcl::PointXYZ>::Ptr pclCloud, ccPointCloud* m_cloud)
-
-//{
-
-//    int num = pclCloud->points.size();
-
-//    m_cloud->reserve(static_cast<unsigned>(num));
-
-//    for (int i = 0; i < num; i++)
-
-//    {
-
-//        CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
-//        m_cloud->addPoint(P11);
-
-//    }
-
-//}
-
-
-void CSlamLadirDialog::loadpointPCD(const QString objname,	const QStringList& filenames)
+ccPointCloud* MeragePoint(ccHObject* newGroups)
 {
+    qDebug()<<" start  ";
+    qDebug()<<newGroups->getName();
+    ccHObject* newGroup = nullptr;
+    ccPointCloud* firstCloud = new ccPointCloud(newGroups->getName());
 
-    //    pcl::PointCloud<pcl::PointXYZ>::Ptr pclCloudALL(new pcl::PointCloud<pcl::PointXYZ>);
-    //    ccPointCloud* newGroups = new ccPointCloud(objname);
-
-
-    //    for ( const QString &filename : filenames )
-    //    {
-    //        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-    //        if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename.toStdString(), *cloud) < 0)
-    //        {
-    //            PCL_ERROR("Could not read file\n");
-    //            continue;
-    //        }
-    //        *pclCloudALL = * pclCloudALL + *cloud;
+    //    ccConsole::Error("currentOpenDlgFilter =====: ");
 
 
-
-    //    }
-
-    //    PCLcloudToCCcloud(pclCloudALL, newGroups);
-
-    //    ccHObject* newGroupname = new ccHObject(objname);
-    //    newGroupname->addChild(newGroupname);
-    //    m_pMainWindow->addToDB(newGroupname, true, true, false);
-
-
-}
-
-
-
-void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filenames,
-                                 QString fileFilter/*=QString()*/,
-                                 ccGLWindow* destWin/*=0*/)
-{
-
-    ccHObject* newGroups = new ccHObject(objname);
-    std::vector<ccPointCloud*> _vecpointcloud;
-
-    //to use the same 'global shift' for multiple files
-    CCVector3d loadCoordinatesShift(0, 0, 0);
-    bool loadCoordinatesTransEnabled = false;
-
-    FileIOFilter::LoadParameters parameters;
+    for (unsigned i = 0; i < newGroups->getChildrenNumber(); ++i)
     {
-        parameters.alwaysDisplayLoadDialog = true;
-        parameters.shiftHandlingMode = ccGlobalShiftManager::DIALOG_IF_NECESSARY;
-        parameters.coordinatesShift = &loadCoordinatesShift;
-        parameters.coordinatesShiftEnabled = &loadCoordinatesTransEnabled;
-        parameters.parentWidget = this;
-    }
+        newGroup = newGroups->getChild(i);
+        //        ccConsole::Error(newGroups->getName().toLatin1().data());
+        //qstr.toLatin1().data();
 
-    bool normalsDisplayedByDefault = ccOptions::Instance().normalsDisplayedByDefault;
-    FileIOFilter::ResetSesionCounter();
+        ccPointCloud* pc = static_cast<ccPointCloud*>(newGroup);
+        //        pc->point()
+        //        ccPointCloud* pc = ccHObjectCaster::ToPointCloud(newGroup);
+        ccConsole::Error((QString::number(pc->size())+"---"+pc->getName()).toLatin1().data());
+        //        ccConsole::Error("===================================");
+        //        assert(pc);
+        //        *firstCloud += pc;
 
-    for ( const QString &filename : filenames )
-    {
-        CC_FILE_ERROR result = CC_FERR_NO_ERROR;
-        ccHObject* newGroup = FileIOFilter::LoadFromFile(filename, parameters, result, fileFilter);
-
-        if (newGroup)
+        for (int i = 0; i < pc->size(); i++)
         {
-            if (!normalsDisplayedByDefault)
-            {
-                //disable the normals on all loaded clouds!
-                ccHObject::Container clouds;
-                newGroup->filterChildren(clouds, true, CC_TYPES::POINT_CLOUD);
-                for (ccHObject* cloud : clouds)
-                {
-                    if (cloud)
-                    {
-                        static_cast<ccGenericPointCloud*>(cloud)->showNormals(false);
-                    }
-                }
-            }
 
-            if (destWin)
-            {
-                newGroup->setDisplay_recursive(destWin);
-            }
-
-
-            newGroups->addChild(newGroup);
-            //            ccPointCloud* firstCloud = new ccPointCloud()
-            //            ccPointCloud* firstCloud = ccHObjectCaster::ToPointCloud(newGroup);
-            //            _vecpointcloud.push_back(firstCloud);
+            CCVector3 P11(pc->getPoint(i)->x, pc->getPoint(i)->y, pc->getPoint(i)->z);
+            firstCloud->addPoint(P11);
 
         }
 
-        if (result == CC_FERR_CANCELED_BY_USER)
-        {
-            //stop importing the file if the user has cancelled the current process!
-            break;
-        }
+        ccConsole::Error((QString::number(firstCloud->size())+"---"+pc->getName()).toLatin1().data());
+
+        //        ccConsole::Error(firstCloud->getName().toLatin1().data());
     }
-    //    baseMesh->addChild(baseVertices);
+
+
+    if(firstCloud != nullptr)
+        firstCloud->setName(newGroups->getName());
 
 
 
+    return firstCloud;
 
-    qDebug()<<"firstCloud";
     //    ccPointCloud* firstCloud = new ccPointCloud(objname);
     //    for (unsigned i = 0; i < _vecpointcloud.size(); ++i)
     //    {
@@ -498,11 +457,189 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
 
     //    zoomOn(newDataCloud);
     //    addToDB(newDataCloud);
+}
 
-    m_pMainWindow->addToDB(newGroups, true, true, false);
-    //    qDebug()<<"addToDB";
+
+
+
+//Clockwise is positive
+Eigen::Matrix4f getSE3Mat(float yaw, float pitch, float roll, float x , float y, float z, string order)
+{
+
+    Eigen::Matrix3f R;
+    if(order =="rpy")  //default
+        R = Eigen::AngleAxisf(roll * M_PI / 180, Eigen::Vector3f::UnitX()) *
+                Eigen::AngleAxisf(pitch * M_PI / 180, Eigen::Vector3f::UnitY()) *
+                Eigen::AngleAxisf(yaw * M_PI / 180, Eigen::Vector3f::UnitZ());
+    else
+        R = Eigen::AngleAxisf(yaw * M_PI / 180, Eigen::Vector3f::UnitZ()) *
+                Eigen::AngleAxisf(pitch * M_PI / 180, Eigen::Vector3f::UnitY()) *
+                Eigen::AngleAxisf(roll * M_PI / 180, Eigen::Vector3f::UnitX());
+
+    Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+    transform_2.translation() << x, y, z;
+    transform_2.rotate(R);
+
+    Eigen::Matrix4f camera_pose(transform_2.matrix());
+    //std::cout << "camera_pose: " << endl << camera_pose << std::endl;
+    return camera_pose;
+}
+
+
+static ccGLMatrix FromEigenMat(const Eigen::Matrix4f& ovrMat)
+{
+    ccGLMatrix ccMat;
+    float* data = ccMat.data();
+
+    data[0] = ovrMat(0,0); data[4] = ovrMat(0,1);   data[8] = ovrMat(0,2); data[12] = ovrMat(0,3);
+    data[1] = ovrMat(1,0); data[5] = ovrMat(1,1);	data[9] = ovrMat(1,2); data[13] = ovrMat(1,3);
+    data[2] = ovrMat(2,0); data[6] = ovrMat(2,1);	data[10] = ovrMat(2,2); data[14] = ovrMat(2,3);
+    data[3] = ovrMat(3,0); data[7] = ovrMat(3,1);	data[11] = ovrMat(3,2); data[15] = ovrMat(3,3);
+
+
+    return ccMat;
+}
+
+
+// this pointcloud transform form origin to world
+ccPointCloud*  CSlamLadirDialog::changeMat(ccPointCloud* obj,std::string strfilename)
+{
+    std::string  str = strfilename.substr(0,strfilename.length()-4);
+
+    if(g_trajectoryMap.count(str) == 1)
+    {
+
+        lygs::trajectoryData lidarSe3 = g_trajectoryMap[strfilename.substr(0, strfilename.size() - 4)];
+        Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+
+        ccGLMatrix transTemp = FromEigenMat(Roi2w);
+
+        obj->applyRigidTransformation(transTemp);
+
+        //        pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(cloudA, Roi2w);
+
+    }
+
+
+
+    return obj;
+}
+
+void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filenames,QString dir,
+                                 QString fileFilter/*=QString()*/,
+                                 ccGLWindow* destWin/*=0*/)
+{
+
+
+
+    ccHObject* newGroups = new ccHObject(objname);
+    std::vector<ccPointCloud*> _vecpointcloud;
+
+    //to use the same 'global shift' for multiple files
+    CCVector3d loadCoordinatesShift(0, 0, 0);
+    bool loadCoordinatesTransEnabled = false;
+
+    FileIOFilter::LoadParameters parameters;
+    {
+        parameters.alwaysDisplayLoadDialog = true;
+        parameters.shiftHandlingMode = ccGlobalShiftManager::DIALOG_IF_NECESSARY;
+        parameters.coordinatesShift = &loadCoordinatesShift;
+        parameters.coordinatesShiftEnabled = &loadCoordinatesTransEnabled;
+        parameters.parentWidget = this;
+    }
+
+    bool normalsDisplayedByDefault = ccOptions::Instance().normalsDisplayedByDefault;
+    FileIOFilter::ResetSesionCounter();
+
+    for ( const QString &filename : filenames )
+    {
+        CC_FILE_ERROR result = CC_FERR_NO_ERROR;
+        ccHObject* newGroup = FileIOFilter::LoadFromFile(dir +filename, parameters, result, fileFilter);
+
+        if (newGroup)
+        {
+            if (!normalsDisplayedByDefault)
+            {
+                //disable the normals on all loaded clouds!
+                ccHObject::Container clouds;
+                newGroup->filterChildren(clouds, true, CC_TYPES::POINT_CLOUD);
+                for (ccHObject* cloud : clouds)
+                {
+                    if (cloud)
+                    {
+                        static_cast<ccGenericPointCloud*>(cloud)->showNormals(false);
+                    }
+                }
+            }
+
+            if (destWin)
+            {
+                newGroup->setDisplay_recursive(destWin);
+            }
+
+
+            newGroups->addChild(newGroup);
+
+
+            for (unsigned i = 0; i < newGroup->getChildrenNumber(); ++i)
+            {
+
+                ccHObject* cloud = newGroup->getChild(i);
+
+                //获取选中的点云对象
+
+                if (!cloud || !cloud->isA(CC_TYPES::POINT_CLOUD)) {
+
+                    ccConsole::Error((QString::number(cloud->getClassID())+"---"+cloud->getName()).toLatin1().data());
+                    //                    continue;
+                }
+                else
+                {
+
+
+                    //                    ccPointCloud *pc = ccHObjectCaster::ToPointCloud(cloud);
+
+                    ccPointCloud *pc =changeMat(ccHObjectCaster::ToPointCloud(cloud),filename.toStdString());
+
+                    //                    ccScalarField *sf = pc->getCurrentDisplayedScalarField();
+                    _vecpointcloud.push_back(pc);
+                    //                    ccConsole::Error((QString::number(pc->size())+"---"+pc->getName()).toLatin1().data());
+                }
+
+
+
+            }
+            //分类，继承关系，类型转换
+        }
+
+        if (result == CC_FERR_CANCELED_BY_USER)
+        {
+            //stop importing the file if the user has cancelled the current process!
+            break;
+        }
+    }
+    //    baseMesh->addChild(baseVertices);
+
+
+
+
+
+    if(!_vecpointcloud.empty())
+    {
+        ccPointCloud* firstCloud = new ccPointCloud(objname);
+
+        for(int i = 0;i<_vecpointcloud.size();i++)
+        {
+            *firstCloud += _vecpointcloud[i];
+        }
+
+        m_pMainWindow->addToDB(firstCloud, true, true, false);
+    }
+
 
 }
+
+
 
 
 void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned>> match)
@@ -533,7 +670,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
     //创建一个进度对话框
     QProgressDialog *progressDialog=new QProgressDialog();
-    QFont font("cloudpoint",12);
+    QFont font("compute Registration.....",12);
     progressDialog->setFont(font);
     //设置进度对话框采用模态方式进行，即显示进度的同时，其他窗口将不响应输入信号
     progressDialog->setWindowModality(Qt::WindowModal);
@@ -563,27 +700,31 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         {
 
             // perform front and back of fream pointcloud
-            //front
-            int index = iter->first - 10;
+            //1
+            int index = iter->first - 15;
             for (int i = index;i<index+20;i++) {
 
                 int icurrent = i;
                 if(icurrent>=0 && icurrent<m_vecs.size())
                 {
-                    selectedFilesMatched.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
+                    //                    selectedFilesMatched.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
+                    selectedFilesMatched.push_back(m_vecs[icurrent].name.data() + strtype);
+
                     m_selectedFiles.push_back(m_vecs[icurrent].name.data() + strtype);
                 }
 
             }
 
-            //back
-            index = iter->second - 10;
+
+            //2
+            index = iter->second - 15;
             for (int i = index;i<index+20;i++) {
 
                 int icurrent = i;
                 if(icurrent>=0 && icurrent<m_vecs.size())
                 {
-                    selectedFilesMatching.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
+                    //                    selectedFilesMatching.push_back(m_pointDir+m_vecs[icurrent].name.data() + strtype);
+                    selectedFilesMatching.push_back(m_vecs[icurrent].name.data() + strtype);
                     m_selectedFiles.push_back(m_vecs[i].name.data() + strtype);
                 }
 
@@ -610,7 +751,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         std::map<QString,QStringList>::iterator iter1;
         for (iter1 = _showpointlist.begin();iter1 != _showpointlist.end();iter1++)
         {
-            loadpoint( iter1->first,iter1->second, m_currentOpenDlgFilter);
+            loadpoint( iter1->first,iter1->second, m_pointDir,m_currentOpenDlgFilter);
             //            loadpointPCD(iter1->first,iter1->second);
             progressDialog->setValue(i);
             if(progressDialog->wasCanceled())
@@ -642,3 +783,231 @@ void CSlamLadirDialog::on_pushButtonpointresi_clicked()
     emit SignalsRegisterPoint();
 
 }
+
+void CSlamLadirDialog::on_btnclose_clicked()
+{
+    this->close();
+}
+
+void CSlamLadirDialog::on_btnAuto_clicked()
+{
+
+}
+
+void CSlamLadirDialog::on_pushButton_clicked()
+{
+
+}
+
+
+
+
+
+
+//#include <ccPointCloud.h>
+//#include <pcl/io/pcd_io.h>
+//#include <pcl/io/ply_io.h>
+//#include <pcl/point_types.h>
+//#include <pcl/point_cloud.h>
+
+
+//////cccloud转换成pcl的pointcloud no rgb--重载一下这个函数
+
+
+////无色的cccloud ---重载一下这个函数
+
+//void PCLcloudToCCcloud(pcl::PointCloud<pcl::PointXYZ>::Ptr pclCloud, ccPointCloud* m_cloud)
+
+//{
+
+//    int num = pclCloud->points.size();
+
+//    m_cloud->reserve(static_cast<unsigned>(num));
+
+//    for (int i = 0; i < num; i++)
+
+//    {
+
+//        CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+//        m_cloud->addPoint(P11);
+
+//    }
+
+//}
+
+////----------------------pointCloud转ccCloud---------------------
+
+//void PCLcloudToCCcloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr pclCloud, ccPointCloud* m_cloud)
+
+//{
+
+//    int num = pclCloud->points.size();
+
+//    m_cloud->reserve(static_cast<unsigned>(num));
+
+//    for (int i = 0; i < num; i++)
+
+//    {
+
+//        CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+
+//        m_cloud->addPoint(P11);
+
+
+
+//        ccColor::Rgb rgb;//定义一个颜色
+
+//        if (pclCloud->points[0].r <= 1 && pclCloud->points[0].g <= 1)
+
+//        {
+
+//            rgb = ccColor::Rgb(pclCloud->points[i].r*255, pclCloud->points[i].g*255, pclCloud->points[i].b*255);
+
+//        }
+
+//        else
+
+//        {
+
+//            rgb = ccColor::Rgb(pclCloud->points[i].r, pclCloud->points[i].g, pclCloud->points[i].b);
+
+//        }
+
+//        m_cloud->resizeTheRGBTable(true);
+
+//        m_cloud->setPointColor(i, rgb);
+
+//    }
+
+//}
+
+
+//void PCLcloudToCCcloudI(pcl::PointCloud<pcl::PointXYZI>::Ptr pclCloud, ccPointCloud* m_cloud)
+
+//{
+
+//    //    int num = pclCloud->points.size();
+
+//    //    m_cloud->reserve(static_cast<unsigned>(num));
+
+
+//    //    for (int i = 0; i < num; i++)
+
+//    //    {
+
+//    //        CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+//    //        m_cloud->addPoint(P11);
+
+
+//    //        static const int lodIconSize = 32;
+//    //        static const int margin = 6;
+//    //        static const unsigned lodIconParts = 12;
+//    //        static const float lodPartsRadius = 3.0f;
+
+
+//    //        static const float radius = lodIconSize / 2.0f - lodPartsRadius;
+//    //        static const float alpha = static_cast<float>((2 * M_PI) / lodIconParts);
+
+
+
+//    //            float intensity = pclCloud->intensity;
+//    //            intensity /= ccColor::MAX;
+
+
+//    //            float col[3] = {	textCol.rgb[0] * intensity,
+//    //                                textCol.rgb[1] * intensity,
+//    //                                textCol.rgb[2] * intensity };
+
+//    //        //current intensity (x3)
+//    //        int I = static_cast<int>(R) + static_cast<int>(G) + static_cast<int>(B);
+//    //        if (I == 0)
+//    //        {
+//    //            continue; //black remains black!
+//    //        }
+
+
+//    //    }
+
+
+
+//    //    int R = 0;
+//    //    int G = 0;
+//    //    int B = 0;
+
+//    //    int num = pclCloud->points.size();
+
+//    //    m_cloud->reserve(static_cast<unsigned>(num));
+
+//    //    for (int i = 0; i < num; i++)
+
+//    //    {
+
+//    //         CCVector3 P11(pclCloud->points[i].x, pclCloud->points[i].y, pclCloud->points[i].z);
+
+//    //         m_cloud->addPoint(P11);
+
+
+//    //        float intensity = pclCloud->intensity;
+//    //         ccColor::Rgb rgb;//定义一个颜色
+
+//    //         rgb = ccColor::Rgb(intensity, pclCloud->points[i].g, pclCloud->points[i].b);
+
+//    ////         if (pclCloud->points[0].r <= 1 && pclCloud->points[0].g <= 1)
+
+//    ////         {
+
+//    ////              rgb = ccColor::Rgb(pclCloud->points[i].r*255, pclCloud->points[i].g*255, pclCloud->points[i].b*255);
+
+//    ////         }
+
+//    ////         else
+
+//    ////         {
+
+//    ////              rgb = ccColor::Rgb(pclCloud->points[i].r, pclCloud->points[i].g, pclCloud->points[i].b);
+
+//    ////         }
+
+//    //         m_cloud->resizeTheRGBTable(true);
+
+//    //         m_cloud->setPointColor(i, rgb.rgb);
+
+//    //    }
+
+
+
+//}
+
+
+
+
+//void CSlamLadirDialog::loadpointPCD(const QString objname,	const QStringList& filenames)
+//{
+
+//    //    pcl::PointCloud<pcl::PointXYZ>::Ptr pclCloudALL(new pcl::PointCloud<pcl::PointXYZ>);
+//    //    ccPointCloud* newGroups = new ccPointCloud(objname);
+
+
+//    //    for ( const QString &filename : filenames )
+//    //    {
+//    //        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+//    //        if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename.toStdString(), *cloud) < 0)
+//    //        {
+//    //            PCL_ERROR("Could not read file\n");
+//    //            continue;
+//    //        }
+//    //        *pclCloudALL = * pclCloudALL + *cloud;
+
+
+
+//    //    }
+
+//    //    PCLcloudToCCcloud(pclCloudALL, newGroups);
+
+//    //    ccHObject* newGroupname = new ccHObject(objname);
+//    //    newGroupname->addChild(newGroupname);
+//    //    m_pMainWindow->addToDB(newGroupname, true, true, false);
+
+
+//}
+

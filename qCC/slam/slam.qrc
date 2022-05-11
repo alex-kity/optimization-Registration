@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/qss">
+        <file>Darcula.qss</file>
+        <file>Windows.qss</file>
+    </qresource>
+</RCC>
