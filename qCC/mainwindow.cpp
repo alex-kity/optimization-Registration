@@ -10676,10 +10676,6 @@ void MainWindow::updatePropertiesView()
     }
 }
 
-//void MainWindow::ADDRecently(QString str)
-//{
-//    m_recentFiles->addFilePath( str );
-//}
 
 void MainWindow::updateUIWithSelection()
 {
@@ -11358,6 +11354,23 @@ void MainWindow::doActionComparePlanes()
 
 
 
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
 #include "slam/ColorChangeTool.h"
 void MainWindow::on_actionColorChange_triggered()
 {
@@ -11544,6 +11557,166 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //    }
 
 }
+
+
+void MainWindow::ADDRecently(QString str)
+{
+    m_recentFiles->addFilePath( str );
+}
+
+
+
+#include "slam/CDataChange.h"
+CDataChange g_CDataChange;
+
+void MainWindow::SetActivateRegisterPointPairTool()
+{
+    if (!haveSelection())
+    {
+        ccConsole::Error(tr("Select at least one entity (point cloud or mesh)!"));
+        return;
+    }
+
+    ccHObject::Container alignedEntities;
+    ccHObject::Container refEntities;
+    try
+    {
+        ccHObject::Container entities;
+        entities.reserve(m_selectedEntities.size());
+
+        for (ccHObject* entity : m_selectedEntities)
+        {
+            //for now, we only handle clouds or meshes
+            if (entity->isKindOf(CC_TYPES::POINT_CLOUD) || entity->isKindOf(CC_TYPES::MESH))
+            {
+                entities.push_back(entity);
+            }
+        }
+
+        if (entities.empty())
+        {
+            ccConsole::Error("Select at least one entity (point cloud or mesh)!");
+            return;
+        }
+        else if (entities.size() == 1)
+        {
+            alignedEntities = entities;
+        }
+        else
+        {
+            std::vector<int> indexes;
+            if (!ccEntitySelectionDialog::SelectEntities(entities, indexes, this, tr("Select aligned entities")))
+            {
+                //process cancelled by the user
+                return;
+            }
+
+            //add the selected indexes as 'aligned' entities
+            alignedEntities.reserve(indexes.size());
+            for (size_t i = 0; i < indexes.size(); ++i)
+            {
+                alignedEntities.push_back(entities[indexes[i]]);
+            }
+
+            //add the others as 'reference' entities
+            assert(indexes.size() <= entities.size());
+            refEntities.reserve(entities.size() - indexes.size());
+            for (size_t i = 0; i < entities.size(); ++i)
+            {
+                if (std::find(indexes.begin(), indexes.end(), i) == indexes.end())
+                {
+                    refEntities.push_back(entities[i]);
+                }
+            }
+        }
+    }
+    catch (const std::bad_alloc&)
+    {
+        ccLog::Error(tr("Not enough memory"));
+        return;
+    }
+
+    if (alignedEntities.empty())
+    {
+        ccLog::Error(tr("No aligned entity selected"));
+        return;
+    }
+
+    //deselect all entities
+    if (m_ccRoot)
+    {
+        m_ccRoot->unselectAllEntities();
+    }
+
+    ccGLWindow* win = new3DView(true);
+    if (!win)
+    {
+        ccLog::Error(tr("[PointPairRegistration] Failed to create dedicated 3D view!"));
+        return;
+    }
+
+    //we disable all windows
+    disableAllBut(win);
+
+    if (!m_pprDlg)
+    {
+        m_pprDlg = new ccPointPairRegistrationDlg(m_pickingHub, this, this);
+        connect(m_pprDlg, &ccOverlayDialog::processFinished, this, &MainWindow::deactivateRegisterPointPairTool);
+        connect(m_pprDlg, &ccPointPairRegistrationDlg::SignalRegistrationFinish, this, [=](){
+
+            ccGLMatrix finalTrans = m_pprDlg->m_transMatRT;
+            float phi_rad = 0.0;
+            float theta_rad = 0.0;
+            float psi_rad = 0.0;
+            CCVector3 t3D;
+
+            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+            ccConsole::Error(QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : ");
+
+            DATARegistration _DATARegistration;
+            _DATARegistration.phi_rad = phi_rad;
+            _DATARegistration.theta_rad = theta_rad;
+            _DATARegistration.psi_rad = psi_rad;
+
+            _DATARegistration.x = t3D.x;
+            _DATARegistration.y = t3D.y;
+            _DATARegistration.z = t3D.z;
+
+            _DATARegistration.ied = 0;
+            _DATARegistration.iing = 0;
+
+            g_CDataChange.SetData(_DATARegistration);
+        });
+
+
+        registerOverlayDialog(m_pprDlg, Qt::TopRightCorner);
+    }
+
+    if (!m_pprDlg->init(win, alignedEntities, &refEntities))
+    {
+        deactivateRegisterPointPairTool(false);
+    }
+
+    freezeUI(true);
+
+    if (!m_pprDlg->start())
+        deactivateRegisterPointPairTool(false);
+    else
+        updateOverlayDialogsPlacement();
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 void MainWindow::on_actionShow_triggered()
 {

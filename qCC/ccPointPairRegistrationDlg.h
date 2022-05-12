@@ -38,13 +38,16 @@ class ccGenericGLDisplay;
 class ccGLWindow;
 class cc2DLabel;
 class ccPickingHub;
-
+class ccGLMatrix;
 //Dialog for the point-pair registration algorithm (Horn)
 class ccPointPairRegistrationDlg : public ccOverlayDialog, public ccPickingListener, Ui::pointPairRegistrationDlg
 {
 	Q_OBJECT
 
 public:
+
+    ccGLMatrix m_transMatRT ;
+
 
 	//! Default constructor
 	explicit ccPointPairRegistrationDlg(ccPickingHub* pickingHub, ccMainAppInterface* app, QWidget* parent = nullptr);
@@ -77,6 +80,9 @@ public:
 
 	//! Inherited from ccPickingListener
 	void onItemPicked(const PickedItem& pi) override;
+
+signals:
+    void SignalRegistrationFinish();
 
 protected:
 
@@ -196,6 +202,8 @@ protected: //members
 
 	//! Main application interface
 	ccMainAppInterface* m_app;
+
+
 };
 
 #endif //POINT_PAIR_REGISTRATION_DIALOG_HEADER

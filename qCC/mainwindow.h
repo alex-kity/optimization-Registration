@@ -174,8 +174,9 @@ public:
 	//! Updates the 'Properties' view
 	void updatePropertiesView();
 
-//    void ADDRecently(QString str);
-	
+    void ADDRecently(QString str);
+
+    void SetActivateRegisterPointPairTool();
 private slots:
     void on_actionColorChange_triggered();
 
