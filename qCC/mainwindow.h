@@ -177,6 +177,7 @@ public:
     void ADDRecently(QString str);
 
     void SetActivateRegisterPointPairTool();
+    bool SelectTWOPointCloud();
 private slots:
     void on_actionColorChange_triggered();
 

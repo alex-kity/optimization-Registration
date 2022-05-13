@@ -11545,7 +11545,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
     });
 
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsResample, this, [=]{doActionResampleWithOctree();} );
-    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsRegisterPoint, this, [=]{activateRegisterPointPairTool();} );
+    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsRegisterPoint, this, [=]{SetActivateRegisterPointPairTool();} );
 
     //    //当DB-Tree为空时，清空点云
     //    connect(m_ccRoot, &ccDBRoot::dbIsEmpty, m_colorDlg, &ColorChangeTool::onClear);
@@ -11569,11 +11569,72 @@ void MainWindow::ADDRecently(QString str)
 #include "slam/CDataChange.h"
 CDataChange g_CDataChange;
 
-void MainWindow::SetActivateRegisterPointPairTool()
+
+
+
+std::string m_strfirstID = "";
+std::string m_strsecondID = "";
+
+bool MainWindow::SelectTWOPointCloud()
 {
     if (!haveSelection())
     {
         ccConsole::Error(tr("Select at least one entity (point cloud or mesh)!"));
+        return false;
+    }
+
+    try
+    {
+        ccHObject::Container entities;
+        entities.reserve(m_selectedEntities.size());
+
+
+        for (ccHObject* entity : m_selectedEntities)
+        {
+
+            //for now, we only handle clouds or meshes
+            if (entity->isKindOf(CC_TYPES::POINT_CLOUD) || entity->isKindOf(CC_TYPES::MESH))
+            {
+                entities.push_back(entity);
+                QStringList strlist = entity->getName().split("-");
+
+                if(!strlist[1].isEmpty()&&!strlist[1].isNull())
+                {
+                    m_strfirstID = strlist[1].toStdString();
+                }
+                if(!strlist[2].isEmpty()&&!strlist[2].isNull())
+                {
+                    m_strsecondID = strlist[2].toStdString();
+                }
+
+            }
+
+
+        }
+
+        if (entities.empty())
+        {
+            ccConsole::Error("Select at least one entity (point cloud or mesh)!");
+            return false;
+        }
+
+        return true;
+
+
+    }
+    catch (const std::bad_alloc&)
+    {
+        ccLog::Error(tr("Not enough memory"));
+        return false;
+    }
+}
+
+
+
+void MainWindow::SetActivateRegisterPointPairTool()
+{
+    if(!SelectTWOPointCloud())
+    {
         return;
     }
 
@@ -11672,7 +11733,6 @@ void MainWindow::SetActivateRegisterPointPairTool()
 
             finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
 
-            ccConsole::Error(QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : ");
 
             DATARegistration _DATARegistration;
             _DATARegistration.phi_rad = phi_rad;
@@ -11683,8 +11743,11 @@ void MainWindow::SetActivateRegisterPointPairTool()
             _DATARegistration.y = t3D.y;
             _DATARegistration.z = t3D.z;
 
-            _DATARegistration.ied = 0;
-            _DATARegistration.iing = 0;
+//            _DATARegistration.ied = m_strfirstID;
+//            _DATARegistration.iing = m_strsecondID;
+
+            ccConsole::Error(QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : ");
+
 
             g_CDataChange.SetData(_DATARegistration);
         });

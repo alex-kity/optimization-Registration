@@ -730,8 +730,10 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
             }
 
-            _showpointlist["Matching" + QString(QString::fromLocal8Bit(std::to_string(index).c_str()))] = selectedFilesMatching;
-            _showpointlist["Matched" + QString(QString::fromLocal8Bit(std::to_string(index).c_str()))] = selectedFilesMatched;
+
+            std::string flagname = "-"+std::to_string(iter->first) + "-" +std::to_string(iter->second);
+            _showpointlist["Matching" + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatching;
+            _showpointlist["Matched" + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatched;
 
         }
 

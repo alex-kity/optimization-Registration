@@ -48,6 +48,8 @@ struct IndexDistLyg_Sorter {
     }
 };
 
+
+
 class CGYLCommon
 {
 public:
