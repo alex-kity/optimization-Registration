@@ -11523,23 +11523,41 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
+        ccPointCloud* pclCloud = new ccPointCloud("ladir path");
+
 
         //Sphere
         ccHObject* newGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
 
-        std::cout<<_vec.size()<<std::endl;
-        for (int i = 0;i<_vec.size();i++) {
-            ccGenericPrimitive* primitive = nullptr;
-            ccGLMatrix transMat;
-            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
 
-            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
-                            static_cast<PointCoordinateType>(0.3),
-                            static_cast<PointCoordinateType>(0.3));
-            primitive = new ccBox(dims,&transMat);
-            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
-            newGroup->addChild(primitive);
+        //pointcloud
+        int num = _vec.size();
+        pclCloud->reserve(static_cast<unsigned>(num));
+
+        for (int i = 0; i < num; i++)
+        {
+            pclCloud->addPoint(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
         }
+        pclCloud->setPointSize(3);
+        newGroup->addChild(pclCloud);
+
+
+        //        //obj
+        //        for (int i = 0;i<_vec.size();i++) {
+        //            ccGenericPrimitive* primitive = nullptr;
+        //            ccGLMatrix transMat;
+        //            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+
+        //            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
+        //                            static_cast<PointCoordinateType>(0.3),
+        //                            static_cast<PointCoordinateType>(0.3));
+        //            primitive = new ccBox(dims,&transMat);
+        //            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
+        //            newGroup->addChild(primitive);
+        //        }
+
+
+
         addToDB(newGroup);
 
     });
@@ -11653,6 +11671,88 @@ int isDigitStr(const char *s)
 }
 
 
+void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
+{
+    try {
+
+        float phi_rad = 0.0;
+        float theta_rad = 0.0;
+        float psi_rad = 0.0;
+        CCVector3 t3D;
+        DATARegistration _DATARegistration;
+
+        ccGLMatrix finalTransCorrected = finalTrans;
+
+
+        //将相对量变化为绝对直
+        if(!m_strsecondID.empty())
+        {
+
+            if(isDigitStr(m_strsecondID.c_str()) == 0)
+            {
+
+
+                if(m_pSlamLadirDialog != nullptr)
+                {
+                    //                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
+
+                    ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
+
+                    ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
+                    tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                    finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+                    ccLog::Error(tempTrans.toString(12,' ')); //full precision
+                    ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
+
+
+                    //                        finalTrans = finalTrans * tempTrans;
+                    finalTrans = tempTrans * finalTrans;
+
+                    //被匹配数据id
+                    _DATARegistration.ied = m_strfirstID;
+                    //匹配数据id
+                    _DATARegistration.iing = m_strsecondID;
+
+
+
+                    finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                    finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+                    _DATARegistration.phi_rad = phi_rad;
+                    _DATARegistration.theta_rad = theta_rad;
+                    _DATARegistration.psi_rad = psi_rad;
+
+                    _DATARegistration.x = t3D.x;
+                    _DATARegistration.y = t3D.y;
+                    _DATARegistration.z = t3D.z;
+
+
+                    ccConsole::Error("result = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+                    g_CDataChange.SetData(_DATARegistration);
+                }
+
+
+            }
+
+
+        }
+
+    }
+    catch (const std::bad_alloc&)
+    {
+        ccLog::Error(tr("Not enough memory"));
+    }
+
+
+
+}
+
 void MainWindow::SetActivateRegisterPointPairTool()
 {
     if(!SelectTWOPointCloud())
@@ -11746,93 +11846,7 @@ void MainWindow::SetActivateRegisterPointPairTool()
         m_pprDlg = new ccPointPairRegistrationDlg(m_pickingHub, this, this);
         connect(m_pprDlg, &ccOverlayDialog::processFinished, this, &MainWindow::deactivateRegisterPointPairTool);
         connect(m_pprDlg, &ccPointPairRegistrationDlg::SignalRegistrationFinish, this, [=](){
-
-
-            try {
-
-
-                ccGLMatrix finalTrans = m_pprDlg->m_transMatRT;
-                float phi_rad = 0.0;
-                float theta_rad = 0.0;
-                float psi_rad = 0.0;
-                CCVector3 t3D;
-                DATARegistration _DATARegistration;
-
-
-                ccGLMatrix finalTransCorrected = finalTrans;
-
-
-
-
-                //将相对量变化为绝对直
-                if(!m_strsecondID.empty())
-                {
-
-                    if(isDigitStr(m_strsecondID.c_str()) == 0)
-                    {
-
-
-                        if(m_pSlamLadirDialog != nullptr)
-                        {
-                            //                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
-
-                            ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
-
-                            ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
-                            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
-
-                            ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
-
-                            ccLog::Error(tempTrans.toString(12,' ')); //full precision
-                            ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
-
-
-                            //                        finalTrans = finalTrans * tempTrans;
-                            finalTrans = tempTrans * finalTrans;
-
-                            //被匹配数据id
-                            _DATARegistration.ied = m_strfirstID;
-                            //匹配数据id
-                            _DATARegistration.iing = m_strsecondID;
-
-
-
-                            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
-
-                            _DATARegistration.phi_rad = phi_rad;
-                            _DATARegistration.theta_rad = theta_rad;
-                            _DATARegistration.psi_rad = psi_rad;
-
-                            _DATARegistration.x = t3D.x;
-                            _DATARegistration.y = t3D.y;
-                            _DATARegistration.z = t3D.z;
-
-
-                            ccConsole::Error("result = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
-
-                            g_CDataChange.SetData(_DATARegistration);
-                        }
-
-
-
-
-                    }
-
-
-                }
-
-
-
-            }
-            catch (const std::bad_alloc&)
-            {
-                ccLog::Error(tr("Not enough memory"));
-            }
-
+            GetResultRegister(m_pprDlg->m_transMatRT);
         });
 
 
@@ -11888,95 +11902,7 @@ void MainWindow::SetActivateTranslateRotateMode()
 
         /////////////////////////////
         connect(m_transTool, &ccGraphicalTransformationTool::SignalTransfromFinish, this, [=](){
-
-            try {
-
-
-                ccGLMatrix finalTrans = m_transTool->m_transMatRT;
-
-
-                float phi_rad = 0.0;
-                float theta_rad = 0.0;
-                float psi_rad = 0.0;
-                CCVector3 t3D;
-                DATARegistration _DATARegistration;
-
-
-                ccGLMatrix finalTransCorrected = finalTrans;
-
-
-
-
-
-                //将相对量变化为绝对直
-                if(!m_strsecondID.empty())
-                {
-
-                    if(isDigitStr(m_strsecondID.c_str()) == 0)
-                    {
-
-
-                        if(m_pSlamLadirDialog != nullptr)
-                        {
-                            //                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
-
-                            ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
-
-                            ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
-                            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
-
-                            ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
-
-                            //                            ccLog::Error(tempTrans.toString(12,' ')); //full precision
-                            //                            ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
-
-
-                            //                        finalTrans = finalTrans * tempTrans;
-                            finalTrans = tempTrans * finalTrans;
-
-                            //被匹配数据id
-                            _DATARegistration.ied = m_strfirstID;
-                            //匹配数据id
-                            _DATARegistration.iing = m_strsecondID;
-
-
-
-                            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
-
-                            _DATARegistration.phi_rad = phi_rad;
-                            _DATARegistration.theta_rad = theta_rad;
-                            _DATARegistration.psi_rad = psi_rad;
-
-                            _DATARegistration.x = t3D.x;
-                            _DATARegistration.y = t3D.y;
-                            _DATARegistration.z = t3D.z;
-
-
-                            ccConsole::Error("result = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
-
-                            g_CDataChange.SetData(_DATARegistration);
-                        }
-
-
-
-                    }
-
-
-                }
-
-
-
-            }
-            catch (const std::bad_alloc&)
-            {
-                ccLog::Error(tr("Not enough memory"));
-            }
-
-
+            GetResultRegister(m_transTool->m_transMatRT);
         });
 
         /////////////////////////////

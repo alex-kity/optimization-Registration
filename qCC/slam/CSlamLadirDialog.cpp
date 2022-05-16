@@ -237,6 +237,9 @@ CSlamLadirDialog::CSlamLadirDialog(QWidget *parent, MainWindow* _pMainWindow ) :
     //    connect(ui->pushButtonpointresi,QPushButton::clicked,this,[=]{ emit SignalsRegisterPoint(); });
 
     //    ui->load_path->setEnabled(false);
+
+    ui->widget_option->hide();
+    this->resize(150,30);
 }
 
 CSlamLadirDialog::~CSlamLadirDialog()
@@ -325,58 +328,66 @@ void CSlamLadirDialog::on_load_path_clicked()
     //    _FileDialog.setStyleSheet("background-color: rgb(200, 200, 200)");
     _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
     QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
-    //            m_recentFiles->addFilePath( fileName );
-    std::map<std::string,lygs::trajectoryData> trajectorys;
-    m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),g_trajectoryMap);
 
 
 
-    m_IndextrajectoryMap.clear();
-    for (int i = 0;i<m_vecs.size();i++) {
-        lygs::trajectoryData lidarSe3 = m_vecs[i];
-        Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
-        ccGLMatrix transTemp = FromEigenMat(Roi2w);
-        m_IndextrajectoryMap[i] = transTemp;
-    }
-
-
-    //    std::vector<string> _vec;
-    //    std::map<std::string,lygs::trajectoryData>::iterator iter;
-    //    for(iter = g_trajectoryMap.begin(); iter!=g_trajectoryMap.end(); iter++)
-    //    {
-    //        std::cout<<iter->first<<" g_trajectoryMap: "<<std::endl;
-
-    //        lygs::trajectoryData lidarSe3 = g_trajectoryMap[iter->first];
-    //        _vec.push_back(lidarSe3.name);
-
-
-    //    }
-    //    SqereTrajectory("/home/alexlyg/file/cclog.txt",_vec);
-
-
-
-
-    //    m_pMainWindow->ADDRecently(fileName);
-    //show trajectorydata
-    QList<QVector3D> _vec3d;
-    QVector3D vec;
-    for (int i = 0;i<m_vecs.size();i++) {
-        vec.setX(m_vecs[i].x);
-        vec.setY(m_vecs[i].y);
-        vec.setZ(m_vecs[i].z);
-
-        _vec3d.push_back(vec);
-    }
-    emit SignalsLoadPath(_vec3d);
-
-
-    //perform
-    std::vector<std::pair<unsigned,unsigned>> match;
-    GetPointDataSelf(m_vecs,match);
-
-    if(!match.empty())
+    if(!fileName.isEmpty())
     {
-        SetShowCloudPoint(match);
+        //        m_recentFiles->addFilePath( fileName );
+        std::map<std::string,lygs::trajectoryData> trajectorys;
+        m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),g_trajectoryMap);
+
+
+
+        m_IndextrajectoryMap.clear();
+        for (int i = 0;i<m_vecs.size();i++) {
+            lygs::trajectoryData lidarSe3 = m_vecs[i];
+            Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+            ccGLMatrix transTemp = FromEigenMat(Roi2w);
+            m_IndextrajectoryMap[i] = transTemp;
+        }
+
+
+        //    std::vector<string> _vec;
+        //    std::map<std::string,lygs::trajectoryData>::iterator iter;
+        //    for(iter = g_trajectoryMap.begin(); iter!=g_trajectoryMap.end(); iter++)
+        //    {
+        //        std::cout<<iter->first<<" g_trajectoryMap: "<<std::endl;
+
+        //        lygs::trajectoryData lidarSe3 = g_trajectoryMap[iter->first];
+        //        _vec.push_back(lidarSe3.name);
+
+
+        //    }
+        //    SqereTrajectory("/home/alexlyg/file/cclog.txt",_vec);
+
+
+
+
+        //    m_pMainWindow->ADDRecently(fileName);
+        //show trajectorydata
+        QList<QVector3D> _vec3d;
+        QVector3D vec;
+        for (int i = 0;i<m_vecs.size();i++) {
+            vec.setX(m_vecs[i].x);
+            vec.setY(m_vecs[i].y);
+            vec.setZ(m_vecs[i].z);
+
+            _vec3d.push_back(vec);
+        }
+        emit SignalsLoadPath(_vec3d);
+
+
+        //perform
+        std::vector<std::pair<unsigned,unsigned>> match;
+        GetPointDataSelf(m_vecs,match);
+
+        if(!match.empty())
+        {
+            SetShowCloudPoint(match);
+        }
+
+        ui->widget_option->show();
     }
 
 }

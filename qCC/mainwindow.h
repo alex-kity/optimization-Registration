@@ -179,6 +179,7 @@ public:
     void SetActivateRegisterPointPairTool();
     bool SelectTWOPointCloud();
     void SetActivateTranslateRotateMode();
+    void GetResultRegister(ccGLMatrix finalTrans);
 private slots:
     void on_actionColorChange_triggered();
 
