@@ -929,6 +929,13 @@ void ccGraphicalTransformationTool::apply()
 		double psi_rad = 0.0;
 		CCVector3d t3D;
 		finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+////////////////////
+        ccGLMatrix correctedFinalTransTNT(finalTrans.data());
+        m_transMatRT = correctedFinalTransTNT;
+        emit SignalTransfromFinish();
+////////////////////
+
 		finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
 
 #ifdef QT_DEBUG
@@ -955,6 +962,7 @@ void ccGraphicalTransformationTool::apply()
 
 	//update GL transformation for all entities
 	ccGLMatrix correctedFinalTrans(finalTransCorrected.data());
+
 
 	for (unsigned i=0; i<m_toTransform.getChildrenNumber(); ++i)
 	{

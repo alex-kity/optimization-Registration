@@ -278,6 +278,44 @@ void SqereTrajectory(std::string outfileName,std::vector<string> _vec)
 }
 
 
+//Clockwise is positive
+Eigen::Matrix4f getSE3Mat(float yaw, float pitch, float roll, float x , float y, float z, string order)
+{
+
+    Eigen::Matrix3f R;
+    if(order =="rpy")  //default
+        R = Eigen::AngleAxisf(roll * M_PI / 180, Eigen::Vector3f::UnitX()) *
+                Eigen::AngleAxisf(pitch * M_PI / 180, Eigen::Vector3f::UnitY()) *
+                Eigen::AngleAxisf(yaw * M_PI / 180, Eigen::Vector3f::UnitZ());
+    else
+        R = Eigen::AngleAxisf(yaw * M_PI / 180, Eigen::Vector3f::UnitZ()) *
+                Eigen::AngleAxisf(pitch * M_PI / 180, Eigen::Vector3f::UnitY()) *
+                Eigen::AngleAxisf(roll * M_PI / 180, Eigen::Vector3f::UnitX());
+
+    Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+    transform_2.translation() << x, y, z;
+    transform_2.rotate(R);
+
+    Eigen::Matrix4f camera_pose(transform_2.matrix());
+    //std::cout << "camera_pose: " << endl << camera_pose << std::endl;
+    return camera_pose;
+}
+
+
+static ccGLMatrix FromEigenMat(const Eigen::Matrix4f& ovrMat)
+{
+    ccGLMatrix ccMat;
+    float* data = ccMat.data();
+
+    data[0] = ovrMat(0,0); data[4] = ovrMat(0,1);   data[8] = ovrMat(0,2); data[12] = ovrMat(0,3);
+    data[1] = ovrMat(1,0); data[5] = ovrMat(1,1);	data[9] = ovrMat(1,2); data[13] = ovrMat(1,3);
+    data[2] = ovrMat(2,0); data[6] = ovrMat(2,1);	data[10] = ovrMat(2,2); data[14] = ovrMat(2,3);
+    data[3] = ovrMat(3,0); data[7] = ovrMat(3,1);	data[11] = ovrMat(3,2); data[15] = ovrMat(3,3);
+
+
+    return ccMat;
+}
+
 void CSlamLadirDialog::on_load_path_clicked()
 {
     //get trajectory data
@@ -290,6 +328,16 @@ void CSlamLadirDialog::on_load_path_clicked()
     //            m_recentFiles->addFilePath( fileName );
     std::map<std::string,lygs::trajectoryData> trajectorys;
     m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),g_trajectoryMap);
+
+
+
+    m_IndextrajectoryMap.clear();
+    for (int i = 0;i<m_vecs.size();i++) {
+        lygs::trajectoryData lidarSe3 = m_vecs[i];
+        Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+        ccGLMatrix transTemp = FromEigenMat(Roi2w);
+        m_IndextrajectoryMap[i] = transTemp;
+    }
 
 
     //    std::vector<string> _vec;
@@ -462,44 +510,6 @@ ccPointCloud* MeragePoint(ccHObject* newGroups)
 
 
 
-//Clockwise is positive
-Eigen::Matrix4f getSE3Mat(float yaw, float pitch, float roll, float x , float y, float z, string order)
-{
-
-    Eigen::Matrix3f R;
-    if(order =="rpy")  //default
-        R = Eigen::AngleAxisf(roll * M_PI / 180, Eigen::Vector3f::UnitX()) *
-                Eigen::AngleAxisf(pitch * M_PI / 180, Eigen::Vector3f::UnitY()) *
-                Eigen::AngleAxisf(yaw * M_PI / 180, Eigen::Vector3f::UnitZ());
-    else
-        R = Eigen::AngleAxisf(yaw * M_PI / 180, Eigen::Vector3f::UnitZ()) *
-                Eigen::AngleAxisf(pitch * M_PI / 180, Eigen::Vector3f::UnitY()) *
-                Eigen::AngleAxisf(roll * M_PI / 180, Eigen::Vector3f::UnitX());
-
-    Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
-    transform_2.translation() << x, y, z;
-    transform_2.rotate(R);
-
-    Eigen::Matrix4f camera_pose(transform_2.matrix());
-    //std::cout << "camera_pose: " << endl << camera_pose << std::endl;
-    return camera_pose;
-}
-
-
-static ccGLMatrix FromEigenMat(const Eigen::Matrix4f& ovrMat)
-{
-    ccGLMatrix ccMat;
-    float* data = ccMat.data();
-
-    data[0] = ovrMat(0,0); data[4] = ovrMat(0,1);   data[8] = ovrMat(0,2); data[12] = ovrMat(0,3);
-    data[1] = ovrMat(1,0); data[5] = ovrMat(1,1);	data[9] = ovrMat(1,2); data[13] = ovrMat(1,3);
-    data[2] = ovrMat(2,0); data[6] = ovrMat(2,1);	data[10] = ovrMat(2,2); data[14] = ovrMat(2,3);
-    data[3] = ovrMat(3,0); data[7] = ovrMat(3,1);	data[11] = ovrMat(3,2); data[15] = ovrMat(3,3);
-
-
-    return ccMat;
-}
-
 
 // this pointcloud transform form origin to world
 ccPointCloud*  CSlamLadirDialog::changeMat(ccPointCloud* obj,std::string strfilename)
@@ -520,10 +530,36 @@ ccPointCloud*  CSlamLadirDialog::changeMat(ccPointCloud* obj,std::string strfile
 
     }
 
-
-
     return obj;
 }
+
+
+
+//// this pointcloud transform form origin to world
+//ccPointCloud*  CSlamLadirDialog::GetOrignMat(int index,ccGLMatrix &transTemp)
+//{
+
+//    if(g_trajectoryMap.count(str) == 1)
+//    {
+
+//        lygs::trajectoryData lidarSe3 = g_trajectoryMap[strfilename.substr(0, strfilename.size() - 4)];
+//        Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+
+//        ccGLMatrix transTemp = FromEigenMat(Roi2w);
+
+//        obj->applyRigidTransformation(transTemp);
+
+//        //        pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(cloudA, Roi2w);
+
+//    }
+//}
+
+
+
+
+
+
+
 
 void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filenames,QString dir,
                                  QString fileFilter/*=QString()*/,
@@ -731,9 +767,9 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
             }
 
 
-            std::string flagname = "-"+std::to_string(iter->first) + "-" +std::to_string(iter->second);
-            _showpointlist["Matching" + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatching;
-            _showpointlist["Matched" + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatched;
+            std::string flagname = "N-" +std::to_string(iter->second)+"-"+std::to_string(iter->first);
+            _showpointlist["Matched" + QString::number(iter->second) +QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatched;
+            _showpointlist["Matching" + QString::number(iter->first) + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatching;
 
         }
 
@@ -1013,3 +1049,8 @@ void CSlamLadirDialog::on_pushButton_clicked()
 
 //}
 
+
+void CSlamLadirDialog::on_m_btnTransFrom_clicked()
+{
+    emit SignalsTransFrom();
+}

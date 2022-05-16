@@ -178,6 +178,7 @@ public:
 
     void SetActivateRegisterPointPairTool();
     bool SelectTWOPointCloud();
+    void SetActivateTranslateRotateMode();
 private slots:
     void on_actionColorChange_triggered();
 
@@ -645,6 +646,8 @@ private:
 
     /////
     ColorChangeTool *m_colorDlg = nullptr;
+
+    CSlamLadirDialog *m_pSlamLadirDialog = nullptr;
 
 
 

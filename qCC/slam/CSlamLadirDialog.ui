@@ -45,6 +45,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="m_btnTransFrom">
+     <property name="text">
+      <string>动态变换配准</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="pushButton_resample">
      <property name="text">
       <string>采样</string>

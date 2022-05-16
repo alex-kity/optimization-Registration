@@ -11501,7 +11501,7 @@ void MainWindow::on_actionoptimization_triggered()
 #include "slam/CSlamLadirDialog.h"
 void MainWindow::on_actionSetLadirPer_triggered()
 {
-    CSlamLadirDialog *m_pSlamLadirDialog = nullptr;
+
 
     //    if(m_pSlamLadirDialog == nullptr)
     //    {
@@ -11546,6 +11546,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
 
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsResample, this, [=]{doActionResampleWithOctree();} );
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsRegisterPoint, this, [=]{SetActivateRegisterPointPairTool();} );
+    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsTransFrom, this, [=]{SetActivateTranslateRotateMode();} );
 
     //    //当DB-Tree为空时，清空点云
     //    connect(m_ccRoot, &ccDBRoot::dbIsEmpty, m_colorDlg, &ColorChangeTool::onClear);
@@ -11572,8 +11573,8 @@ CDataChange g_CDataChange;
 
 
 
-std::string m_strfirstID = "";
-std::string m_strsecondID = "";
+std::string m_strfirstID = "null";
+std::string m_strsecondID = "null";
 
 bool MainWindow::SelectTWOPointCloud()
 {
@@ -11629,6 +11630,27 @@ bool MainWindow::SelectTWOPointCloud()
     }
 }
 
+
+#include <cctype> //判断字符类型需要的头文件
+
+
+
+/***
+  *判断一个字符串是否为纯数字
+  */
+int isDigitStr(const char *s)
+{
+    while(*s && *s>='0' && *s<='9') s++;
+
+    if (*s)
+    { //不是纯数字
+        return -1;
+    }
+    else
+    { //纯数字
+        return 0;
+    }
+}
 
 
 void MainWindow::SetActivateRegisterPointPairTool()
@@ -11725,32 +11747,96 @@ void MainWindow::SetActivateRegisterPointPairTool()
         connect(m_pprDlg, &ccOverlayDialog::processFinished, this, &MainWindow::deactivateRegisterPointPairTool);
         connect(m_pprDlg, &ccPointPairRegistrationDlg::SignalRegistrationFinish, this, [=](){
 
-            ccGLMatrix finalTrans = m_pprDlg->m_transMatRT;
-            float phi_rad = 0.0;
-            float theta_rad = 0.0;
-            float psi_rad = 0.0;
-            CCVector3 t3D;
 
-            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+            try {
 
 
-            DATARegistration _DATARegistration;
-            _DATARegistration.phi_rad = phi_rad;
-            _DATARegistration.theta_rad = theta_rad;
-            _DATARegistration.psi_rad = psi_rad;
-
-            _DATARegistration.x = t3D.x;
-            _DATARegistration.y = t3D.y;
-            _DATARegistration.z = t3D.z;
-
-//            _DATARegistration.ied = m_strfirstID;
-//            _DATARegistration.iing = m_strsecondID;
-
-            ccConsole::Error(QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : ");
+                ccGLMatrix finalTrans = m_pprDlg->m_transMatRT;
+                float phi_rad = 0.0;
+                float theta_rad = 0.0;
+                float psi_rad = 0.0;
+                CCVector3 t3D;
+                DATARegistration _DATARegistration;
 
 
-            g_CDataChange.SetData(_DATARegistration);
+                ccGLMatrix finalTransCorrected = finalTrans;
+
+
+
+
+                //将相对量变化为绝对直
+                if(!m_strsecondID.empty())
+                {
+
+                    if(isDigitStr(m_strsecondID.c_str()) == 0)
+                    {
+
+
+                        if(m_pSlamLadirDialog != nullptr)
+                        {
+                            //                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
+
+                            ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
+
+                            ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
+                            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+                            ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+                            ccLog::Error(tempTrans.toString(12,' ')); //full precision
+                            ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
+
+
+                            //                        finalTrans = finalTrans * tempTrans;
+                            finalTrans = tempTrans * finalTrans;
+
+                            //被匹配数据id
+                            _DATARegistration.ied = m_strfirstID;
+                            //匹配数据id
+                            _DATARegistration.iing = m_strsecondID;
+
+
+
+                            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+                            _DATARegistration.phi_rad = phi_rad;
+                            _DATARegistration.theta_rad = theta_rad;
+                            _DATARegistration.psi_rad = psi_rad;
+
+                            _DATARegistration.x = t3D.x;
+                            _DATARegistration.y = t3D.y;
+                            _DATARegistration.z = t3D.z;
+
+
+                            ccConsole::Error("result = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+                            g_CDataChange.SetData(_DATARegistration);
+                        }
+
+
+
+
+                    }
+
+
+                }
+
+
+
+            }
+            catch (const std::bad_alloc&)
+            {
+                ccLog::Error(tr("Not enough memory"));
+            }
+
         });
+
+
+
 
 
         registerOverlayDialog(m_pprDlg, Qt::TopRightCorner);
@@ -11767,11 +11853,193 @@ void MainWindow::SetActivateRegisterPointPairTool()
         deactivateRegisterPointPairTool(false);
     else
         updateOverlayDialogsPlacement();
+
+
+
+    //    0.884262561798 -0.466218829155 -0.026826394722 -135.867004394531
+    //    0.466181993484 0.884652733803 -0.007994966581 -70.262496948242
+    //    0.027459448203 -0.005436332896 0.999608159065 -1.007109999657
+    //    0.000000000000 0.000000000000 0.000000000000 1.000000000000
+
+    //    0.884262621403 -0.466218858957 -0.026826396585 -135.867004394531
+    //    0.466182023287 0.884652733803 -0.007994967513 -70.262496948242
+    //    0.027459448203 -0.005436332431 0.999608159065 -1.007109999657
+    //    0.000000000000 0.000000000000 0.000000000000 1.000000000000
+
 }
 
 
 
 
+void MainWindow::SetActivateTranslateRotateMode()
+{
+    if (!haveSelection())
+        return;
+
+    ccGLWindow* win = getActiveGLWindow();
+    if (!win)
+        return;
+
+
+
+    if (!m_transTool)
+    {
+        m_transTool = new ccGraphicalTransformationTool(this);
+
+        /////////////////////////////
+        connect(m_transTool, &ccGraphicalTransformationTool::SignalTransfromFinish, this, [=](){
+
+            try {
+
+
+                ccGLMatrix finalTrans = m_transTool->m_transMatRT;
+
+
+                float phi_rad = 0.0;
+                float theta_rad = 0.0;
+                float psi_rad = 0.0;
+                CCVector3 t3D;
+                DATARegistration _DATARegistration;
+
+
+                ccGLMatrix finalTransCorrected = finalTrans;
+
+
+
+
+
+                //将相对量变化为绝对直
+                if(!m_strsecondID.empty())
+                {
+
+                    if(isDigitStr(m_strsecondID.c_str()) == 0)
+                    {
+
+
+                        if(m_pSlamLadirDialog != nullptr)
+                        {
+                            //                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
+
+                            ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
+
+                            ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
+                            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+                            ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+                            //                            ccLog::Error(tempTrans.toString(12,' ')); //full precision
+                            //                            ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
+
+
+                            //                        finalTrans = finalTrans * tempTrans;
+                            finalTrans = tempTrans * finalTrans;
+
+                            //被匹配数据id
+                            _DATARegistration.ied = m_strfirstID;
+                            //匹配数据id
+                            _DATARegistration.iing = m_strsecondID;
+
+
+
+                            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+                            _DATARegistration.phi_rad = phi_rad;
+                            _DATARegistration.theta_rad = theta_rad;
+                            _DATARegistration.psi_rad = psi_rad;
+
+                            _DATARegistration.x = t3D.x;
+                            _DATARegistration.y = t3D.y;
+                            _DATARegistration.z = t3D.z;
+
+
+                            ccConsole::Error("result = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                             QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+                            g_CDataChange.SetData(_DATARegistration);
+                        }
+
+
+
+                    }
+
+
+                }
+
+
+
+            }
+            catch (const std::bad_alloc&)
+            {
+                ccLog::Error(tr("Not enough memory"));
+            }
+
+
+        });
+
+        /////////////////////////////
+
+    }
+
+    assert(m_transTool->getNumberOfValidEntities() == 0);
+    m_transTool->linkWith(win);
+
+    bool rejectedEntities = false;
+    for ( ccHObject *entity : getSelectedEntities() )
+    {
+        if (!m_transTool->addEntity(entity))
+            rejectedEntities = true;
+
+        /////////////////////////////
+
+        //for now, we only handle clouds or meshes
+        if (entity->isKindOf(CC_TYPES::POINT_CLOUD) || entity->isKindOf(CC_TYPES::MESH))
+        {
+            QStringList strlist = entity->getName().split("-");
+
+            if(!strlist[1].isEmpty()&&!strlist[1].isNull())
+            {
+                m_strfirstID = strlist[1].toStdString();
+            }
+            if(!strlist[2].isEmpty()&&!strlist[2].isNull())
+            {
+                m_strsecondID = strlist[2].toStdString();
+            }
+
+        }
+        /////////////////////////////
+
+
+
+    }
+    //ccLog::Error(tempTrans.toString(12,' ')); //full precision
+    if (m_transTool->getNumberOfValidEntities() == 0)
+    {
+        ccConsole::Error(tr("No entity eligible for manual transformation! (see console)"));
+        return;
+    }
+    else if (rejectedEntities)
+    {
+        ccConsole::Error(tr("Some entities were ignored! (see console)"));
+    }
+
+    //try to activate "moving mode" in current GL window
+    if (m_transTool->start())
+    {
+        connect(m_transTool, &ccOverlayDialog::processFinished, this, &MainWindow::deactivateTranslateRotateMode);
+        registerOverlayDialog(m_transTool, Qt::TopRightCorner);
+        freezeUI(true);
+        updateOverlayDialogsPlacement();
+        //deactivate all other GL windows
+        disableAllBut(win);
+    }
+    else
+    {
+        ccConsole::Error(tr("Unexpected error!")); //indeed...
+    }
+}
 
 
 

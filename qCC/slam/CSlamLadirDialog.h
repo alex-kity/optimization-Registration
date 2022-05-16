@@ -21,6 +21,11 @@
 
 #include "CGYLCommon.h"
 
+#include "ccGLMatrix.h"
+
+
+
+
 namespace Ui {
 class CSlamLadirDialog;
 }
@@ -32,6 +37,8 @@ class CSlamLadirDialog :public ccOverlayDialog
     Q_OBJECT
 
 public:
+    std::map<int,ccGLMatrix> m_IndextrajectoryMap;
+
     explicit CSlamLadirDialog(QWidget *parent = nullptr, MainWindow *_pMainWindow = nullptr);
     ~CSlamLadirDialog();
 
@@ -48,6 +55,7 @@ signals:
     void SignalsLoadPath(QList<QVector3D> _vec);
     void SignalsResample();
     void SignalsRegisterPoint();
+    void SignalsTransFrom();
 
 private slots:
     void on_load_path_clicked();
@@ -66,6 +74,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_m_btnTransFrom_clicked();
+
 private:
     Ui::CSlamLadirDialog *ui;
 
@@ -75,6 +85,7 @@ private:
 
     std::vector<lygs::trajectoryData> m_vecs ;
     std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
+
 
 
     QString m_currentOpenDlgFilter;

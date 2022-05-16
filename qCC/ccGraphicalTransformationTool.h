@@ -27,7 +27,7 @@
 #include <ccHObject.h>
 
 class ccGLWindow;
-
+class ccGLMatrix;
 //! Dialog + mechanism for graphical transformation of entities
 /** Mouse driven rotation and translation of selected entities at screen.
 **/
@@ -36,6 +36,8 @@ class ccGraphicalTransformationTool : public ccOverlayDialog, public Ui::Graphic
 	Q_OBJECT
 
 public:
+
+    ccGLMatrix m_transMatRT;
 
 	//! Default constructor
 	explicit ccGraphicalTransformationTool(QWidget* parent);
@@ -70,6 +72,9 @@ public:
 
 	//! Returns the transform for rotation around an arbitrary vector
 	ccGLMatrixd arbitraryVectorRotation(double angle, const CCVector3d&);
+
+signals:
+    void SignalTransfromFinish();
 
 
 protected:
