@@ -333,6 +333,7 @@ void CSlamLadirDialog::on_load_path_clicked()
 
     if(!fileName.isEmpty())
     {
+        m_filename = fileName.toStdString();
         //        m_recentFiles->addFilePath( fileName );
         std::map<std::string,lygs::trajectoryData> trajectorys;
         m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),g_trajectoryMap);
@@ -388,6 +389,7 @@ void CSlamLadirDialog::on_load_path_clicked()
         }
 
         ui->widget_option->show();
+
     }
 
 }
@@ -1064,4 +1066,9 @@ void CSlamLadirDialog::on_pushButton_clicked()
 void CSlamLadirDialog::on_m_btnTransFrom_clicked()
 {
     emit SignalsTransFrom();
+}
+
+void CSlamLadirDialog::on_SavePath_clicked()
+{
+    emit SignalsSavePath();
 }

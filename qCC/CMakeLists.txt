@@ -1,4 +1,5 @@
 project( PointCloudSuper VERSION 2.12.0 )
+add_compile_options(-std=c++11)
 
 include( CMakePolicies NO_POLICY_SCOPE )
 
@@ -34,7 +35,21 @@ qt5_add_resources( generated_qrc_list ${qrc_list} )
 #link_directories(${PCL_LIBRARY_DIRS})
 #add_definitions(${PCL_DEFINITIONS})
 
+#find_package(GTSAM REQUIRED QUIET)
+##link_directories(${PROTOBUF_LIBRARIES})
+#include_directories(${GTSAM_INCLUDE_DIR})
+##link_directories(${GTSAM_LIBRARY_DIR})
 
+find_package(GTSAM REQUIRED)
+set(CMAKE_CXX_STANDARD 11)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+include_directories(${GTSAM_INCLUDE_DIRS})
+link_directories(${GTSAM_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES("/usr/include/eigen3")
+
+
+
+#$ sudo cp /usr/local/lib/libxxx.so usr/lib
 
 
 if( MSVC )
@@ -48,6 +63,7 @@ elseif( APPLE )
 else()
         add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list}
 #            ${PCL_LIBRARIES}
+#            ${PROTOBUF_LIBRARIES}
             )
 endif()
 
@@ -71,7 +87,10 @@ target_link_libraries( ${PROJECT_NAME}
     CCAppCommon
     QCustomPlot
     Qt5::PrintSupport
+    /usr/lib/x86_64-linux-gnu/libtbb.so.2
+    -lgtsam
 #    ${PCL_LIBRARIES}
+#    -lgtsams
 )
 
 if( CCCORELIB_USE_QT_CONCURRENT )

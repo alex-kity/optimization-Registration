@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>166</width>
-    <height>374</height>
+    <height>376</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -113,6 +113,13 @@
          <widget class="QPushButton" name="cloneBtn">
           <property name="text">
            <string>克隆</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="SavePath">
+          <property name="text">
+           <string>保存</string>
           </property>
          </widget>
         </item>

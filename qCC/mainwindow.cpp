@@ -11499,6 +11499,12 @@ void MainWindow::on_actionoptimization_triggered()
 
 #include <iostream>
 #include "slam/CSlamLadirDialog.h"
+#include "slam/CDataChange.h"
+CDataChange g_CDataChange;
+
+std::string m_strfirstID = "null";
+std::string m_strsecondID = "null";
+
 void MainWindow::on_actionSetLadirPer_triggered()
 {
 
@@ -11523,6 +11529,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
+        g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
         ccPointCloud* pclCloud = new ccPointCloud("ladir path");
 
 
@@ -11566,6 +11573,22 @@ void MainWindow::on_actionSetLadirPer_triggered()
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsRegisterPoint, this, [=]{SetActivateRegisterPointPairTool();} );
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsTransFrom, this, [=]{SetActivateTranslateRotateMode();} );
 
+    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsSavePath, this, [=]{
+
+        QString _pointDir = QFileDialog::getExistingDirectory(
+                    nullptr, "choose src Directory",
+                    "/");
+
+        if (_pointDir.isEmpty())
+        {
+            _pointDir = nullptr;
+            return;
+        }
+
+
+        g_CDataChange.graphOptimizerAndSavePoses(_pointDir.toStdString());
+    } );
+
     //    //当DB-Tree为空时，清空点云
     //    connect(m_ccRoot, &ccDBRoot::dbIsEmpty, m_colorDlg, &ColorChangeTool::onClear);
 
@@ -11585,14 +11608,7 @@ void MainWindow::ADDRecently(QString str)
 
 
 
-#include "slam/CDataChange.h"
-CDataChange g_CDataChange;
 
-
-
-
-std::string m_strfirstID = "null";
-std::string m_strsecondID = "null";
 
 bool MainWindow::SelectTWOPointCloud()
 {
@@ -11671,6 +11687,21 @@ int isDigitStr(const char *s)
 }
 
 
+
+//struct DATARegistration
+//{
+//    float phi_rad;
+//    float theta_rad;
+//    float psi_rad;
+//    float x;
+//    float y;
+//    float z;
+
+//    std::string ied = "null";
+//    std::string iing = "null";
+
+//};
+
 void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
 {
     try {
@@ -11679,7 +11710,6 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
         float theta_rad = 0.0;
         float psi_rad = 0.0;
         CCVector3 t3D;
-        DATARegistration _DATARegistration;
 
         ccGLMatrix finalTransCorrected = finalTrans;
 
@@ -11698,43 +11728,47 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
 
                     ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
 
-                    ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
+                    //                    ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
                     tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
                     finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
 
-                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+                    //                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                    //                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
 
-                    ccLog::Error(tempTrans.toString(12,' ')); //full precision
-                    ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
+                    //                    ccLog::Error(tempTrans.toString(12,' ')); //full precision
+                    //                    ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
 
 
                     //                        finalTrans = finalTrans * tempTrans;
                     finalTrans = tempTrans * finalTrans;
 
-                    //被匹配数据id
-                    _DATARegistration.ied = m_strfirstID;
-                    //匹配数据id
-                    _DATARegistration.iing = m_strsecondID;
-
-
-
                     finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
                     finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
 
-                    _DATARegistration.phi_rad = phi_rad;
-                    _DATARegistration.theta_rad = theta_rad;
-                    _DATARegistration.psi_rad = psi_rad;
-
-                    _DATARegistration.x = t3D.x;
-                    _DATARegistration.y = t3D.y;
-                    _DATARegistration.z = t3D.z;
 
 
-                    ccConsole::Error("result = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+                    PointTypePose key_frame_pose;
 
-                    g_CDataChange.SetData(_DATARegistration);
+                    if(isDigitStr(m_strfirstID.c_str()) == 0)
+                        key_frame_pose.id = std::atoi(m_strfirstID.c_str());
+
+                    key_frame_pose.yaw = phi_rad;
+                    key_frame_pose.pitch = theta_rad;
+                    key_frame_pose.roll = psi_rad;
+
+                    key_frame_pose.x = t3D.x;
+                    key_frame_pose.y = t3D.y;
+                    key_frame_pose.z = t3D.z;
+
+                    ccConsole::Error("result = "+QString::number(key_frame_pose.roll)+" : "+QString::number(key_frame_pose.pitch)+" : "+QString::number(key_frame_pose.yaw )+" : "+
+                                     QString::number(key_frame_pose.x )+" : "+QString::number(key_frame_pose.y)+" : "+QString::number(key_frame_pose.z)+":"+
+                                     QString::number(key_frame_pose.id ) +":"+QString::number(std::atoi(m_strsecondID.c_str())));
+
+                    // result = 0.0294738 : -0.0521302 : 0.511663 : -140.59 : -67.3515 : 7.10431:193:578
+
+                    g_CDataChange.addLoopClosureFactor(key_frame_pose, std::atoi(m_strsecondID.c_str()));
+
+
                 }
 
 

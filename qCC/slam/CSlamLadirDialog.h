@@ -23,7 +23,8 @@
 
 #include "ccGLMatrix.h"
 
-
+//#include "CDataChange.h"
+//#include "CDataChange.h"
 
 
 namespace Ui {
@@ -47,8 +48,10 @@ public:
                     QString fileFilter = QString(),
                    ccGLWindow* destWin = nullptr );
     void loadpointPCD(const QString objname, const QStringList &filenames);
-    //    void MeragePoint(ccHObject *newGroups);
+
     ccPointCloud *changeMat(ccPointCloud *obj, std::string strfilename);
+
+    std::string GetFileName(){return m_filename;}
 
 
 signals:
@@ -56,6 +59,7 @@ signals:
     void SignalsResample();
     void SignalsRegisterPoint();
     void SignalsTransFrom();
+    void SignalsSavePath();
 
 private slots:
     void on_load_path_clicked();
@@ -76,12 +80,15 @@ private slots:
 
     void on_m_btnTransFrom_clicked();
 
+    void on_SavePath_clicked();
+
 private:
     Ui::CSlamLadirDialog *ui;
 
 
     MainWindow * m_pMainWindow = nullptr;
     QString m_pointDir = nullptr;
+    std::string m_filename = "0";
 
     std::vector<lygs::trajectoryData> m_vecs ;
     std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
