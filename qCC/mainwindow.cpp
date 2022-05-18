@@ -11529,13 +11529,16 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
-        g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
+//        g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
 
-        ccPointCloud* pclCloud = new ccPointCloud("ladir path");
+        ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_pSlamLadirDialog->GetFileName().c_str()));
 
 
         //Sphere
-        ccHObject* newGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+        if(m_ladirnewGroup==nullptr)
+        {
+            m_ladirnewGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+        }
 
 
         //pointcloud
@@ -11547,7 +11550,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
             pclCloud->addPoint(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
         }
         pclCloud->setPointSize(3);
-        newGroup->addChild(pclCloud);
+        m_ladirnewGroup->addChild(pclCloud);
 
 
         //        //obj
@@ -11566,7 +11569,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
 
 
 
-        addToDB(newGroup);
+        addToDB(m_ladirnewGroup);
 
     });
 
@@ -11733,18 +11736,30 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
                     tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
                     finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
 
-                    //                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                    //                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
 
                     //                    ccLog::Error(tempTrans.toString(12,' ')); //full precision
                     //                    ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
 
 
                     //                        finalTrans = finalTrans * tempTrans;
-                    finalTrans = tempTrans * finalTrans;
+                    //                    finalTrans = tempTrans * finalTrans;
+
+                    std::cout<<"o"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
+
+                    finalTrans = finalTrans * tempTrans ;
+
+                    tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+                    std::cout<<"p"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
 
                     finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
                     finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+
+                    std::cout<<"q"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
+                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
 
 
 

@@ -103,7 +103,7 @@ class CDataChange
 
                 infile >> line;
                 std::vector<std::string> res = split(line, ",");
-                if(res.size() < 10){
+                if(res.size() < 7){
                     std::cout<<"loadTrajectory errot"<< std::endl;
                     return;
                 }
@@ -115,13 +115,15 @@ class CDataChange
                 pose.roll  = atof(res[4].c_str());
                 pose.pitch = atof(res[5].c_str());
                 pose.yaw   = atof(res[6].c_str());
-                pose.latitude    = atof(res[7].c_str());
-                pose.longitude   = atof(res[8].c_str());
-                pose.altitude    = atof(res[9].c_str());
+//                pose.latitude    = atof(res[7].c_str());
+//                pose.longitude   = atof(res[8].c_str());
+//                pose.altitude    = atof(res[9].c_str());
 
                 addKeyFrameFactor(pose);
 
                 _cloudKeyPoses6D.push_back(pose);
+                std::cout<<_cloudKeyPoses6D.size()<< std::endl;
+
 
                 infile.get();
                 if(infile.peek() == '\n'){
@@ -173,16 +175,16 @@ class CDataChange
         gtsam::Pose3 poseFrom = Pose3(Rot3::RzRyRx(key_frame_pose.roll, key_frame_pose.pitch, key_frame_pose.yaw),
                                     Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z));
 
-//        PointTypePose history_frame_pose = _cloudKeyPoses6D[closest_frame_id];
+        PointTypePose history_frame_pose = _cloudKeyPoses6D[closest_frame_id];
 
-//        gtsam::Pose3 poseTo = Pose3(Rot3::RzRyRx(history_frame_pose.roll, history_frame_pose.pitch, history_frame_pose.yaw),
-//                                Point3(history_frame_pose.x, history_frame_pose.y, history_frame_pose.z));
+        gtsam::Pose3 poseTo = Pose3(Rot3::RzRyRx(history_frame_pose.roll, history_frame_pose.pitch, history_frame_pose.yaw),
+                                Point3(history_frame_pose.x, history_frame_pose.y, history_frame_pose.z));
 
-//        gtSAMgraph.add(BetweenFactor<Pose3>(key_frame_pose.id, closest_frame_id, poseFrom.between(poseTo), odometryNoise));
+        gtSAMgraph.add(BetweenFactor<Pose3>(key_frame_pose.id, closest_frame_id, poseFrom.between(poseTo), odometryNoise));
 
-//        isam->update(gtSAMgraph);
-//        isam->update();
-//        gtSAMgraph.resize(0);
+        isam->update(gtSAMgraph);
+        isam->update();
+        gtSAMgraph.resize(0);
     }
 
 

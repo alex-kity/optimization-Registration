@@ -650,6 +650,8 @@ private:
 
     CSlamLadirDialog *m_pSlamLadirDialog = nullptr;
 
+    ccHObject* m_ladirnewGroup = nullptr;
+
 
 
 };

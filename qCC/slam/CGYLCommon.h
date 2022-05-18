@@ -32,6 +32,8 @@ typedef struct _trajectoryData {
     long double time;
     float x, y, z;
     float roll, pitch, yaw;
+    float latitude, longitude, altitude;
+
 }trajectoryData, *trajectoryDataPtr;
 
 
@@ -175,7 +177,96 @@ public:
     }
 
 
+    std::vector<trajectoryData>  readTrajectoryToxian1(string fileName, std::map<string, trajectoryData> &trajectorys)
+    {
+        ifstream myfile(fileName);
 
+        std::vector<trajectoryData> _trajectoryDatav;
+        if (!myfile.is_open())
+        {
+            std::cout << "can not open this file:" << fileName << endl;
+            return _trajectoryDatav;
+        }
+
+        //float temp;
+        string temp;
+        while (!myfile.eof())
+        {
+            myfile >> temp;
+            vector<string> res = splittoxian(temp, ",");
+            if(res.size() < 7){
+                std::cout<<"loadTrajectory errot"<< std::endl;
+                return _trajectoryDatav;
+            }
+
+            int i = 0;
+            trajectoryData para;
+            string timeStr = res[0];
+
+            std::string str = res[i++];
+            str.erase(std::remove(str.begin(),str.end(),'.'),str.end());
+            para.name = timeStr;
+            para.time = stringToNum<long double>(str);
+            para.x = atof(res[i++].c_str());
+            para.y = atof(res[i++].c_str());
+            para.z = atof(res[i++].c_str());
+            para.roll = atof(res[i++].c_str());
+            para.pitch = atof(res[i++].c_str());
+            para.yaw = atof(res[i++].c_str());
+            para.latitude    = atof(res[i++].c_str());
+            para.longitude   = atof(res[i++].c_str());
+            para.altitude    = atof(res[i++].c_str());
+            //        trajectorys.push_back(para);
+            trajectorys[timeStr] = para;
+            _trajectoryDatav.push_back(para);
+            //        std::cout<<para.name <<std::endl;
+
+
+        }
+
+        return _trajectoryDatav;
+    }
+
+
+//    void loadTrajectory(std::string name){
+
+//        std::ifstream infile;
+//        int id = 0;
+//        std::string line;
+//        _trajectoryData pose;
+//        infile.open(name, std::ios::in);
+
+//        if(infile.is_open ()){
+//            while (!infile.eof()){
+
+
+//                infile >> line;
+//                std::vector<std::string> res = split(line, ",");
+//                if(res.size() < 7){
+//                    std::cout<<"loadTrajectory errot"<< std::endl;
+//                    return;
+//                }
+//                pose.id = id++;
+//                pose.time  = atof(res[0].c_str());
+//                pose.x     = atof(res[1].c_str());
+//                pose.y     = atof(res[2].c_str());
+//                pose.z     = atof(res[3].c_str());
+//                pose.roll  = atof(res[4].c_str());
+//                pose.pitch = atof(res[5].c_str());
+//                pose.yaw   = atof(res[6].c_str());
+//                pose.latitude    = atof(res[7].c_str());
+//                pose.longitude   = atof(res[8].c_str());
+//                pose.altitude    = atof(res[9].c_str());
+
+
+
+//                infile.get();
+//                if(infile.peek() == '\n'){
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
 
 };
