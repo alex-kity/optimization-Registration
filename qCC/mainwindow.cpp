@@ -11530,6 +11530,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
         g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
+
         ccPointCloud* pclCloud = new ccPointCloud("ladir path");
 
 
@@ -11749,8 +11750,8 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
 
                     PointTypePose key_frame_pose;
 
-                    if(isDigitStr(m_strfirstID.c_str()) == 0)
-                        key_frame_pose.id = std::atoi(m_strfirstID.c_str());
+                    if(isDigitStr(m_strsecondID.c_str()) == 0)
+                        key_frame_pose.id = std::atoi(m_strsecondID.c_str());
 
                     key_frame_pose.yaw = phi_rad;
                     key_frame_pose.pitch = theta_rad;
@@ -11766,7 +11767,7 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
 
                     // result = 0.0294738 : -0.0521302 : 0.511663 : -140.59 : -67.3515 : 7.10431:193:578
 
-                    g_CDataChange.addLoopClosureFactor(key_frame_pose, std::atoi(m_strsecondID.c_str()));
+                    g_CDataChange.addLoopClosureFactor(key_frame_pose, std::atoi(m_strfirstID.c_str()));
 
 
                 }

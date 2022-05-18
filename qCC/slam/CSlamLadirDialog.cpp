@@ -336,7 +336,7 @@ void CSlamLadirDialog::on_load_path_clicked()
         m_filename = fileName.toStdString();
         //        m_recentFiles->addFilePath( fileName );
         std::map<std::string,lygs::trajectoryData> trajectorys;
-        m_vecs = _CGYLCommon.readTrajectoryToxian(fileName.toStdString(),g_trajectoryMap);
+        m_vecs = _CGYLCommon.readTrajectoryToxian(m_filename,g_trajectoryMap);
 
 
 
