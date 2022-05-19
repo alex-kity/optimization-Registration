@@ -11529,7 +11529,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
-//        g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
+        g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
 
         ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_pSlamLadirDialog->GetFileName().c_str()));
 

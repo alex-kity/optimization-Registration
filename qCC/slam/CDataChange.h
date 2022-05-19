@@ -28,17 +28,17 @@ using namespace gtsam;
 
 struct PointXYZIRPYT
 {
-  int id;
-  double time;
-  float x;
-  float y;
-  float z;
-  float roll;
-  float pitch;
-  float yaw;
-  double latitude;
-  double longitude;
-  double altitude;
+    int id;
+    double time;
+    float x;
+    float y;
+    float z;
+    float roll;
+    float pitch;
+    float yaw;
+    double latitude;
+    double longitude;
+    double altitude;
 };
 
 typedef PointXYZIRPYT PointTypePose;
@@ -47,7 +47,7 @@ typedef PointXYZIRPYT PointTypePose;
 class CDataChange
 {
 
-  private:
+private:
     gtsam::NonlinearFactorGraph gtSAMgraph;
     gtsam::Values initialEstimate;
     gtsam::Values optimizedEstimate;
@@ -59,7 +59,7 @@ class CDataChange
     std::vector<PointTypePose> _cloudKeyPoses6D;
     PointTypePose _last_key_frame_pose;
 
-  public:
+public:
 
     CDataChange(){
         parameters.relinearizeThreshold = 0.1;
@@ -103,8 +103,9 @@ class CDataChange
 
                 infile >> line;
                 std::vector<std::string> res = split(line, ",");
-                if(res.size() < 7){
+                if(res.size() < 10){
                     std::cout<<"loadTrajectory errot"<< std::endl;
+                    infile.close();
                     return;
                 }
                 pose.id = id++;
@@ -115,14 +116,14 @@ class CDataChange
                 pose.roll  = atof(res[4].c_str());
                 pose.pitch = atof(res[5].c_str());
                 pose.yaw   = atof(res[6].c_str());
-//                pose.latitude    = atof(res[7].c_str());
-//                pose.longitude   = atof(res[8].c_str());
-//                pose.altitude    = atof(res[9].c_str());
+                pose.latitude    = atof(res[7].c_str());
+                pose.longitude   = atof(res[8].c_str());
+                pose.altitude    = atof(res[9].c_str());
 
                 addKeyFrameFactor(pose);
 
                 _cloudKeyPoses6D.push_back(pose);
-                std::cout<<_cloudKeyPoses6D.size()<< std::endl;
+                //                std::cout<<_cloudKeyPoses6D.size()<< std::endl;
 
 
                 infile.get();
@@ -131,6 +132,9 @@ class CDataChange
                 }
             }
         }
+
+        infile.close();
+
     }
 
 
@@ -141,22 +145,22 @@ class CDataChange
             noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Variances((Vector(6) << 1.0, 1.0, M_PI*M_PI, 1e-8, 1e-8, 1e-8).finished()); // rad*rad, meter*meter
 
             gtSAMgraph.add(PriorFactor<Pose3>(key_frame_pose.id, Pose3(Rot3::RzRyRx(key_frame_pose.roll, key_frame_pose.pitch, key_frame_pose.yaw),
-                    Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z)), priorNoise));
+                                                                       Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z)), priorNoise));
 
         }
         else {
             noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Variances((Vector(6) <<  1e-6, 1e-6, 1e-6, 1e-4, 1e-4, 1e-4).finished());
             gtsam::Pose3 poseFrom = Pose3(Rot3::RzRyRx(_last_key_frame_pose.roll, _last_key_frame_pose.pitch, _last_key_frame_pose.yaw),
-                                    Point3(_last_key_frame_pose.x, _last_key_frame_pose.y, _last_key_frame_pose.z));
+                                          Point3(_last_key_frame_pose.x, _last_key_frame_pose.y, _last_key_frame_pose.z));
 
             gtsam::Pose3 poseTo = Pose3(Rot3::RzRyRx(key_frame_pose.roll, key_frame_pose.pitch, key_frame_pose.yaw),
-                                Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z));
+                                        Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z));
 
             gtSAMgraph.add(BetweenFactor<Pose3>(key_frame_pose.id - 1, key_frame_pose.id, poseFrom.between(poseTo), odometryNoise));
         }
 
         initialEstimate.insert(key_frame_pose.id, Pose3(Rot3::RzRyRx(key_frame_pose.roll, key_frame_pose.pitch, key_frame_pose.yaw),
-                                                Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z)));
+                                                        Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z)));
 
         _last_key_frame_pose = key_frame_pose;
 
@@ -173,12 +177,12 @@ class CDataChange
         noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Variances((Vector(6) <<  1e-6, 1e-6, 1e-6, 1e-4, 1e-4, 1e-4).finished());;
 
         gtsam::Pose3 poseFrom = Pose3(Rot3::RzRyRx(key_frame_pose.roll, key_frame_pose.pitch, key_frame_pose.yaw),
-                                    Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z));
+                                      Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z));
 
         PointTypePose history_frame_pose = _cloudKeyPoses6D[closest_frame_id];
 
         gtsam::Pose3 poseTo = Pose3(Rot3::RzRyRx(history_frame_pose.roll, history_frame_pose.pitch, history_frame_pose.yaw),
-                                Point3(history_frame_pose.x, history_frame_pose.y, history_frame_pose.z));
+                                    Point3(history_frame_pose.x, history_frame_pose.y, history_frame_pose.z));
 
         gtSAMgraph.add(BetweenFactor<Pose3>(key_frame_pose.id, closest_frame_id, poseFrom.between(poseTo), odometryNoise));
 
@@ -190,11 +194,11 @@ class CDataChange
 
     void saveKeyPose(std::ofstream& ofs, const PointTypePose& pose)
     {
-       ofs<< std::to_string(pose.time)<<","
-          << std::to_string(pose.x) << "," << std::to_string(pose.y) << "," << std::to_string(pose.z) << ","
-          << std::to_string(pose.roll) << ","<< std::to_string(pose.pitch) << "," <<std::to_string(pose.yaw) << ","
-          << std::to_string(pose.latitude) << ","<< std::to_string(pose.longitude) << "," <<std::to_string(pose.altitude)
-          <<std::endl;
+        ofs<< std::to_string(pose.time)<<","
+           << std::to_string(pose.x) << "," << std::to_string(pose.y) << "," << std::to_string(pose.z) << ","
+           << std::to_string(pose.roll) << ","<< std::to_string(pose.pitch) << "," <<std::to_string(pose.yaw) << ","
+           << std::to_string(pose.latitude) << ","<< std::to_string(pose.longitude) << "," <<std::to_string(pose.altitude)
+           <<std::endl;
     }
 
 
