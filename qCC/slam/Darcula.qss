@@ -146,3 +146,47 @@ color:white;
 QTabBar::tab:!selected {margin-top: 5px;}
 
 
+
+QToolButton {
+        border:2px solid #124d92;
+        border-radius:5px;
+        background-color:green;
+        min-width:30px;
+        min-height:20px;
+}
+
+/* QLabel在disabled的样式 */
+QToolButton:disabled {
+        border: 1px solid #FFF;
+        background-color: #EEE;
+        color: #B4B4B4;
+}
+
+
+QToolButton[pupupMode="1"] {
+        padding-right:20px;
+}
+
+/* 鼠标按下时 */
+QToolButton:pressed {
+        background-color:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
+}
+
+/* 按钮有菜单时 */
+QToolButton::menu-button {
+        border:2px solid red;
+        border-top-right-radius:6px;
+        border-bottom-right-radius:6px;
+        width = 16px;
+}
+
+
+/* 菜单打开时 */
+QToolButton::menu-arrow:open {
+        top:2px;
+        left:2px;
+}
+
+
+

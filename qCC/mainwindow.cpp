@@ -222,8 +222,8 @@ MainWindow::MainWindow()
 
 
 
-    m_UI->option->hide();
-    m_UI->dockWidget_DataBase->hide();
+    //    m_UI->option->hide();
+    //    m_UI->dockWidget_DataBase->hide();
 
 
 
@@ -325,8 +325,8 @@ MainWindow::MainWindow()
 
     ccConsole::Print(tr("CloudCompare started!"));
 
-    m_UI->option->close();
-    m_UI->dockWidget_DataBase->close();
+    //    m_UI->option->close();
+    //    m_UI->dockWidget_DataBase->close();
 }
 
 MainWindow::~MainWindow()
@@ -12027,6 +12027,6 @@ void MainWindow::SetActivateTranslateRotateMode()
 
 void MainWindow::on_actionShow_triggered()
 {
-    m_UI->option->show();
-    m_UI->dockWidget_DataBase->show();
+    //    m_UI->option->show();
+    //    m_UI->dockWidget_DataBase->show();
 }
