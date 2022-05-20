@@ -11576,12 +11576,13 @@ void MainWindow::on_actionSetLadirPer_triggered()
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsTestLoadPath, this, [=](QList<QVector3D> _vec){
 
 
-        ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_pSlamLadirDialog->GetFileName().c_str()));
+        ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_pSlamLadirDialog->GetFileNameTnt().c_str()));
 
+        ccHObject* ladirnewGroup = nullptr;
         //Sphere
-        if(m_ladirnewGroup==nullptr)
+        if(ladirnewGroup==nullptr)
         {
-            m_ladirnewGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+            ladirnewGroup = new ccHObject(QString::fromLocal8Bit("ladir-path-dnt"));
         }
 
 
@@ -11594,7 +11595,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
             pclCloud->addPoint(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
         }
         pclCloud->setPointSize(3);
-        m_ladirnewGroup->addChild(pclCloud);
+        ladirnewGroup->addChild(pclCloud);
 
 
         //        //obj
@@ -11611,7 +11612,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
         //            newGroup->addChild(primitive);
         //        }
 
-        addToDB(m_ladirnewGroup);
+        addToDB(ladirnewGroup);
 
     });
 

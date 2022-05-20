@@ -739,7 +739,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
             // perform front and back of fream pointcloud
             //1
-            int index = iter->first - 15;
+            int index = iter->first - 5;
             for (int i = index;i<index+20;i++) {
 
                 int icurrent = i;
@@ -1074,6 +1074,7 @@ void CSlamLadirDialog::on_btn_TestPath_clicked()
 
     if(!fileName.isEmpty())
     {
+        m_filenametnt = fileName.toStdString();
         std::map<std::string,lygs::trajectoryData> trajectorys;
         std::vector<lygs::trajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
 

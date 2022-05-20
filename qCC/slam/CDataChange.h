@@ -62,13 +62,21 @@ private:
 public:
 
     CDataChange(){
-        parameters.relinearizeThreshold = 0.1;
-        parameters.relinearizeSkip = 1;
-        isam = new ISAM2(parameters);
+
     }
     ~CDataChange(){
         delete isam;
 
+    }
+
+
+
+    void init()
+    {
+        parameters.relinearizeThreshold = 0.1;
+        parameters.relinearizeSkip = 1;
+        isam = new ISAM2(parameters);
+        _cloudKeyPoses6D.clear();
     }
 
     std::vector< std::string> split(const std::string& s, const std::string& delim)
@@ -90,6 +98,7 @@ public:
     }
 
     void loadTrajectory(std::string name){
+         init();
 
         std::ifstream infile;
         int id = 0;
@@ -230,7 +239,15 @@ public:
             saveKeyPose(optimized_pose_ofs, pose);
         }
         //pcl::io::savePCDFileBinary(path +"/cloudKeyPoses6D.pcd", *_cloudKeyPoses6D);
+
+
+
+
+
     }
+
+
+
 };
 
 

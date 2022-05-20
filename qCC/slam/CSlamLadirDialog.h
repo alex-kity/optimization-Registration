@@ -52,6 +52,7 @@ public:
     ccPointCloud *changeMat(ccPointCloud *obj, std::string strfilename);
 
     std::string GetFileName(){return m_filename;}
+    std::string GetFileNameTnt(){return m_filenametnt;}
 
 
 signals:
@@ -92,6 +93,8 @@ private:
     MainWindow * m_pMainWindow = nullptr;
     QString m_pointDir = nullptr;
     std::string m_filename = "0";
+    std::string m_filenametnt = "0";
+
 
     std::vector<lygs::trajectoryData> m_vecs ;
     std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
