@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>166</width>
-    <height>376</height>
+    <width>148</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -25,10 +25,20 @@
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_4">
+     <property name="spacing">
+      <number>2</number>
+     </property>
      <item>
       <widget class="QPushButton" name="load_path">
        <property name="text">
         <string>加载轨迹</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_TestPath">
+       <property name="text">
+        <string>加载辅助轨迹</string>
        </property>
       </widget>
      </item>
@@ -46,7 +56,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <property name="spacing">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="leftMargin">
          <number>0</number>

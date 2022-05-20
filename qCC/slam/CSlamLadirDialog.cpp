@@ -1061,3 +1061,36 @@ void CSlamLadirDialog::on_SavePath_clicked()
 {
     emit SignalsSavePath();
 }
+
+void CSlamLadirDialog::on_btn_TestPath_clicked()
+{
+    //get trajectory data
+    lygs::CGYLCommon _CGYLCommon;
+    //    background-color: rgb(115, 210, 22);
+    QFileDialog _FileDialog;
+    //    _FileDialog.setStyleSheet("background-color: rgb(200, 200, 200)");
+    _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
+    QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
+
+    if(!fileName.isEmpty())
+    {
+        std::map<std::string,lygs::trajectoryData> trajectorys;
+        std::vector<lygs::trajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
+
+
+        //    m_pMainWindow->ADDRecently(fileName);
+        //show trajectorydata
+        QList<QVector3D> _vec3d;
+        QVector3D vec;
+        for (int i = 0;i<m_vecs.size();i++) {
+            vec.setX(m_vecs[i].x);
+            vec.setY(m_vecs[i].y);
+            vec.setZ(m_vecs[i].z);
+
+            _vec3d.push_back(vec);
+        }
+        emit SignalsTestLoadPath(_vec3d);
+
+    }
+
+}

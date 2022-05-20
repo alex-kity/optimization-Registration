@@ -56,6 +56,7 @@ public:
 
 signals:
     void SignalsLoadPath(QList<QVector3D> _vec);
+    void SignalsTestLoadPath(QList<QVector3D> _vec);
     void SignalsResample();
     void SignalsRegisterPoint();
     void SignalsTransFrom();
@@ -81,6 +82,8 @@ private slots:
     void on_m_btnTransFrom_clicked();
 
     void on_SavePath_clicked();
+
+    void on_btn_TestPath_clicked();
 
 private:
     Ui::CSlamLadirDialog *ui;

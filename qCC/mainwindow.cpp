@@ -11573,6 +11573,51 @@ void MainWindow::on_actionSetLadirPer_triggered()
 
     });
 
+    connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsTestLoadPath, this, [=](QList<QVector3D> _vec){
+
+
+        ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_pSlamLadirDialog->GetFileName().c_str()));
+
+        //Sphere
+        if(m_ladirnewGroup==nullptr)
+        {
+            m_ladirnewGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+        }
+
+
+        //pointcloud
+        int num = _vec.size();
+        pclCloud->reserve(static_cast<unsigned>(num));
+
+        for (int i = 0; i < num; i++)
+        {
+            pclCloud->addPoint(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+        }
+        pclCloud->setPointSize(3);
+        m_ladirnewGroup->addChild(pclCloud);
+
+
+        //        //obj
+        //        for (int i = 0;i<_vec.size();i++) {
+        //            ccGenericPrimitive* primitive = nullptr;
+        //            ccGLMatrix transMat;
+        //            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+
+        //            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
+        //                            static_cast<PointCoordinateType>(0.3),
+        //                            static_cast<PointCoordinateType>(0.3));
+        //            primitive = new ccBox(dims,&transMat);
+        //            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
+        //            newGroup->addChild(primitive);
+        //        }
+
+        addToDB(m_ladirnewGroup);
+
+    });
+
+
+
+
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsResample, this, [=]{doActionResampleWithOctree();} );
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsRegisterPoint, this, [=]{SetActivateRegisterPointPairTool();} );
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsTransFrom, this, [=]{SetActivateTranslateRotateMode();} );
