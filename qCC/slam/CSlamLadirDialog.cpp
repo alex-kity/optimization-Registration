@@ -76,6 +76,10 @@
 #include <ccPointCloud.h>
 
 
+static const std::string Matched = "Matched";
+static const std::string Matching = "Matching";
+static const QString MATCHName = "MATCH_";
+
 using namespace CCCoreLib;
 using namespace lygs;
 
@@ -605,14 +609,11 @@ ccPointCloud*  CSlamLadirDialog::changeMat(ccPointCloud* obj,std::string strfile
 
 
 
-void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filenames,QString dir,
+void CSlamLadirDialog::loadpoint(ccHObject *newGroups, const QString objname,	const QStringList& filenames, QString dir,
                                  QString fileFilter/*=QString()*/,
-                                 ccGLWindow* destWin/*=0*/)
+                                 ccGLWindow* destWin/*=0*/ )
 {
 
-
-
-    ccHObject* newGroups = new ccHObject(objname);
     std::vector<ccPointCloud*> _vecpointcloud;
 
     //to use the same 'global shift' for multiple files
@@ -658,7 +659,7 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
             }
 
 
-            newGroups->addChild(newGroup);
+            //            newGroups->addChild(newGroup);
 
 
             for (unsigned i = 0; i < newGroup->getChildrenNumber(); ++i)
@@ -706,14 +707,15 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
 
     if(!_vecpointcloud.empty())
     {
+
         ccPointCloud* firstCloud = new ccPointCloud(objname);
 
         for(int i = 0;i<_vecpointcloud.size();i++)
         {
             *firstCloud += _vecpointcloud[i];
         }
+        newGroups->addChild(firstCloud);
 
-        m_pMainWindow->addToDB(firstCloud, true, true, false);
     }
 
 
@@ -721,7 +723,6 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
 
 
 
-#include <QThread>
 void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned>> match)
 {
     if (m_pointDir == nullptr || m_pointDir.isEmpty())
@@ -762,17 +763,15 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
     m_pProgressDialog.setLabelText(tr("Compute..."));
     //设置进度对话框的“取消”按钮的显示文字
     m_pProgressDialog.setCancelButtonText(tr("Cancel"));
-    //    m_pProgressDialog->setStyleSheet("QWidget{background-color: rgb(255,255,255);}");//背景板是白色
-    //    QProgressBar * prog = new QProgressBar(&m_pProgressDialog);
-    //    prog->setTextVisible(false);
-    //    m_pProgressDialog.setBar(prog);
     m_pProgressDialog.show();
     QThread::msleep(50);
 
     QString strtype = ".pcd";
     // perform
 
-    std::map<QString,QStringList> _showpointlist;
+    std::vector<_MapMatch> _showVecpointlist;
+    _MapMatch _MapMatch_t;
+    std::string flagname ;
     std::vector<std::pair<unsigned,unsigned>>::iterator iter;
     for(iter = match.begin(); iter!= match.end(); iter++)
     {
@@ -800,7 +799,6 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
 
             //2
-            //2
             index = iter->second + CAppConfig::secondsatrt;
             for (int i = index;i<index+CAppConfig::secondstep;i++) {
 
@@ -816,10 +814,18 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
             }
 
 
-            std::string flagname = "N-" +std::to_string(iter->second)+"-"+std::to_string(iter->first);
-            _showpointlist["Matched" + QString::number(iter->second) +QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatched;
-            _showpointlist["Matching" + QString::number(iter->first) + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatching;
+            flagname = "N-" +std::to_string(iter->second)+"-"+std::to_string(iter->first);
 
+            _MapMatch_t.name = QString(QString::fromLocal8Bit(flagname.c_str()));
+
+            _MapMatch_t.matched = QString(QString::fromLocal8Bit(Matched.c_str())) +
+                    QString::number(iter->second) ;
+            _MapMatch_t.matchedlist = selectedFilesMatched;
+
+            _MapMatch_t.matching = QString(QString::fromLocal8Bit(Matching.c_str())) +
+                    QString::number(iter->first) ;
+            _MapMatch_t.matchinglist = selectedFilesMatching;
+            _showVecpointlist.push_back(_MapMatch_t);
         }
     }
 
@@ -828,26 +834,22 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         return;
     else
     {
-        int num = _showpointlist.size()+1;
+        int num = _showVecpointlist.size()+1;
         m_pProgressDialog.setRange(0,num); //设置进度对话框的步进范围
 
-
-        int i = 0;
-        std::map<QString,QStringList>::iterator iter1;
-        for (iter1 = _showpointlist.begin();iter1 != _showpointlist.end();iter1++)
-        {
-            loadpoint( iter1->first,iter1->second, m_pointDir,m_currentOpenDlgFilter);
-            //            loadpointPCD(iter1->first,iter1->second);
+        for (int i = 0;i<_showVecpointlist.size();i++) {
             m_pProgressDialog.setValue(i);
+            _MapMatch _MapMatch_t = _showVecpointlist[i];
+            ccHObject* newGroups = new ccHObject(MATCHName+QString::number(i));
+            loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,m_currentOpenDlgFilter);
+            loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,m_currentOpenDlgFilter);
+            m_pMainWindow->addToDB(newGroups, true, true, false);
+
             if(m_pProgressDialog.wasCanceled())
                 return;
-            i++;
             QCoreApplication::processEvents();
         }
 
-
-        //        loadpoint("Matched",selectedFilesMatched, m_currentOpenDlgFilter);
-        //        loadpoint("Matching",selectedFilesMatching, m_currentOpenDlgFilter);
     }
 
     m_pProgressDialog.close();

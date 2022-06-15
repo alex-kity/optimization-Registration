@@ -27,12 +27,28 @@
 //#include "CDataChange.h"
 
 
+
+#include <QThread>
+
+struct _MapMatch
+{
+    QString matched;
+    QStringList matchedlist;
+
+    QString matching;
+    QStringList matchinglist;
+
+    QString name;
+
+};
+
 namespace Ui {
 class CSlamLadirDialog;
 }
 
 class ccPointCloud;
 class MainWindow;
+class ccHObject;
 class CSlamLadirDialog :public ccOverlayDialog
 {
     Q_OBJECT
@@ -44,9 +60,10 @@ public:
     ~CSlamLadirDialog();
 
     void SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match);
-    void loadpoint(const QString objname, const QStringList& filenames, QString dir = "",
+    void loadpoint(ccHObject* newGroups,const QString objname, const QStringList& filenames, QString dir = "",
                     QString fileFilter = QString(),
                    ccGLWindow* destWin = nullptr );
+
     void loadpointPCD(const QString objname, const QStringList &filenames);
 
     ccPointCloud *changeMat(ccPointCloud *obj, std::string strfilename);
