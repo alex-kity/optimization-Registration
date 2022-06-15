@@ -65,27 +65,6 @@ signals:
 
 private slots:
     void on_load_path_clicked();
-
-    void on_pushButton_resample_clicked();
-
-    void on_setpointfile_clicked();
-
-    void on_getcurrentpath_clicked();
-
-    void on_pushButtonpointresi_clicked();
-
-    void on_btnclose_clicked();
-
-    void on_btnAuto_clicked();
-
-    void on_pushButton_clicked();
-
-    void on_m_btnTransFrom_clicked();
-
-    void on_SavePath_clicked();
-
-    void on_btn_TestPath_clicked();
-
 private:
     Ui::CSlamLadirDialog *ui;
 
@@ -99,10 +78,10 @@ private:
     std::vector<lygs::trajectoryData> m_vecs ;
     std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
 
-
-
     QString m_currentOpenDlgFilter;
     QStringList m_selectedFiles;
+
+    void initForm();
 };
 
 #endif // CSLAMLADIRDIALOG_H

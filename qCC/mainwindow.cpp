@@ -11738,19 +11738,6 @@ int isDigitStr(const char *s)
 
 
 
-//struct DATARegistration
-//{
-//    float phi_rad;
-//    float theta_rad;
-//    float psi_rad;
-//    float x;
-//    float y;
-//    float z;
-
-//    std::string ied = "null";
-//    std::string iing = "null";
-
-//};
 
 void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
 {
@@ -11760,81 +11747,39 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
         float theta_rad = 0.0;
         float psi_rad = 0.0;
         CCVector3 t3D;
-
         ccGLMatrix finalTransCorrected = finalTrans;
 
-
         //将相对量变化为绝对直
-        if(!m_strsecondID.empty())
+        if(!m_strsecondID.empty() && isDigitStr(m_strsecondID.c_str()) == 0 && m_pSlamLadirDialog != nullptr)
         {
 
+            ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
+
+            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+            finalTrans = finalTrans * tempTrans ;
+
+            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+
+            PointTypePose key_frame_pose;
+
             if(isDigitStr(m_strsecondID.c_str()) == 0)
-            {
+                key_frame_pose.id = std::atoi(m_strsecondID.c_str());
+            key_frame_pose.yaw = phi_rad;
+            key_frame_pose.pitch = theta_rad;
+            key_frame_pose.roll = psi_rad;
+
+            key_frame_pose.x = t3D.x;
+            key_frame_pose.y = t3D.y;
+            key_frame_pose.z = t3D.z;
 
 
-                if(m_pSlamLadirDialog != nullptr)
-                {
-                    //                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
-
-                    ccGLMatrix tempTrans = m_pSlamLadirDialog->m_IndextrajectoryMap[std::atoi(m_strsecondID.c_str())];
-
-                    //                    ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
-                    tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                    finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
-
-                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
-
-                    //                    ccLog::Error(tempTrans.toString(12,' ')); //full precision
-                    //                    ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
-
-
-                    //                        finalTrans = finalTrans * tempTrans;
-                    //                    finalTrans = tempTrans * finalTrans;
-
-                    std::cout<<"o"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
-
-                    finalTrans = finalTrans * tempTrans ;
-
-                    tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                    std::cout<<"p"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
-
-                    finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
-                    finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
-
-
-                    std::cout<<"q"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
-                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
-                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
-
-
-
-                    PointTypePose key_frame_pose;
-
-                    if(isDigitStr(m_strsecondID.c_str()) == 0)
-                        key_frame_pose.id = std::atoi(m_strsecondID.c_str());
-
-                    key_frame_pose.yaw = phi_rad;
-                    key_frame_pose.pitch = theta_rad;
-                    key_frame_pose.roll = psi_rad;
-
-                    key_frame_pose.x = t3D.x;
-                    key_frame_pose.y = t3D.y;
-                    key_frame_pose.z = t3D.z;
-
-                    ccConsole::Error("result = "+QString::number(key_frame_pose.roll)+" : "+QString::number(key_frame_pose.pitch)+" : "+QString::number(key_frame_pose.yaw )+" : "+
-                                     QString::number(key_frame_pose.x )+" : "+QString::number(key_frame_pose.y)+" : "+QString::number(key_frame_pose.z)+":"+
-                                     QString::number(key_frame_pose.id ) +":"+QString::number(std::atoi(m_strsecondID.c_str())));
-
-                    // result = 0.0294738 : -0.0521302 : 0.511663 : -140.59 : -67.3515 : 7.10431:193:578
-
-                    g_CDataChange.addLoopClosureFactor(key_frame_pose, std::atoi(m_strfirstID.c_str()));
-
-
-                }
-
-
-            }
+            g_CDataChange.addLoopClosureFactor(key_frame_pose, std::atoi(m_strfirstID.c_str()));
 
 
         }
@@ -11848,6 +11793,43 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
 
 
 }
+
+//struct DATARegistration
+//{
+//    float phi_rad;
+//    float theta_rad;
+//    float psi_rad;
+//    float x;
+//    float y;
+//    float z;
+
+//    std::string ied = "null";
+//    std::string iing = "null";
+
+//};
+//std::cout<<"p"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
+//std::cout<<"o"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
+//std::cout<<"q"<<t3D.x<<t3D.y<<t3D.z<<std::endl;
+//                    ccConsole::Error("result = "+QString::number(key_frame_pose.roll)+" : "+QString::number(key_frame_pose.pitch)+" : "+QString::number(key_frame_pose.yaw )+" : "+
+//                                     QString::number(key_frame_pose.x )+" : "+QString::number(key_frame_pose.y)+" : "+QString::number(key_frame_pose.z)+":"+
+//                                     QString::number(key_frame_pose.id ) +":"+QString::number(std::atoi(m_strsecondID.c_str())));
+
+// result = 0.0294738 : -0.0521302 : 0.511663 : -140.59 : -67.3515 : 7.10431:193:578
+//                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+//                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+//                    ccConsole::Error("or = "+QString::number(phi_rad)+" : "+QString::number(theta_rad)+" : "+QString::number(psi_rad)+" : "+
+//                                     QString::number(t3D.x )+" : "+QString::number(t3D.y)+" : "+QString::number(t3D.z));
+
+//                    ccLog::Error(tempTrans.toString(12,' ')); //full precision
+//                    ccLog::Error(finalTransCorrected.toString(12,' ')); //full precision
+
+
+//                        finalTrans = finalTrans * tempTrans;
+//                    finalTrans = tempTrans * finalTrans;
+//                            ccLog::Error(QString::number(m_pSlamLadirDialog->m_IndextrajectoryMap.size())); //full precision
+
+//                    ccLog::Error(QString::number(std::atoi(m_strsecondID.c_str()))); //full precision
+
 
 void MainWindow::SetActivateRegisterPointPairTool()
 {

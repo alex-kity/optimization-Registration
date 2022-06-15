@@ -69,100 +69,19 @@
 #include "clygnanoflann.hpp"
 #include "utils.h"
 
-
 #include <map>
 #include <QProgressDialog>
 
 #include <eigen3/Eigen/Eigen>
+#include <ccPointCloud.h>
+
 
 using namespace CCCoreLib;
-
-void GetPointData(std::vector<lygs::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
-{
-    float dis = 10.0f;
-    int frontToBackfram = 200;
-    int jumpfram = 50;
-
-
-    PointCloud tmpCloud1;
-    {
-        unsigned count = static_cast<unsigned>(_vecs.size());
-        if (!tmpCloud1.reserve(count * 2)) //not enough memory
-            return ;
-        for (unsigned i = 0; i < count; i++)
-        {
-            tmpCloud1.addPoint(CCVector3f(_vecs[i].x, _vecs[i].y, _vecs[i].z));
-
-        }
-    }
-
-
-
-    //build kdtree for nearest neighbour fast research
-    KDTree intermediateTree;
-    if (!intermediateTree.buildFromCloud(&tmpCloud1))
-        return ;
-
-
-    for (unsigned i = 0; i < tmpCloud1.size(); i++)
-    {
-        //    int i = tmpCloud1.size()-1;
-        const CCVector3 *q0 = tmpCloud1.getPoint(i);
-
-        std::vector<unsigned> points;
-        if (intermediateTree.findPointsLyingToDistance(q0->u, dis,dis,points))
-        {
-
-            //get distance is smallst point and index , and compute distance point to point
-            std::vector<std::pair<int, double>> IndicesDists;
-            for(int j = 0;j<points.size();j++)
-            {
-                std::cout<<"==points[j]== "<<points[j]<<std::endl;
-                const CCVector3 *qcurrentpoint = tmpCloud1.getPoint(points[j]);
-
-                double twopointdistance = std::sqrt((qcurrentpoint->x-q0->x)*(qcurrentpoint->x-q0->x) +
-                                                    (qcurrentpoint->y-q0->y)*(qcurrentpoint->y-q0->y) +
-                                                    (qcurrentpoint->z-q0->z)*(qcurrentpoint->z-q0->z) );
-
-                IndicesDists.push_back(std::make_pair(points[j], twopointdistance));
-
-            }
-
-
-            // in order to sort to distance
-            std::sort(IndicesDists.begin(), IndicesDists.end(), lygs::IndexDistLyg_Sorter());
-
-            // perform
-            std::vector<std::pair<int, double>>::iterator iter;
-            for(iter = IndicesDists.begin(); iter!=IndicesDists.end(); iter++)
-            {
-                std::cout<<iter->first<<" sort twopointdistance: "<<iter->second<<std::endl;
-
-                if((int)(i-iter->first)>frontToBackfram)
-                {
-                    //perform
-                    std::cout<<i<<"perform ===+++++=== "<<iter->first<<std::endl;
-
-                    match.push_back(std::make_pair(i, iter->first));
-
-                    i = i+jumpfram;
-                    break;
-                }
-
-            }
-
-
-        }
-
-    }
-
-}
+using namespace lygs;
 
 void GetPointDataSelf(std::vector<lygs::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
 {
-    float dis = 10.0f;
-    int frontToBackfram = 200;
-    int jumpfram = 200;
+
 
     lyg::PointCloud<double> tmpCloud1;
     {
@@ -196,7 +115,7 @@ void GetPointDataSelf(std::vector<lygs::trajectoryData> _vecs, std::vector<std::
         params.sorted = true;
 
         const size_t nMatches = index_kdtree.radiusSearch(
-                    &query_pt[0], dis, ret_matches, params);
+                    &query_pt[0], CAppConfig::dis, ret_matches, params);
 
         if(nMatches>1)
         {
@@ -206,7 +125,7 @@ void GetPointDataSelf(std::vector<lygs::trajectoryData> _vecs, std::vector<std::
             {
                 //                std::cout<<iter->first<<" sort twopointdistance: "<<iter->second<<std::endl;
 
-                if((int)(i-iter->first)>frontToBackfram)
+                if((int)(i-iter->first)>CAppConfig::frontToBackfram)
                 {
                     //perform
                     std::cout<<i<<"perform ===+++++=== "<<iter->first<<std::endl;
@@ -214,7 +133,7 @@ void GetPointDataSelf(std::vector<lygs::trajectoryData> _vecs, std::vector<std::
                     //get result
                     match.push_back(std::make_pair(i, iter->first));
 
-                    i = i+jumpfram;
+                    i = i+CAppConfig::jumpfram;
                     break;
                 }
 
@@ -226,40 +145,83 @@ void GetPointDataSelf(std::vector<lygs::trajectoryData> _vecs, std::vector<std::
     }
 
 }
-
-CSlamLadirDialog::CSlamLadirDialog(QWidget *parent, MainWindow* _pMainWindow ) :
-    ccOverlayDialog(parent),
-    ui(new Ui::CSlamLadirDialog)
+void GetPointData(std::vector<lygs::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
 {
-    ui->setupUi(this);
-    m_pMainWindow = _pMainWindow;
-    m_currentOpenDlgFilter = "Point Cloud Library cloud (*.pcd)";
-    //    connect(ui->pushButtonpointresi,QPushButton::clicked,this,[=]{ emit SignalsRegisterPoint(); });
 
-    //    ui->load_path->setEnabled(false);
 
-    ui->widget_option->hide();
-    this->resize(150,30);
+    PointCloud tmpCloud1;
+    {
+        unsigned count = static_cast<unsigned>(_vecs.size());
+        if (!tmpCloud1.reserve(count * 2)) //not enough memory
+            return ;
+        for (unsigned i = 0; i < count; i++)
+        {
+            tmpCloud1.addPoint(CCVector3f(_vecs[i].x, _vecs[i].y, _vecs[i].z));
+
+        }
+    }
+
+
+
+    //build kdtree for nearest neighbour fast research
+    KDTree intermediateTree;
+    if (!intermediateTree.buildFromCloud(&tmpCloud1))
+        return ;
+
+
+    for (unsigned i = 0; i < tmpCloud1.size(); i++)
+    {
+        //    int i = tmpCloud1.size()-1;
+        const CCVector3 *q0 = tmpCloud1.getPoint(i);
+
+        std::vector<unsigned> points;
+        if (intermediateTree.findPointsLyingToDistance(q0->u, CAppConfig::dis,CAppConfig::dis,points))
+        {
+
+            //get distance is smallst point and index , and compute distance point to point
+            std::vector<std::pair<int, double>> IndicesDists;
+            for(int j = 0;j<points.size();j++)
+            {
+                std::cout<<"==points[j]== "<<points[j]<<std::endl;
+                const CCVector3 *qcurrentpoint = tmpCloud1.getPoint(points[j]);
+
+                double twopointdistance = std::sqrt((qcurrentpoint->x-q0->x)*(qcurrentpoint->x-q0->x) +
+                                                    (qcurrentpoint->y-q0->y)*(qcurrentpoint->y-q0->y) +
+                                                    (qcurrentpoint->z-q0->z)*(qcurrentpoint->z-q0->z) );
+
+                IndicesDists.push_back(std::make_pair(points[j], twopointdistance));
+
+            }
+
+
+            // in order to sort to distance
+            std::sort(IndicesDists.begin(), IndicesDists.end(), lygs::IndexDistLyg_Sorter());
+
+            // perform
+            std::vector<std::pair<int, double>>::iterator iter;
+            for(iter = IndicesDists.begin(); iter!=IndicesDists.end(); iter++)
+            {
+                std::cout<<iter->first<<" sort twopointdistance: "<<iter->second<<std::endl;
+
+                if((int)(i-iter->first)>CAppConfig::frontToBackfram)
+                {
+                    //perform
+                    std::cout<<i<<"perform ===+++++=== "<<iter->first<<std::endl;
+
+                    match.push_back(std::make_pair(i, iter->first));
+
+                    i = i+CAppConfig::jumpfram;
+                    break;
+                }
+
+            }
+
+
+        }
+
+    }
+
 }
-
-CSlamLadirDialog::~CSlamLadirDialog()
-{
-    delete ui;
-}
-
-
-
-//if(trajectoryMap.count(ins[i].substr(0,ins[i].length()-4)) == 1)
-//           {
-//               lygs::trajectoryData lidarSe3 = trajectoryMap[ins[i].substr(0, ins[i].size() - 4)];
-//               Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
-//               pcl::PointCloud<pcl::PointXYZI>::Ptr cloudRGBAllreult = transform<pcl::PointXYZI>(transformed_cloud, Roi2w);
-//               transformed_cloud->points.clear();
-//               transformed_cloud = cloudRGBAllreult;
-
-//           }
-
-
 
 
 void SqereTrajectory(std::string outfileName,std::vector<string> _vec)
@@ -280,6 +242,20 @@ void SqereTrajectory(std::string outfileName,std::vector<string> _vec)
     outfile.close();
 }
 
+
+static ccGLMatrix FromEigenMat(const Eigen::Matrix4f& ovrMat)
+{
+    ccGLMatrix ccMat;
+    float* data = ccMat.data();
+
+    data[0] = ovrMat(0,0); data[4] = ovrMat(0,1);   data[8] = ovrMat(0,2); data[12] = ovrMat(0,3);
+    data[1] = ovrMat(1,0); data[5] = ovrMat(1,1);	data[9] = ovrMat(1,2); data[13] = ovrMat(1,3);
+    data[2] = ovrMat(2,0); data[6] = ovrMat(2,1);	data[10] = ovrMat(2,2); data[14] = ovrMat(2,3);
+    data[3] = ovrMat(3,0); data[7] = ovrMat(3,1);	data[11] = ovrMat(3,2); data[15] = ovrMat(3,3);
+
+
+    return ccMat;
+}
 
 //Clockwise is positive
 Eigen::Matrix4f getSE3Mat(float yaw, float pitch, float roll, float x , float y, float z, string order)
@@ -305,19 +281,133 @@ Eigen::Matrix4f getSE3Mat(float yaw, float pitch, float roll, float x , float y,
 }
 
 
-static ccGLMatrix FromEigenMat(const Eigen::Matrix4f& ovrMat)
+
+CSlamLadirDialog::CSlamLadirDialog(QWidget *parent, MainWindow* _pMainWindow ) :
+    ccOverlayDialog(parent),
+    ui(new Ui::CSlamLadirDialog)
 {
-    ccGLMatrix ccMat;
-    float* data = ccMat.data();
+    ui->setupUi(this);
+    m_pMainWindow = _pMainWindow;
+    m_currentOpenDlgFilter = "Point Cloud Library cloud (*.pcd)";
 
-    data[0] = ovrMat(0,0); data[4] = ovrMat(0,1);   data[8] = ovrMat(0,2); data[12] = ovrMat(0,3);
-    data[1] = ovrMat(1,0); data[5] = ovrMat(1,1);	data[9] = ovrMat(1,2); data[13] = ovrMat(1,3);
-    data[2] = ovrMat(2,0); data[6] = ovrMat(2,1);	data[10] = ovrMat(2,2); data[14] = ovrMat(2,3);
-    data[3] = ovrMat(3,0); data[7] = ovrMat(3,1);	data[11] = ovrMat(3,2); data[15] = ovrMat(3,3);
+    ui->widget_option->hide();
+    this->resize(150,30);
 
+    initForm();
 
-    return ccMat;
 }
+
+CSlamLadirDialog::~CSlamLadirDialog()
+{
+
+    delete ui;
+}
+
+void CSlamLadirDialog::initForm()
+{
+
+    //    connect(ui->pushButtonpointresi,QPushButton::clicked,this,[=]{ emit SignalsRegisterPoint(); });
+
+    //    ui->load_path->setEnabled(false);
+
+
+    connect(ui->pushButton_resample,&QPushButton::clicked,this,[=](){
+        emit SignalsResample();
+    });
+
+    connect(ui->pushButtonpointresi,&QPushButton::clicked,this,[=](){
+        emit SignalsRegisterPoint();
+    });
+    connect(ui->btnclose,&QPushButton::clicked,this,[=](){
+        this->close();
+    });
+
+    connect(ui->m_btnTransFrom,&QPushButton::clicked,this,[=](){
+        emit SignalsTransFrom();
+    });
+
+
+    connect(ui->SavePath,&QPushButton::clicked,this,[=](){
+        emit SignalsSavePath();
+    });
+
+    connect(ui->btn_TestPath,&QPushButton::clicked,this,[=](){
+        //get trajectory data
+        lygs::CGYLCommon _CGYLCommon;
+        //    background-color: rgb(115, 210, 22);
+        QFileDialog _FileDialog;
+        //    _FileDialog.setStyleSheet("background-color: rgb(200, 200, 200)");
+        _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
+        QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
+
+        if(!fileName.isEmpty())
+        {
+            m_filenametnt = fileName.toStdString();
+            std::map<std::string,lygs::trajectoryData> trajectorys;
+            std::vector<lygs::trajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
+
+
+            //    m_pMainWindow->ADDRecently(fileName);
+            //show trajectorydata
+            QList<QVector3D> _vec3d;
+            QVector3D vec;
+            for (int i = 0;i<m_vecs.size();i++) {
+                vec.setX(m_vecs[i].x);
+                vec.setY(m_vecs[i].y);
+                vec.setZ(m_vecs[i].z);
+
+                _vec3d.push_back(vec);
+            }
+            emit SignalsTestLoadPath(_vec3d);
+
+        }
+    });
+
+
+    connect(ui->setpointfile,&QPushButton::clicked,this,[=](){
+        //    ui->load_path->setEnabled(true);
+        //文件夹路径
+        m_pointDir = QFileDialog::getExistingDirectory(
+                    nullptr, "choose src Directory",
+                    "/");
+
+
+
+        if (m_pointDir.isEmpty())
+        {
+            m_pointDir = nullptr;
+            return;
+        }
+        else
+        {
+            qDebug() << "srcDirPath=" << m_pointDir;
+            m_pointDir += "/";
+        }
+
+
+        if (m_selectedFiles.isEmpty())
+            return;
+
+        //    QStringList selectedFiles;
+
+        //    for (int i = 0;i<m_selectedFiles.size();i++) {
+        //        selectedFiles.push_back(m_pointDir+m_selectedFiles.at(i));
+        //        qDebug()<<m_selectedFiles.at(i);
+        //    }
+
+        //    //load files
+
+        ////    loadpoint("obj",selectedFiles, m_currentOpenDlgFilter);
+        //    //    m_pMainWindow->addToDB(selectedFiles, m_currentOpenDlgFilter);
+    });
+
+
+}
+
+
+
+
+
 
 void CSlamLadirDialog::on_load_path_clicked()
 {
@@ -386,57 +476,10 @@ void CSlamLadirDialog::on_load_path_clicked()
 
 
 
-void CSlamLadirDialog::on_pushButton_resample_clicked()
-{
-    emit SignalsResample();
-}
-
-void CSlamLadirDialog::on_setpointfile_clicked()
-{
-    //    ui->load_path->setEnabled(true);
-    //文件夹路径
-    m_pointDir = QFileDialog::getExistingDirectory(
-                nullptr, "choose src Directory",
-                "/");
-
-
-
-    if (m_pointDir.isEmpty())
-    {
-        m_pointDir = nullptr;
-        return;
-    }
-    else
-    {
-        qDebug() << "srcDirPath=" << m_pointDir;
-        m_pointDir += "/";
-    }
-
-
-    if (m_selectedFiles.isEmpty())
-        return;
-
-    //    QStringList selectedFiles;
-
-    //    for (int i = 0;i<m_selectedFiles.size();i++) {
-    //        selectedFiles.push_back(m_pointDir+m_selectedFiles.at(i));
-    //        qDebug()<<m_selectedFiles.at(i);
-    //    }
-
-    //    //load files
-
-    ////    loadpoint("obj",selectedFiles, m_currentOpenDlgFilter);
-    //    //    m_pMainWindow->addToDB(selectedFiles, m_currentOpenDlgFilter);
-
-
-}
-
-#include <ccPointCloud.h>
 
 
 ccPointCloud* MeragePoint(ccHObject* newGroups)
 {
-    qDebug()<<" start  ";
     qDebug()<<newGroups->getName();
     ccHObject* newGroup = nullptr;
     ccPointCloud* firstCloud = new ccPointCloud(newGroups->getName());
@@ -454,7 +497,6 @@ ccPointCloud* MeragePoint(ccHObject* newGroups)
         //        pc->point()
         //        ccPointCloud* pc = ccHObjectCaster::ToPointCloud(newGroup);
         ccConsole::Error((QString::number(pc->size())+"---"+pc->getName()).toLatin1().data());
-        //        ccConsole::Error("===================================");
         //        assert(pc);
         //        *firstCloud += pc;
 
@@ -679,7 +721,7 @@ void CSlamLadirDialog::loadpoint(const QString objname,	const QStringList& filen
 
 
 
-
+#include <QThread>
 void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned>> match)
 {
     if (m_pointDir == nullptr || m_pointDir.isEmpty())
@@ -693,7 +735,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
         if (message_box.exec() == QMessageBox::Yes)
         {
-            on_setpointfile_clicked();
+            ui->setpointfile->clicked();
         }
     }
 
@@ -707,21 +749,25 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
 
     //创建一个进度对话框
-    QProgressDialog *progressDialog=new QProgressDialog();
+    QProgressDialog m_pProgressDialog;
     QFont font("compute Registration.....",12);
-    progressDialog->setFont(font);
+    m_pProgressDialog.setFont(font);
     //设置进度对话框采用模态方式进行，即显示进度的同时，其他窗口将不响应输入信号
-    progressDialog->setWindowModality(Qt::WindowModal);
+    m_pProgressDialog.setWindowModality(Qt::WindowModal);
     //设置进度对话框出现需等待的时间，默认为4s
-    progressDialog->setMinimumDuration(2);
+    m_pProgressDialog.setMinimumDuration(1);
     //设置进度对话框的窗体标题
-    progressDialog->setWindowTitle(tr("Please Wait"));
+    m_pProgressDialog.setWindowTitle(tr("Please Wait"));
     //设置进度对话框的显示文字信息
-    progressDialog->setLabelText(tr("Compute..."));
+    m_pProgressDialog.setLabelText(tr("Compute..."));
     //设置进度对话框的“取消”按钮的显示文字
-    progressDialog->setCancelButtonText(tr("Cancel"));
-    progressDialog->show();
-
+    m_pProgressDialog.setCancelButtonText(tr("Cancel"));
+    //    m_pProgressDialog->setStyleSheet("QWidget{background-color: rgb(255,255,255);}");//背景板是白色
+    //    QProgressBar * prog = new QProgressBar(&m_pProgressDialog);
+    //    prog->setTextVisible(false);
+    //    m_pProgressDialog.setBar(prog);
+    m_pProgressDialog.show();
+    QThread::msleep(50);
 
     QString strtype = ".pcd";
     // perform
@@ -736,11 +782,10 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
         if(!m_vecs.empty())
         {
-
             // perform front and back of fream pointcloud
             //1
-            int index = iter->first - 5;
-            for (int i = index;i<index+20;i++) {
+            int index = iter->first + CAppConfig::firstsatrt;
+            for (int i = index;i<index+CAppConfig::firststep;i++) {
 
                 int icurrent = i;
                 if(icurrent>=0 && icurrent<m_vecs.size())
@@ -755,8 +800,10 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
 
             //2
-            index = iter->second - 15;
-            for (int i = index;i<index+20;i++) {
+            //2
+            index = iter->second + CAppConfig::secondsatrt;
+            for (int i = index;i<index+CAppConfig::secondstep;i++) {
+
 
                 int icurrent = i;
                 if(icurrent>=0 && icurrent<m_vecs.size())
@@ -774,17 +821,15 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
             _showpointlist["Matching" + QString::number(iter->first) + QString(QString::fromLocal8Bit(flagname.c_str()))] = selectedFilesMatching;
 
         }
-
     }
 
 
     if (m_selectedFiles.isEmpty())
         return;
-
     else
     {
         int num = _showpointlist.size()+1;
-        progressDialog->setRange(0,num); //设置进度对话框的步进范围
+        m_pProgressDialog.setRange(0,num); //设置进度对话框的步进范围
 
 
         int i = 0;
@@ -793,10 +838,11 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         {
             loadpoint( iter1->first,iter1->second, m_pointDir,m_currentOpenDlgFilter);
             //            loadpointPCD(iter1->first,iter1->second);
-            progressDialog->setValue(i);
-            if(progressDialog->wasCanceled())
+            m_pProgressDialog.setValue(i);
+            if(m_pProgressDialog.wasCanceled())
                 return;
             i++;
+            QCoreApplication::processEvents();
         }
 
 
@@ -804,40 +850,31 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         //        loadpoint("Matching",selectedFilesMatching, m_currentOpenDlgFilter);
     }
 
-
-    progressDialog->close();
-    delete progressDialog;
-
-}
-
-
-void CSlamLadirDialog::on_getcurrentpath_clicked()
-{
+    m_pProgressDialog.close();
+    //    delete m_pProgressDialog;
 
 }
 
 
 
-void CSlamLadirDialog::on_pushButtonpointresi_clicked()
-{
-    emit SignalsRegisterPoint();
 
-}
 
-void CSlamLadirDialog::on_btnclose_clicked()
-{
-    this->close();
-}
 
-void CSlamLadirDialog::on_btnAuto_clicked()
-{
 
-}
 
-void CSlamLadirDialog::on_pushButton_clicked()
-{
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1052,46 +1089,3 @@ void CSlamLadirDialog::on_pushButton_clicked()
 //}
 
 
-void CSlamLadirDialog::on_m_btnTransFrom_clicked()
-{
-    emit SignalsTransFrom();
-}
-
-void CSlamLadirDialog::on_SavePath_clicked()
-{
-    emit SignalsSavePath();
-}
-
-void CSlamLadirDialog::on_btn_TestPath_clicked()
-{
-    //get trajectory data
-    lygs::CGYLCommon _CGYLCommon;
-    //    background-color: rgb(115, 210, 22);
-    QFileDialog _FileDialog;
-    //    _FileDialog.setStyleSheet("background-color: rgb(200, 200, 200)");
-    _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
-    QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
-
-    if(!fileName.isEmpty())
-    {
-        m_filenametnt = fileName.toStdString();
-        std::map<std::string,lygs::trajectoryData> trajectorys;
-        std::vector<lygs::trajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
-
-
-        //    m_pMainWindow->ADDRecently(fileName);
-        //show trajectorydata
-        QList<QVector3D> _vec3d;
-        QVector3D vec;
-        for (int i = 0;i<m_vecs.size();i++) {
-            vec.setX(m_vecs[i].x);
-            vec.setY(m_vecs[i].y);
-            vec.setZ(m_vecs[i].z);
-
-            _vec3d.push_back(vec);
-        }
-        emit SignalsTestLoadPath(_vec3d);
-
-    }
-
-}

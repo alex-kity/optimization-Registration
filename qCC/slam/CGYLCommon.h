@@ -24,9 +24,28 @@
 
 
 #define M_PI (3.141592653589793238462643383279)
+
 using namespace std;
 
 namespace lygs{
+
+
+class CAppConfig
+{
+public:
+    static constexpr float dis = 20.0f;
+    static const int frontToBackfram = 200;
+    static const int jumpfram = 200;
+
+    static const int firstsatrt = 10;
+    static const int firststep = 30;
+    static const int secondsatrt = -10;
+    static const int secondstep = 30;
+
+};
+
+
+
 typedef struct _trajectoryData {
     std::string name;
     long double time;
@@ -35,7 +54,6 @@ typedef struct _trajectoryData {
     float latitude, longitude, altitude;
 
 }trajectoryData, *trajectoryDataPtr;
-
 
 
 
@@ -49,6 +67,14 @@ struct IndexDistLyg_Sorter {
         return p1.second < p2.second;
     }
 };
+
+
+
+
+
+
+
+
 
 
 
