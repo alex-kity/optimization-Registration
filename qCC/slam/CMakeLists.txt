@@ -5,6 +5,11 @@ set(header_list
    ${CMAKE_CURRENT_SOURCE_DIR}/CSlamLadirDialog.h
    ${CMAKE_CURRENT_SOURCE_DIR}/CGYLCommon.h
    ${CMAKE_CURRENT_SOURCE_DIR}/CDataChange.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/ClidarCompute.h
+   #${CMAKE_CURRENT_SOURCE_DIR}/clygnanoflann.hpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/CSlamPointPairRegistrationDlg.h
+
+
    PARENT_SCOPE
 )
 
@@ -13,6 +18,9 @@ set(source_list
    ${CMAKE_CURRENT_SOURCE_DIR}/ColorChangeTool.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/CSlamLadirDialog.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/CDataChange.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/ClidarCompute.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/CSlamPointPairRegistrationDlg.cpp
+
    PARENT_SCOPE
 )
 

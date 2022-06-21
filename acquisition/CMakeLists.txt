@@ -255,8 +255,15 @@ include_directories(SYSTEM
     ${CMAKE_SOURCE_DIR}/src/usercontrol
 
 )
+include_directories( ${CloudComparePlugins_SOURCE_DIR} )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/src )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/src/core_common )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR}/src/form)
+include_directories( ${CMAKE_CURRENT_BINARY_DIR}/src/inputnum )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR}/src/usercontrol)
 
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/form )
+INCLUDE_DIRECTORIES("/home/alexkity/source/cc/CloudCompare-master/acquisition/src/include")
+
 
 
 file( GLOB header_list *.h  )

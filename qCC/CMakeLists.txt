@@ -27,29 +27,54 @@ qt5_add_resources( generated_qrc_list ${qrc_list} )
 
 
 
-#pcl
+#option( DEVCHANGE ON )
+#if( DEVCHANGE )
+    #pcl
 
-#find_package(PCL 1.2 REQUIRED)
+    #find_package(PCL 1.2 REQUIRED)
 
-#include_directories(${PCL_INCLUDE_DIRS})
-#link_directories(${PCL_LIBRARY_DIRS})
-#add_definitions(${PCL_DEFINITIONS})
+    #include_directories(${PCL_INCLUDE_DIRS})
+    #link_directories(${PCL_LIBRARY_DIRS})
+    #add_definitions(${PCL_DEFINITIONS})
 
-#find_package(GTSAM REQUIRED QUIET)
-##link_directories(${PROTOBUF_LIBRARIES})
-#include_directories(${GTSAM_INCLUDE_DIR})
-##link_directories(${GTSAM_LIBRARY_DIR})
+    #find_package(GTSAM REQUIRED QUIET)
+    ##link_directories(${PROTOBUF_LIBRARIES})
+    #include_directories(${GTSAM_INCLUDE_DIR})
+    ##link_directories(${GTSAM_LIBRARY_DIR})
 
-find_package(GTSAM REQUIRED)
-set(CMAKE_CXX_STANDARD 11)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-include_directories(${GTSAM_INCLUDE_DIRS})
-link_directories(${GTSAM_LIBRARY_DIRS})
-INCLUDE_DIRECTORIES("/usr/include/eigen3")
+    #boost
+    set(Boost_INCLUDE_DIR /usr/local/boost/include)
+    set(Boost_LIBRARY_DIR /usr/local/boost/lib)
+    set(BOOST_ROOT "/usr/local/boost/")
+    find_package(Boost REQUIRED system)
+    link_directories(${Boost_LIBRARY_DIR})
 
 
 
-#$ sudo cp /usr/local/lib/libxxx.so usr/lib
+    #gtsam
+    find_package(GTSAM REQUIRED)
+    set(CMAKE_CXX_STANDARD 11)
+    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+    include_directories(${GTSAM_INCLUDE_DIRS})
+    link_directories(${GTSAM_LIBRARY_DIRS})
+    INCLUDE_DIRECTORIES("/usr/include/eigen3")
+
+
+
+    #spdlog ${PROJECT_SOURCE_DIR}
+    set(SPDLOGDIR ${PROJECT_SOURCE_DIR}/spdloginc)
+    INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/spdloginc)
+    get_filename_component(VAR ${PROJECT_SOURCE_DIR} DIRECTORY)
+    message("DIRECTORY: ${VAR}")
+    message(${SPDLOGDIR})
+
+    #$ sudo cp /usr/local/lib/libxxx.so usr/lib
+
+
+#endif()
+
+
+
 
 
 if( MSVC )
@@ -64,6 +89,7 @@ else()
         add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list}
 #            ${PCL_LIBRARIES}
 #            ${PROTOBUF_LIBRARIES}
+
             )
 endif()
 
@@ -89,6 +115,7 @@ target_link_libraries( ${PROJECT_NAME}
     Qt5::PrintSupport
     /usr/lib/x86_64-linux-gnu/libtbb.so.2
     -lgtsam
+    ${Boost_LIBRARIES}
 #    ${PCL_LIBRARIES}
 #    -lgtsams
 )

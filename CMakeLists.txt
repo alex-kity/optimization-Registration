@@ -87,6 +87,9 @@ add_subdirectory( plugins )
 # qCC
 add_subdirectory( qCC )
 
+## acquisition
+#add_subdirectory( acquisition )
+
 # CCViewer
 if( OPTION_BUILD_CCVIEWER )
 	add_subdirectory( ccViewer )

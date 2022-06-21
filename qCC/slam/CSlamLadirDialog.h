@@ -19,17 +19,33 @@
 
 #include "ccOverlayDialog.h"
 
-#include "CGYLCommon.h"
 
 #include "ccGLMatrix.h"
 
-//#include "CDataChange.h"
-//#include "CDataChange.h"
-
-
-
+//common
+#include <ccPickingHub.h>
+//common dialogs
+#include <ccCameraParamEditDlg.h>
+#include <ccDisplayOptionsDlg.h>
+#include <ccPickOneElementDlg.h>
+#include <ccStereoModeDlg.h>
+#include <QFileDialog>
+#include <QProgressDialog>
+#include <ccPointCloud.h>
+#include <mainwindow.h>
 #include <QThread>
 
+//QCC_glWindow
+#include <ccGLWidget.h>
+#include <ccRenderingTools.h>
+#include "CGYLCommon.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
+#include "spdlog/sinks/basic_file_sink.h"
+
+
+using namespace CCCoreLib;
+using namespace lygs;
 struct _MapMatch
 {
     QString matched;
@@ -49,56 +65,141 @@ class CSlamLadirDialog;
 class ccPointCloud;
 class MainWindow;
 class ccHObject;
+class ClidarCompute;
+class CAppConfig;
 class CSlamLadirDialog :public ccOverlayDialog
 {
     Q_OBJECT
 
 public:
-    std::map<int,ccGLMatrix> m_IndextrajectoryMap;
 
-    explicit CSlamLadirDialog(QWidget *parent = nullptr, MainWindow *_pMainWindow = nullptr);
+    ///
+    /// \brief CSlamLadirDialog
+    /// \param parent
+    /// \param _pMainWindow
+    ///
+    explicit
+    CSlamLadirDialog(QWidget *parent = nullptr, MainWindow *_pMainWindow = nullptr);
     ~CSlamLadirDialog();
 
-    void SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match);
-    void loadpoint(ccHObject* newGroups,const QString objname, const QStringList& filenames, QString dir = "",
+    ///
+    /// \brief SetShowCloudPoint
+    /// \param match
+    ///
+    void
+    SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match,
+                      std::function<_MapMatch(int,int)> func);
+
+
+    ///
+    /// \brief loadpoint
+    /// \param newGroups
+    /// \param objname
+    /// \param filenames
+    /// \param dir
+    /// \param fileFilter
+    /// \param destWin
+    ///
+    void
+    loadpoint(ccHObject* newGroups,const QString objname, const QStringList& filenames, QString dir = "",
                     QString fileFilter = QString(),
                    ccGLWindow* destWin = nullptr );
 
-    void loadpointPCD(const QString objname, const QStringList &filenames);
+    ////
+    /// \brief loadpointPCD
+    /// \param objname
+    /// \param filenames
+    ///
+    void
+    loadpointPCD(const QString objname, const QStringList &filenames);
 
-    ccPointCloud *changeMat(ccPointCloud *obj, std::string strfilename);
+    ///
+    /// \brief changeMat
+    /// \param obj
+    /// \param strfilename
+    /// \return
+    ///
+    ccPointCloud *
+    changeMat(ccPointCloud *obj, std::string strfilename);
 
-    std::string GetFileName(){return m_filename;}
-    std::string GetFileNameTnt(){return m_filenametnt;}
 
+    ///
+    /// \brief GetFileName
+    /// \return
+    ///
+    std::string
+    GetFileName(){return m_filename;}
+
+    ///
+    /// \brief GetFileNameTnt
+    /// \return
+    ///
+    std::string
+    GetFileNameTnt(){return m_filenametnt;}
+
+    ///
+    /// \brief GetLogger
+    /// \return
+    ///
+    std::shared_ptr<spdlog::logger>
+    GetLogger(){return  my_logger;}
+
+    ///
+    /// \brief m_IndextrajectoryMap
+    ///
+    std::map<int,ccGLMatrix> m_IndextrajectoryMap;
+
+
+
+    ///
+    /// \brief DataSpit
+    /// \param first
+    /// \param second
+    /// \return
+    ///
+    _MapMatch DataSpit(int first, int second);
 
 signals:
-    void SignalsLoadPath(QList<QVector3D> _vec);
-    void SignalsTestLoadPath(QList<QVector3D> _vec);
-    void SignalsResample();
-    void SignalsRegisterPoint();
-    void SignalsTransFrom();
-    void SignalsSavePath();
+    void
+    SignalsLoadPath(QList<QVector3D> _vec);
+    void
+    SignalsTestLoadPath(QList<QVector3D> _vec);
+    void
+    SignalsResample();
+    void
+    SignalsRegisterPoint();
+    void
+    SignalsTransFrom();
+    void
+    SignalsSavePath();
 
 private slots:
-    void on_load_path_clicked();
+    void
+    on_load_path_clicked();
 private:
     Ui::CSlamLadirDialog *ui;
-
-
     MainWindow * m_pMainWindow = nullptr;
     QString m_pointDir = nullptr;
     std::string m_filename = "0";
     std::string m_filenametnt = "0";
-
-
     std::vector<lygs::trajectoryData> m_vecs ;
     std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
-
-    QString m_currentOpenDlgFilter;
     QStringList m_selectedFiles;
 
-    void initForm();
+    std::shared_ptr<spdlog::logger> my_logger = nullptr;
+
+private:
+    ///
+    /// \brief initForm
+    ///
+    void
+    initForm();
+
+    ///
+    /// \brief DataClear
+    ///
+    void DataClear();
+
 };
 
 #endif // CSLAMLADIRDIALOG_H

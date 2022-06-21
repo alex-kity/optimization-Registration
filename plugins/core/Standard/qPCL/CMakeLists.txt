@@ -1,6 +1,6 @@
-option( PLUGIN_STANDARD_QPCL "Install qPCL plugin" OFF )
-
-if( PLUGIN_STANDARD_QPCL )	  
+#option( PLUGIN_STANDARD_QPCL "Install qPCL plugin" OFF )
+option( PLUGIN_STANDARD_QPCL "Install qPCL plugin" ON )
+#if( PLUGIN_STANDARD_QPCL )	  
 	project( QPCL_PLUGIN )
 	
 	AddPlugin( NAME ${PROJECT_NAME} )
@@ -17,4 +17,4 @@ if( PLUGIN_STANDARD_QPCL )
 	# Import PCL dlls (if any, WIN32 only)
 	include( cmake/ExportPCLDlls.cmake )
 	export_PCL_dlls( "${CLOUDCOMPARE_DEST_FOLDER}" )
-endif()
+#endif()

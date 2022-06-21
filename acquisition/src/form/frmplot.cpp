@@ -8,6 +8,12 @@ frmplot::frmplot(QWidget *parent) :
     ui->setupUi(this);
     //    m_pgridLayout_viewimage
     qApp->installEventFilter(this);
+
+//    QWidget* pTitleWidget = ui->dockWidget ->titleBarWidget();
+//    QWidget* pWidget = new QWidget;
+//    ui->dockWidget ->setTitleBarWidget(pWidget );
+//    delete pTitleWidget ;
+
 }
 
 frmplot::~frmplot()

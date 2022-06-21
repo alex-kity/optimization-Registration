@@ -160,6 +160,14 @@
 #include <iostream>
 #include <random>
 
+#include "slam/CSlamLadirDialog.h"
+#include "slam/CDataChange.h"
+
+std::string m_strfirstID = "null";
+std::string m_strsecondID = "null";
+#include <ccPointCloud.h>
+
+
 //global static pointer (as there should only be one instance of MainWindow!)
 static MainWindow* s_instance  = nullptr;
 
@@ -11497,18 +11505,10 @@ void MainWindow::on_actionoptimization_triggered()
     updateOverlayDialogsPlacement();
 }
 
-#include <iostream>
-#include "slam/CSlamLadirDialog.h"
-#include "slam/CDataChange.h"
-CDataChange g_CDataChange;
-
-std::string m_strfirstID = "null";
-std::string m_strsecondID = "null";
 
 void MainWindow::on_actionSetLadirPer_triggered()
 {
-
-
+    g_CDataChange.reset(new CDataChange());
     //    if(m_pSlamLadirDialog == nullptr)
     //    {
     //Qt MDI框架
@@ -11529,10 +11529,20 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //连接信号槽：使得后台可以实时获取用户在DB-Tree内所选中的点云
     connect(m_pSlamLadirDialog, &CSlamLadirDialog::SignalsLoadPath, this, [=](QList<QVector3D> _vec){
 
-        g_CDataChange.loadTrajectory(m_pSlamLadirDialog->GetFileName());
+        try
+        {
+            spdlog::info("Optimization : loadTrajectory");
+            // if(g_CDataChange!=nullptr)
+            //     g_CDataChange->loadTrajectory(m_pSlamLadirDialog->GetFileName());
+        }
+        catch (const std::bad_alloc&)
+        {
+            ccLog::Error(tr("Based on Optimization"));
+        }
+
+
 
         ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_pSlamLadirDialog->GetFileName().c_str()));
-
 
         //Sphere
         if(m_ladirnewGroup==nullptr)
@@ -11635,8 +11645,19 @@ void MainWindow::on_actionSetLadirPer_triggered()
             return;
         }
 
+        try
+        {
+            if(g_CDataChange!=nullptr)
+                g_CDataChange->graphOptimizerAndSavePoses(_pointDir.toStdString());
+        }
+        catch (const std::bad_alloc&)
+        {
+            ccLog::Error(tr("Based on Optimization"));
+        }
 
-        g_CDataChange.graphOptimizerAndSavePoses(_pointDir.toStdString());
+
+
+
     } );
 
     //    //当DB-Tree为空时，清空点云
@@ -11779,7 +11800,15 @@ void MainWindow::GetResultRegister(ccGLMatrix finalTrans)
             key_frame_pose.z = t3D.z;
 
 
-            g_CDataChange.addLoopClosureFactor(key_frame_pose, std::atoi(m_strfirstID.c_str()));
+            try
+            {
+                if(g_CDataChange!=nullptr)
+                    g_CDataChange->addLoopClosureFactor(key_frame_pose, std::atoi(m_strfirstID.c_str()));
+            }
+            catch (const std::bad_alloc&)
+            {
+                ccLog::Error(tr("Based on Optimization"));
+            }
 
 
         }
@@ -11853,6 +11882,7 @@ void MainWindow::SetActivateRegisterPointPairTool()
                 entities.push_back(entity);
             }
         }
+
 
         if (entities.empty())
         {
@@ -11945,18 +11975,6 @@ void MainWindow::SetActivateRegisterPointPairTool()
         deactivateRegisterPointPairTool(false);
     else
         updateOverlayDialogsPlacement();
-
-
-
-    //    0.884262561798 -0.466218829155 -0.026826394722 -135.867004394531
-    //    0.466181993484 0.884652733803 -0.007994966581 -70.262496948242
-    //    0.027459448203 -0.005436332896 0.999608159065 -1.007109999657
-    //    0.000000000000 0.000000000000 0.000000000000 1.000000000000
-
-    //    0.884262621403 -0.466218858957 -0.026826396585 -135.867004394531
-    //    0.466182023287 0.884652733803 -0.007994967513 -70.262496948242
-    //    0.027459448203 -0.005436332431 0.999608159065 -1.007109999657
-    //    0.000000000000 0.000000000000 0.000000000000 1.000000000000
 
 }
 
