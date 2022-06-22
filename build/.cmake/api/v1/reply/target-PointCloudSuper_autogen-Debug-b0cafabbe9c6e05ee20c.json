@@ -1,0 +1,525 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"qCC/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "CCAppCommon::@26f598574133c18a1168"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "QCustomPlot::@28ca12648ff249b79a23"
+		}
+	],
+	"id" : "PointCloudSuper_autogen::@851966aea8593276a3aa",
+	"isGeneratorProvided" : true,
+	"name" : "PointCloudSuper_autogen",
+	"paths" : 
+	{
+		"build" : "qCC",
+		"source" : "qCC"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31,
+				32,
+				33,
+				34,
+				35,
+				36,
+				37,
+				38,
+				39,
+				40,
+				41,
+				42,
+				43,
+				44,
+				45,
+				46,
+				47,
+				48,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				58,
+				59,
+				60,
+				61,
+				62,
+				63,
+				64,
+				65,
+				66,
+				67,
+				68,
+				69,
+				70,
+				71,
+				72,
+				73,
+				74,
+				75,
+				76,
+				77
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/qCC/CMakeFiles/PointCloudSuper_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/qCC/CMakeFiles/PointCloudSuper_autogen.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/icons.qrc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/pluginManager/pluginManager.qrc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/slam/slam.qrc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/slam/CSlamLadirDialog.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/slam/ColorChangeTool.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/ManagerWidget.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/SgsTagging.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/aboutDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/adjustZoomDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/alignDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/applyTransformationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/askOneDoubleValueDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/askOneIntValueDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/askOneStringDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/askThreeDoubleValuesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/askTwoDoubleValuesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/boundingBoxEditorDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/camSensorProjectDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/pluginManager/ui/ccPluginInfoDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/clippingBoxDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/clippingBoxRepeatDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/colorFromScalarDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/colorGradientDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/colorLevelsDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/commandLineDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/comparisonDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/computeOctreeDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/dipDirTransformationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/distanceMapDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/entitySelectionDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/envelopeExtractorDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/exportCoordToSFDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/filterByValueDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/gblSensorProjectDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/geomFeaturesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/globalShiftSettingsDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/graphicalSegmentationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/graphicalTransformationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/histogramDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/interpolationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/itemSelectionDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/labelingDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/mainWindow.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/matchScalesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/matrixDisplayDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/noiseFilterDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/normalComputationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/orthoSectionGenerationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/planeEditDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/pointListPickingDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/pointPairRegistrationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/pointPropertiesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/primitiveDistanceDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/primitiveFactoryDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/ptsSamplingDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/rasterExportOptionsDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/rasterizeDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/registrationDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/roleChoiceDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/scalarFieldFromColorDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/scaleDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sectionExtractionDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sectionExtractionSubDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/selectChildrenDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sensorComputeDistancesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sensorComputeScatteringAnglesDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sfArithmeticsDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sfEditDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/smoothPolylineDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/sorFilterDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/statisticalTestDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/subsamplingDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/tracePolylineDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/unrollDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/volumeCalcDlg.ui",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "qCC/ui_templates/waveDlg.ui",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "UTILITY"
+}

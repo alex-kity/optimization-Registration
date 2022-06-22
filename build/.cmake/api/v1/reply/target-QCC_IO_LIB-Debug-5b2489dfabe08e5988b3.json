@@ -1,0 +1,957 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "libs/qCC_io/libQCC_IO_LIBd.so"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"install",
+			"_InstallSharedTarget",
+			"InstallSharedLibrary",
+			"target_link_libraries",
+			"target_compile_definitions",
+			"add_definitions",
+			"include",
+			"target_include_directories",
+			"add_subdirectory"
+		],
+		"files" : 
+		[
+			"libs/qCC_io/CMakeLists.txt",
+			"cmake/Install.cmake",
+			"cmake/CMakeExternalLibs.cmake",
+			"CMakeLists.txt",
+			"libs/qCC_io/include/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 48,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 33,
+				"parent" : 2
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 241,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 15,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 22,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 25,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 37,
+				"parent" : 0
+			},
+			{
+				"file" : 3
+			},
+			{
+				"command" : 7,
+				"file" : 3,
+				"line" : 76,
+				"parent" : 9
+			},
+			{
+				"file" : 2,
+				"parent" : 10
+			},
+			{
+				"command" : 6,
+				"file" : 2,
+				"line" : 44,
+				"parent" : 11
+			},
+			{
+				"file" : 4
+			},
+			{
+				"command" : 8,
+				"file" : 4,
+				"line" : 24,
+				"parent" : 13
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 7,
+				"parent" : 0
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 8,
+				"parent" : 0
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 9,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -fopenmp -g -fPIC -fvisibility=hidden"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-fPIC"
+				},
+				{
+					"fragment" : "-std=c++14"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_CGAL_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_FLOAT"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_QT_CONCURRENT"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "CC_DXF_SUPPORT"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "CC_SHP_SUPPORT"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "QCC_IO_LIBRARY_BUILD"
+				},
+				{
+					"define" : "QCC_IO_LIB_EXPORTS"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_CONCURRENT_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_OPENGLEXTENSIONS_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_OPENGL_LIB"
+				},
+				{
+					"backtrace" : 12,
+					"define" : "QT_USE_QSTRINGBUILDER"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_WIDGETS_LIB"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_io/QCC_IO_LIB_autogen/include"
+				},
+				{
+					"backtrace" : 14,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/extern/dxflib/src"
+				},
+				{
+					"backtrace" : 6,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/extern/shapelib"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_db/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db/extern/CCCoreLib/exports"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_db/extern/CCCoreLib/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/CCFbo/include"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtCore"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtGui"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGLExtensions"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31,
+				32,
+				33,
+				34,
+				35
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -fopenmp -g -fPIC"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-fPIC"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_CGAL_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_FLOAT"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_QT_CONCURRENT"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "CC_DXF_SUPPORT"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "CC_SHP_SUPPORT"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "QCC_IO_LIBRARY_BUILD"
+				},
+				{
+					"define" : "QCC_IO_LIB_EXPORTS"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_CONCURRENT_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_OPENGLEXTENSIONS_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_OPENGL_LIB"
+				},
+				{
+					"backtrace" : 12,
+					"define" : "QT_USE_QSTRINGBUILDER"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_WIDGETS_LIB"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_io/QCC_IO_LIB_autogen/include"
+				},
+				{
+					"backtrace" : 14,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/extern/dxflib/src"
+				},
+				{
+					"backtrace" : 6,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/extern/shapelib"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_db/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db/extern/CCCoreLib/exports"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_db/extern/CCCoreLib/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/CCFbo/include"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtCore"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtGui"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGLExtensions"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				19
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 7,
+			"id" : "CC_FBO_LIB::@ac6d0ab7b10365b95bd0"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "QCC_DB_LIB::@2ca00b815e3ca8dee633"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "CCCoreLib::@42ec691b8e0b3f5e873c"
+		},
+		{
+			"backtrace" : 5,
+			"id" : "dxflib::@3b0d4c7ad1e26df488a6"
+		},
+		{
+			"backtrace" : 6,
+			"id" : "shapelib::@c4c16f537c8cfc960ba2"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "QCC_IO_LIB_autogen::@f7ba38e89cf41ec4e076"
+		}
+	],
+	"id" : "QCC_IO_LIB::@f7ba38e89cf41ec4e076",
+	"install" : 
+	{
+		"destinations" : 
+		[
+			{
+				"backtrace" : 4,
+				"path" : "/usr/local/lib"
+			},
+			{
+				"backtrace" : 4,
+				"path" : "/usr/local/lib"
+			}
+		],
+		"prefix" : 
+		{
+			"path" : "/usr/local"
+		}
+	},
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db:/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db/extern/CCCoreLib:/home/alexkity/source/cc/CloudCompare-master/build/libs/CCFbo:",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "extern/dxflib/libdxflibd.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "extern/shapelib/libshapelibd.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "../qCC_db/libQCC_DB_LIBd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../qCC_db/extern/CCCoreLib/libCCCoreLibd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libCGAL.so.11.0.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libgmp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libgmpxx.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libmpfr.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libboost_thread.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libboost_system.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Concurrent.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../CCFbo/libCC_FBO_LIBd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5OpenGL.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5OpenGLExtensions.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Core.so.5.5.1",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "QCC_IO_LIB",
+	"nameOnDisk" : "libQCC_IO_LIBd.so",
+	"paths" : 
+	{
+		"build" : "libs/qCC_io",
+		"source" : "libs/qCC_io"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31,
+				32,
+				33,
+				34,
+				35
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				43,
+				44,
+				45,
+				46,
+				47,
+				48,
+				49
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				36,
+				37,
+				38,
+				39,
+				40,
+				41,
+				42
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/mocs_compilation.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/ShpFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/AsciiFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/AsciiOpenDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/AsciiSaveDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/BinFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/ccGlobalShiftManager.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/ccShiftAndScaleCloudDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/DepthMapFileFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/DxfFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/FileIO.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/FileIOFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/ImageFileFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/PlyFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/PlyOpenDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/qCC_io.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/RasterGridFilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/rply.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "libs/qCC_io/include/ShpDBFFields.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 1,
+			"path" : "libs/qCC_io/src/rply.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/AsciiFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/AsciiOpenDlg.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/AsciiSaveDlg.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/BinFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/ccGlobalShiftManager.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/ccShiftAndScaleCloudDlg.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/DepthMapFileFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/DxfFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/FileIO.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/FileIOFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/ImageFileFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/PlyFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/PlyOpenDlg.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/RasterGridFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/ShpDBFFields.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "libs/qCC_io/src/ShpFilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/saveSHPFileDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/saveAsciiFileDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/openPlyFileDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/openAsciiFileDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/importDBFFieldDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/globalShiftAndScaleDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"path" : "libs/qCC_io/ui/globalShiftAndScaleAboutDlg.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_saveSHPFileDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_saveAsciiFileDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_openPlyFileDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_openAsciiFileDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_importDBFFieldDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_globalShiftAndScaleDlg.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/libs/qCC_io/QCC_IO_LIB_autogen/include/ui/ui_globalShiftAndScaleAboutDlg.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

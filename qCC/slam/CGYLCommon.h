@@ -60,7 +60,7 @@ namespace lygs{
 //    float latitude, longitude, altitude;
 
 //}trajectoryData, *trajectoryDataPtr;
- struct trajectoryData {
+ struct SensorTrajectoryData {
     std::string name;
     long double time;
     float x, y, z;
@@ -182,15 +182,15 @@ public:
         return result;
     }
 
-    std::vector<trajectoryData>  readTrajectoryToxian(string fileName, std::map<string, trajectoryData> &trajectorys)
+    std::vector<SensorTrajectoryData>  readTrajectoryToxian(string fileName, std::map<string, SensorTrajectoryData> &trajectorys)
     {
         ifstream myfile(fileName);
 
-        std::vector<trajectoryData> _trajectoryDatav;
+        std::vector<SensorTrajectoryData> _SensorTrajectoryDatav;
         if (!myfile.is_open())
         {
             std::cout << "can not open this file:" << fileName << endl;
-            return _trajectoryDatav;
+            return _SensorTrajectoryDatav;
         }
 
         //float temp;
@@ -200,7 +200,7 @@ public:
             myfile >> temp;
             vector<string> res = splittoxian(temp, ",");
             int i = 0;
-            trajectoryData para;
+            SensorTrajectoryData para;
             string timeStr = res[0];
 
             std::string str = res[i++];
@@ -215,25 +215,25 @@ public:
             para.yaw = atof(res[i++].c_str());
             //        trajectorys.push_back(para);
             trajectorys[timeStr] = para;
-            _trajectoryDatav.push_back(para);
+            _SensorTrajectoryDatav.push_back(para);
             //        std::cout<<para.name <<std::endl;
 
 
         }
 
-        return _trajectoryDatav;
+        return _SensorTrajectoryDatav;
     }
 
 
-    std::vector<trajectoryData>  readTrajectoryToxian1(string fileName, std::map<string, trajectoryData> &trajectorys)
+    std::vector<SensorTrajectoryData>  readTrajectoryToxian1(string fileName, std::map<string, SensorTrajectoryData> &trajectorys)
     {
         ifstream myfile(fileName);
 
-        std::vector<trajectoryData> _trajectoryDatav;
+        std::vector<SensorTrajectoryData> _SensorTrajectoryDatav;
         if (!myfile.is_open())
         {
             std::cout << "can not open this file:" << fileName << endl;
-            return _trajectoryDatav;
+            return _SensorTrajectoryDatav;
         }
 
         //float temp;
@@ -244,11 +244,11 @@ public:
             vector<string> res = splittoxian(temp, ",");
             if(res.size() < 7){
                 std::cout<<"loadTrajectory errot"<< std::endl;
-                return _trajectoryDatav;
+                return _SensorTrajectoryDatav;
             }
 
             int i = 0;
-            trajectoryData para;
+            SensorTrajectoryData para;
             string timeStr = res[0];
 
             std::string str = res[i++];
@@ -266,13 +266,13 @@ public:
             para.altitude    = atof(res[i++].c_str());
             //        trajectorys.push_back(para);
             trajectorys[timeStr] = para;
-            _trajectoryDatav.push_back(para);
+            _SensorTrajectoryDatav.push_back(para);
             //        std::cout<<para.name <<std::endl;
 
 
         }
 
-        return _trajectoryDatav;
+        return _SensorTrajectoryDatav;
     }
 
 

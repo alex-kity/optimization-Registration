@@ -1,0 +1,33 @@
+{
+	"BUILD_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen",
+	"CMAKE_BINARY_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qBroom",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom",
+	"CMAKE_SOURCE_DIR" : "/home/alexkity/source/cc/CloudCompare-master",
+	"INCLUDE_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/info.json",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/ccViewXpos.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/ccViewYneg.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/ccViewYpos.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/ccViewZneg.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/ccViewZpos.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/ccViewXneg.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/qBroom.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/warning.png",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/cea_logo_small.jpg",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/cea_logo.jpg",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/images/btn_donateCC_LG.gif"
+	],
+	"LOCK_FILE" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qBroom/CMakeFiles/QBROOM_PLUGIN_autogen.dir/AutoRcc_qBroom_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "qBroom" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_qBroom.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/x86_64-linux-gnu/qt5/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qBroom/CMakeFiles/QBROOM_PLUGIN_autogen.dir/AutoRcc_qBroom_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/qBroom.qrc",
+	"VERBOSITY" : 0
+}

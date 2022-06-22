@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "plugins/example/ExampleGLPlugin",
+		"source" : "plugins/example/ExampleGLPlugin"
+	}
+}

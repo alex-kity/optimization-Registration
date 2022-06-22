@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libQRANSAC_SD_PRIM_SHAPES_LIBd.a"
+)

@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libQPCL_PLUGIN_UTILS_LIBd.a"
+)

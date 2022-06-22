@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "plugins/core/Standard/qBroom/ui",
+		"source" : "plugins/core/Standard/qBroom/ui"
+	}
+}

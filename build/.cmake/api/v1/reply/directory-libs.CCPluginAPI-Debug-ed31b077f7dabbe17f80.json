@@ -1,0 +1,60 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install",
+			"_InstallSharedTarget",
+			"InstallSharedLibrary"
+		],
+		"files" : 
+		[
+			"cmake/Install.cmake",
+			"libs/CCPluginAPI/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 32,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 33,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 241,
+				"parent" : 2
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 3,
+			"component" : "Runtime",
+			"destination" : "/usr/local/lib",
+			"paths" : 
+			[
+				"libs/CCPluginAPI/libCCPluginAPId.so"
+			],
+			"targetId" : "CCPluginAPI::@2f9f92581ca6ea91c183",
+			"targetIndex" : 3,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "libs/CCPluginAPI",
+		"source" : "libs/CCPluginAPI"
+	}
+}

@@ -61,12 +61,12 @@ lyg::PointCloud<double> TrajectoryDataToPointCloud(typename std::vector<Type> _v
 /// \param _vecs
 /// \param match
 /// \param func
-void ClidarCompute::GetPointDataSelf1(std::vector<  lygs::trajectoryData> _vecs,
+void ClidarCompute::GetPointDataSelf1(std::vector<  lygs::SensorTrajectoryData> _vecs,
                                       std::vector<std::pair<unsigned,unsigned>> &match,
                                       std::function<int(int,std::vector<std::pair<uint32_t, double>> ,
                                                         std::vector<std::pair<unsigned,unsigned>> & )> func)
 {
-    lyg::PointCloud<double> tmpCloud1 = TrajectoryDataToPointCloud<lygs::trajectoryData>(_vecs);
+    lyg::PointCloud<double> tmpCloud1 = TrajectoryDataToPointCloud<lygs::SensorTrajectoryData>(_vecs);
     // construct a kd-tree index:
     using my_kd_tree_t =  clygnanoflann::KDTreeSingleIndexAdaptor<
     clygnanoflann::L2_Simple_Adaptor<double, lyg::PointCloud<double>>,
@@ -168,10 +168,10 @@ Eigen::Matrix4f ClidarCompute::getSE3Mat(float yaw, float pitch, float roll, flo
 /// \param _vecs
 /// \param match
 ///
-void ClidarCompute::GetPointDataSelf(std::vector<  lygs::trajectoryData> _vecs,
+void ClidarCompute::GetPointDataSelf(std::vector<  lygs::SensorTrajectoryData> _vecs,
                                      std::vector<std::pair<unsigned,unsigned>> &match)
 {
-    lyg::PointCloud<double> tmpCloud1 = TrajectoryDataToPointCloud<lygs::trajectoryData>(_vecs);
+    lyg::PointCloud<double> tmpCloud1 = TrajectoryDataToPointCloud<lygs::SensorTrajectoryData>(_vecs);
 
     // construct a kd-tree index:
     using my_kd_tree_t =  clygnanoflann::KDTreeSingleIndexAdaptor<
@@ -239,7 +239,7 @@ void ClidarCompute::GetPointDataSelf(std::vector<  lygs::trajectoryData> _vecs,
 /// \param _vecs
 /// \param match
 ///
-void ClidarCompute::GetPointData(std::vector<  lygs::trajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
+void ClidarCompute::GetPointData(std::vector<  lygs::SensorTrajectoryData> _vecs, std::vector<std::pair<unsigned,unsigned>> &match)
 {
 
     CCCoreLib::PointCloud tmpCloud1;

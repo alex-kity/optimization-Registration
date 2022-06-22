@@ -1,0 +1,2096 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						35,
+						93,
+						99
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "libs",
+					"childIndexes" : 
+					[
+						2,
+						9,
+						12,
+						15,
+						19,
+						25,
+						28
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs-Debug-ec580da4e47c3b0e73da.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "libs"
+				},
+				{
+					"build" : "libs/CCAppCommon",
+					"childIndexes" : 
+					[
+						3,
+						6,
+						7,
+						8
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.CCAppCommon-Debug-622f0d44ae9718c9ee9b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"build" : "libs/CCAppCommon/devices",
+					"childIndexes" : 
+					[
+						4,
+						5
+					],
+					"jsonFile" : "directory-libs.CCAppCommon.devices-Debug-81535636d2069ab87ea6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon/devices"
+				},
+				{
+					"build" : "libs/CCAppCommon/devices/3dConnexion",
+					"jsonFile" : "directory-libs.CCAppCommon.devices.3dConnexion-Debug-b1f84844a43eafa6c106.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon/devices/3dConnexion"
+				},
+				{
+					"build" : "libs/CCAppCommon/devices/gamepad",
+					"jsonFile" : "directory-libs.CCAppCommon.devices.gamepad-Debug-a3e2c8b0ec37929b96ef.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon/devices/gamepad"
+				},
+				{
+					"build" : "libs/CCAppCommon/include",
+					"jsonFile" : "directory-libs.CCAppCommon.include-Debug-b91fba47b1cce427cf94.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon/include"
+				},
+				{
+					"build" : "libs/CCAppCommon/src",
+					"jsonFile" : "directory-libs.CCAppCommon.src-Debug-77474a4713f80091bc1d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon/src"
+				},
+				{
+					"build" : "libs/CCAppCommon/ui",
+					"jsonFile" : "directory-libs.CCAppCommon.ui-Debug-621b46e1073d50a24afc.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "libs/CCAppCommon/ui"
+				},
+				{
+					"build" : "libs/CCFbo",
+					"childIndexes" : 
+					[
+						10,
+						11
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.CCFbo-Debug-808322a3158c6c13c4b0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "libs/CCFbo",
+					"targetIndexes" : 
+					[
+						6,
+						7
+					]
+				},
+				{
+					"build" : "libs/CCFbo/include",
+					"jsonFile" : "directory-libs.CCFbo.include-Debug-ac83631415cb36d8108b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 9,
+					"projectIndex" : 2,
+					"source" : "libs/CCFbo/include"
+				},
+				{
+					"build" : "libs/CCFbo/src",
+					"jsonFile" : "directory-libs.CCFbo.src-Debug-806c289273f34d0f1820.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 9,
+					"projectIndex" : 2,
+					"source" : "libs/CCFbo/src"
+				},
+				{
+					"build" : "libs/CCPluginStub",
+					"childIndexes" : 
+					[
+						13,
+						14
+					],
+					"jsonFile" : "directory-libs.CCPluginStub-Debug-e6d1713588f7b9e0be2e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 3,
+					"source" : "libs/CCPluginStub",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "libs/CCPluginStub/include",
+					"jsonFile" : "directory-libs.CCPluginStub.include-Debug-9885ee845c407951aaa4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 12,
+					"projectIndex" : 3,
+					"source" : "libs/CCPluginStub/include"
+				},
+				{
+					"build" : "libs/CCPluginStub/src",
+					"jsonFile" : "directory-libs.CCPluginStub.src-Debug-fbd06fc18e2dcc9884b0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 12,
+					"projectIndex" : 3,
+					"source" : "libs/CCPluginStub/src"
+				},
+				{
+					"build" : "libs/CCPluginAPI",
+					"childIndexes" : 
+					[
+						16,
+						17,
+						18
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.CCPluginAPI-Debug-ed31b077f7dabbe17f80.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 4,
+					"source" : "libs/CCPluginAPI",
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				},
+				{
+					"build" : "libs/CCPluginAPI/include",
+					"jsonFile" : "directory-libs.CCPluginAPI.include-Debug-366d4fa1c962f197e858.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 15,
+					"projectIndex" : 4,
+					"source" : "libs/CCPluginAPI/include"
+				},
+				{
+					"build" : "libs/CCPluginAPI/src",
+					"jsonFile" : "directory-libs.CCPluginAPI.src-Debug-266698f3d7a9b6653616.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 15,
+					"projectIndex" : 4,
+					"source" : "libs/CCPluginAPI/src"
+				},
+				{
+					"build" : "libs/CCPluginAPI/ui",
+					"jsonFile" : "directory-libs.CCPluginAPI.ui-Debug-1fdd57bc9e35b8234a13.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 15,
+					"projectIndex" : 4,
+					"source" : "libs/CCPluginAPI/ui"
+				},
+				{
+					"build" : "libs/qCC_db",
+					"childIndexes" : 
+					[
+						20,
+						21,
+						22
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.qCC_db-Debug-17e900513254b48128c0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 5,
+					"source" : "libs/qCC_db",
+					"targetIndexes" : 
+					[
+						12,
+						13
+					]
+				},
+				{
+					"build" : "libs/qCC_db/include",
+					"jsonFile" : "directory-libs.qCC_db.include-Debug-46948139d1b895028e0b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 19,
+					"projectIndex" : 5,
+					"source" : "libs/qCC_db/include"
+				},
+				{
+					"build" : "libs/qCC_db/src",
+					"jsonFile" : "directory-libs.qCC_db.src-Debug-ba41d7353e4113e08be5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 19,
+					"projectIndex" : 5,
+					"source" : "libs/qCC_db/src"
+				},
+				{
+					"build" : "libs/qCC_db/extern/CCCoreLib",
+					"childIndexes" : 
+					[
+						23,
+						24
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.qCC_db.extern.CCCoreLib-Debug-584b4f973f7f96852a8e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 19,
+					"projectIndex" : 6,
+					"source" : "libs/qCC_db/extern/CCCoreLib",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "libs/qCC_db/extern/CCCoreLib/include",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.qCC_db.extern.CCCoreLib.include-Debug-a5c648d1beaf8c9c2456.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 22,
+					"projectIndex" : 6,
+					"source" : "libs/qCC_db/extern/CCCoreLib/include"
+				},
+				{
+					"build" : "libs/qCC_db/extern/CCCoreLib/src",
+					"jsonFile" : "directory-libs.qCC_db.extern.CCCoreLib.src-Debug-cde92701f570c9d3c6ba.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 22,
+					"projectIndex" : 6,
+					"source" : "libs/qCC_db/extern/CCCoreLib/src"
+				},
+				{
+					"build" : "libs/qCC_glWindow",
+					"childIndexes" : 
+					[
+						26,
+						27
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.qCC_glWindow-Debug-9e349f6e17ea3b21f43c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 7,
+					"source" : "libs/qCC_glWindow",
+					"targetIndexes" : 
+					[
+						14,
+						15
+					]
+				},
+				{
+					"build" : "libs/qCC_glWindow/include",
+					"jsonFile" : "directory-libs.qCC_glWindow.include-Debug-52670e4fc0fbdbcae794.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 25,
+					"projectIndex" : 7,
+					"source" : "libs/qCC_glWindow/include"
+				},
+				{
+					"build" : "libs/qCC_glWindow/src",
+					"jsonFile" : "directory-libs.qCC_glWindow.src-Debug-0b8672e54ada789cb436.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 25,
+					"projectIndex" : 7,
+					"source" : "libs/qCC_glWindow/src"
+				},
+				{
+					"build" : "libs/qCC_io",
+					"childIndexes" : 
+					[
+						29,
+						30,
+						31,
+						32,
+						34
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libs.qCC_io-Debug-0133ff522dcfe30c8cc4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 8,
+					"source" : "libs/qCC_io",
+					"targetIndexes" : 
+					[
+						16,
+						17
+					]
+				},
+				{
+					"build" : "libs/qCC_io/include",
+					"jsonFile" : "directory-libs.qCC_io.include-Debug-c6bf217fd6ecfc4556cf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 28,
+					"projectIndex" : 8,
+					"source" : "libs/qCC_io/include"
+				},
+				{
+					"build" : "libs/qCC_io/src",
+					"jsonFile" : "directory-libs.qCC_io.src-Debug-29e69511fc034f66fd73.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 28,
+					"projectIndex" : 8,
+					"source" : "libs/qCC_io/src"
+				},
+				{
+					"build" : "libs/qCC_io/ui",
+					"jsonFile" : "directory-libs.qCC_io.ui-Debug-612e1ddc012df4153ccb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 28,
+					"projectIndex" : 8,
+					"source" : "libs/qCC_io/ui"
+				},
+				{
+					"build" : "libs/qCC_io/extern/dxflib",
+					"childIndexes" : 
+					[
+						33
+					],
+					"jsonFile" : "directory-libs.qCC_io.extern.dxflib-Debug-96a154b0ff7908fde918.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 28,
+					"projectIndex" : 9,
+					"source" : "libs/qCC_io/extern/dxflib",
+					"targetIndexes" : 
+					[
+						34
+					]
+				},
+				{
+					"build" : "libs/qCC_io/extern/dxflib/src",
+					"jsonFile" : "directory-libs.qCC_io.extern.dxflib.src-Debug-e3970fb73c4d4338359a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 32,
+					"projectIndex" : 9,
+					"source" : "libs/qCC_io/extern/dxflib/src"
+				},
+				{
+					"build" : "libs/qCC_io/extern/shapelib",
+					"jsonFile" : "directory-libs.qCC_io.extern.shapelib-Debug-a10ff0173e67f98f6f53.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 28,
+					"projectIndex" : 10,
+					"source" : "libs/qCC_io/extern/shapelib",
+					"targetIndexes" : 
+					[
+						35
+					]
+				},
+				{
+					"build" : "plugins",
+					"childIndexes" : 
+					[
+						36,
+						89
+					],
+					"jsonFile" : "directory-plugins-Debug-55275e3f2f02dcd473ff.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 11,
+					"source" : "plugins"
+				},
+				{
+					"build" : "plugins/core",
+					"childIndexes" : 
+					[
+						37,
+						40,
+						54
+					],
+					"jsonFile" : "directory-plugins.core-Debug-cbeb3d491107ecfea61c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 35,
+					"projectIndex" : 11,
+					"source" : "plugins/core"
+				},
+				{
+					"build" : "plugins/core/GL",
+					"childIndexes" : 
+					[
+						38,
+						39
+					],
+					"jsonFile" : "directory-plugins.core.GL-Debug-a707464877f7496ed37d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 36,
+					"projectIndex" : 11,
+					"source" : "plugins/core/GL"
+				},
+				{
+					"build" : "plugins/core/GL/qEDL",
+					"jsonFile" : "directory-plugins.core.GL.qEDL-Debug-6434ac326cc19e8aa1ab.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 37,
+					"projectIndex" : 11,
+					"source" : "plugins/core/GL/qEDL"
+				},
+				{
+					"build" : "plugins/core/GL/qSSAO",
+					"jsonFile" : "directory-plugins.core.GL.qSSAO-Debug-0fa12a017f259b5b3afd.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 37,
+					"projectIndex" : 11,
+					"source" : "plugins/core/GL/qSSAO"
+				},
+				{
+					"build" : "plugins/core/IO",
+					"childIndexes" : 
+					[
+						41,
+						42,
+						46,
+						47,
+						48,
+						49,
+						50,
+						51,
+						52,
+						53
+					],
+					"jsonFile" : "directory-plugins.core.IO-Debug-4fb1ae1d7ea3d4ed2fcf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 36,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO"
+				},
+				{
+					"build" : "plugins/core/IO/qAdditionalIO",
+					"jsonFile" : "directory-plugins.core.IO.qAdditionalIO-Debug-3b71f778cda1f60329c0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qAdditionalIO"
+				},
+				{
+					"build" : "plugins/core/IO/qCoreIO",
+					"childIndexes" : 
+					[
+						43,
+						44,
+						45
+					],
+					"jsonFile" : "directory-plugins.core.IO.qCoreIO-Debug-a1836dca3b4d4d3c8e9c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 12,
+					"source" : "plugins/core/IO/qCoreIO",
+					"targetIndexes" : 
+					[
+						18,
+						19
+					]
+				},
+				{
+					"build" : "plugins/core/IO/qCoreIO/include",
+					"jsonFile" : "directory-plugins.core.IO.qCoreIO.include-Debug-b42142d4868350799e5d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 42,
+					"projectIndex" : 12,
+					"source" : "plugins/core/IO/qCoreIO/include"
+				},
+				{
+					"build" : "plugins/core/IO/qCoreIO/src",
+					"jsonFile" : "directory-plugins.core.IO.qCoreIO.src-Debug-81408cddbbdc6840c04e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 42,
+					"projectIndex" : 12,
+					"source" : "plugins/core/IO/qCoreIO/src"
+				},
+				{
+					"build" : "plugins/core/IO/qCoreIO/ui",
+					"jsonFile" : "directory-plugins.core.IO.qCoreIO.ui-Debug-66497e9311beb5d6cf5f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 42,
+					"projectIndex" : 12,
+					"source" : "plugins/core/IO/qCoreIO/ui"
+				},
+				{
+					"build" : "plugins/core/IO/qCSVMatrixIO",
+					"jsonFile" : "directory-plugins.core.IO.qCSVMatrixIO-Debug-c088d035e25f016d1b10.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qCSVMatrixIO"
+				},
+				{
+					"build" : "plugins/core/IO/qE57IO",
+					"jsonFile" : "directory-plugins.core.IO.qE57IO-Debug-4a8ae007217824268131.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qE57IO"
+				},
+				{
+					"build" : "plugins/core/IO/qFBXIO",
+					"jsonFile" : "directory-plugins.core.IO.qFBXIO-Debug-c7e2112b6a5839dceda5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qFBXIO"
+				},
+				{
+					"build" : "plugins/core/IO/qLASFWFIO",
+					"jsonFile" : "directory-plugins.core.IO.qLASFWFIO-Debug-7c0148f9507fe4950473.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qLASFWFIO"
+				},
+				{
+					"build" : "plugins/core/IO/qPDALIO",
+					"jsonFile" : "directory-plugins.core.IO.qPDALIO-Debug-e5f6a58314626b76673c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qPDALIO"
+				},
+				{
+					"build" : "plugins/core/IO/qPhotoscanIO",
+					"jsonFile" : "directory-plugins.core.IO.qPhotoscanIO-Debug-c855c2e6d2af06e61c23.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qPhotoscanIO"
+				},
+				{
+					"build" : "plugins/core/IO/qRDBIO",
+					"jsonFile" : "directory-plugins.core.IO.qRDBIO-Debug-3af97312021f216ca2b6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qRDBIO"
+				},
+				{
+					"build" : "plugins/core/IO/qStepCADImport",
+					"jsonFile" : "directory-plugins.core.IO.qStepCADImport-Debug-2ec08883f80a69be4120.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 40,
+					"projectIndex" : 11,
+					"source" : "plugins/core/IO/qStepCADImport"
+				},
+				{
+					"build" : "plugins/core/Standard",
+					"childIndexes" : 
+					[
+						55,
+						56,
+						60,
+						61,
+						62,
+						63,
+						64,
+						65,
+						66,
+						67,
+						68,
+						79,
+						80,
+						81,
+						88
+					],
+					"jsonFile" : "directory-plugins.core.Standard-Debug-da7a2867b4b77e3fb769.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 36,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard"
+				},
+				{
+					"build" : "plugins/core/Standard/qAnimation",
+					"jsonFile" : "directory-plugins.core.Standard.qAnimation-Debug-71002806c895d187bb4f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qAnimation"
+				},
+				{
+					"build" : "plugins/core/Standard/qBroom",
+					"childIndexes" : 
+					[
+						57,
+						58,
+						59
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qBroom-Debug-6ef2a257877310f75463.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 13,
+					"source" : "plugins/core/Standard/qBroom",
+					"targetIndexes" : 
+					[
+						10,
+						11
+					]
+				},
+				{
+					"build" : "plugins/core/Standard/qBroom/include",
+					"jsonFile" : "directory-plugins.core.Standard.qBroom.include-Debug-7d23c6134a570464d470.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 56,
+					"projectIndex" : 13,
+					"source" : "plugins/core/Standard/qBroom/include"
+				},
+				{
+					"build" : "plugins/core/Standard/qBroom/src",
+					"jsonFile" : "directory-plugins.core.Standard.qBroom.src-Debug-fb4325abdbe8ff5cc2d6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 56,
+					"projectIndex" : 13,
+					"source" : "plugins/core/Standard/qBroom/src"
+				},
+				{
+					"build" : "plugins/core/Standard/qBroom/ui",
+					"jsonFile" : "directory-plugins.core.Standard.qBroom.ui-Debug-ff03cb7d74b94571141d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 56,
+					"projectIndex" : 13,
+					"source" : "plugins/core/Standard/qBroom/ui"
+				},
+				{
+					"build" : "plugins/core/Standard/qCanupo",
+					"jsonFile" : "directory-plugins.core.Standard.qCanupo-Debug-42eb3c64cdd5ccc2be10.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qCanupo"
+				},
+				{
+					"build" : "plugins/core/Standard/qCompass",
+					"jsonFile" : "directory-plugins.core.Standard.qCompass-Debug-3efb5e275bbbfee87591.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qCompass"
+				},
+				{
+					"build" : "plugins/core/Standard/qCork",
+					"jsonFile" : "directory-plugins.core.Standard.qCork-Debug-83afe8fb6e04a3a59f17.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qCork"
+				},
+				{
+					"build" : "plugins/core/Standard/qCSF",
+					"jsonFile" : "directory-plugins.core.Standard.qCSF-Debug-1e9a2f38675fac9858ee.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qCSF"
+				},
+				{
+					"build" : "plugins/core/Standard/qFacets",
+					"jsonFile" : "directory-plugins.core.Standard.qFacets-Debug-b1161895c64cfdf53640.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qFacets"
+				},
+				{
+					"build" : "plugins/core/Standard/qHoughNormals",
+					"jsonFile" : "directory-plugins.core.Standard.qHoughNormals-Debug-ce2ae06f1bd343d7943f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qHoughNormals"
+				},
+				{
+					"build" : "plugins/core/Standard/qHPR",
+					"jsonFile" : "directory-plugins.core.Standard.qHPR-Debug-9698144e1222c6931f46.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qHPR"
+				},
+				{
+					"build" : "plugins/core/Standard/qM3C2",
+					"jsonFile" : "directory-plugins.core.Standard.qM3C2-Debug-8ac8e8b9b7538b6981ee.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qM3C2"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL",
+					"childIndexes" : 
+					[
+						69,
+						70,
+						71,
+						72,
+						76
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qPCL-Debug-36f9c841beca0ba5e244.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 14,
+					"source" : "plugins/core/Standard/qPCL",
+					"targetIndexes" : 
+					[
+						24,
+						27
+					]
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/doc",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.doc-Debug-9070db85686a6ed36cd9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 68,
+					"projectIndex" : 14,
+					"source" : "plugins/core/Standard/qPCL/doc"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/include",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.include-Debug-9ab35332f81c13049710.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 68,
+					"projectIndex" : 14,
+					"source" : "plugins/core/Standard/qPCL/include"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/src",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.src-Debug-0d860a987a7724bc5b45.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 68,
+					"projectIndex" : 14,
+					"source" : "plugins/core/Standard/qPCL/src"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclUtils",
+					"childIndexes" : 
+					[
+						73,
+						75
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclUtils-Debug-75503768f6156362924e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 68,
+					"projectIndex" : 15,
+					"source" : "plugins/core/Standard/qPCL/PclUtils",
+					"targetIndexes" : 
+					[
+						25,
+						26
+					]
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclUtils/filters",
+					"childIndexes" : 
+					[
+						74
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclUtils.filters-Debug-0ae2cc918ebd21d027a4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 72,
+					"projectIndex" : 15,
+					"source" : "plugins/core/Standard/qPCL/PclUtils/filters"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclUtils/filters/dialogs",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclUtils.filters.dialogs-Debug-07e99b6c07b617a766c6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 73,
+					"projectIndex" : 15,
+					"source" : "plugins/core/Standard/qPCL/PclUtils/filters/dialogs"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclUtils/utils",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclUtils.utils-Debug-d893ae16ca2433ff2d4a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 72,
+					"projectIndex" : 15,
+					"source" : "plugins/core/Standard/qPCL/PclUtils/utils"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclIO",
+					"childIndexes" : 
+					[
+						77,
+						78
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclIO-Debug-59ce1ab1fc1c24c5a734.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 68,
+					"projectIndex" : 16,
+					"source" : "plugins/core/Standard/qPCL/PclIO",
+					"targetIndexes" : 
+					[
+						22,
+						23
+					]
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclIO/include",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclIO.include-Debug-bb16dd20b9cc27f02d3b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 76,
+					"projectIndex" : 16,
+					"source" : "plugins/core/Standard/qPCL/PclIO/include"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCL/PclIO/src",
+					"jsonFile" : "directory-plugins.core.Standard.qPCL.PclIO.src-Debug-2446897cbe1658d2a757.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 76,
+					"projectIndex" : 16,
+					"source" : "plugins/core/Standard/qPCL/PclIO/src"
+				},
+				{
+					"build" : "plugins/core/Standard/qPCV",
+					"jsonFile" : "directory-plugins.core.Standard.qPCV-Debug-d663a8c7315a9c8bd38e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qPCV"
+				},
+				{
+					"build" : "plugins/core/Standard/qPoissonRecon",
+					"jsonFile" : "directory-plugins.core.Standard.qPoissonRecon-Debug-f6de6d0e037fefe29b68.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qPoissonRecon"
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD",
+					"childIndexes" : 
+					[
+						82,
+						85,
+						86,
+						87
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD-Debug-78f210af6b6a802a967d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 17,
+					"source" : "plugins/core/Standard/qRANSAC_SD",
+					"targetIndexes" : 
+					[
+						28,
+						29
+					]
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD/extern/RANSAC_SD",
+					"childIndexes" : 
+					[
+						83,
+						84
+					],
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD.extern.RANSAC_SD-Debug-a383d6ad44ae096a15ba.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 81,
+					"projectIndex" : 18,
+					"source" : "plugins/core/Standard/qRANSAC_SD/extern/RANSAC_SD",
+					"targetIndexes" : 
+					[
+						30,
+						31
+					]
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD/extern/RANSAC_SD/GfxTL",
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD.extern.RANSAC_SD.GfxTL-Debug-381039b2635293f99809.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 82,
+					"projectIndex" : 18,
+					"source" : "plugins/core/Standard/qRANSAC_SD/extern/RANSAC_SD/GfxTL"
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD/extern/RANSAC_SD/MiscLib",
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD.extern.RANSAC_SD.MiscLib-Debug-51886740aa6f0b91f52a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 82,
+					"projectIndex" : 18,
+					"source" : "plugins/core/Standard/qRANSAC_SD/extern/RANSAC_SD/MiscLib"
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD/include",
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD.include-Debug-ba93132e1b7ea8bacaf2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 81,
+					"projectIndex" : 17,
+					"source" : "plugins/core/Standard/qRANSAC_SD/include"
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD/src",
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD.src-Debug-14c0f3342fd46f7fc28c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 81,
+					"projectIndex" : 17,
+					"source" : "plugins/core/Standard/qRANSAC_SD/src"
+				},
+				{
+					"build" : "plugins/core/Standard/qRANSAC_SD/ui",
+					"jsonFile" : "directory-plugins.core.Standard.qRANSAC_SD.ui-Debug-b0b67e53c4d25da66b0c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 81,
+					"projectIndex" : 17,
+					"source" : "plugins/core/Standard/qRANSAC_SD/ui"
+				},
+				{
+					"build" : "plugins/core/Standard/qSRA",
+					"jsonFile" : "directory-plugins.core.Standard.qSRA-Debug-84a24c798e083605616e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 54,
+					"projectIndex" : 11,
+					"source" : "plugins/core/Standard/qSRA"
+				},
+				{
+					"build" : "plugins/example",
+					"childIndexes" : 
+					[
+						90,
+						91,
+						92
+					],
+					"jsonFile" : "directory-plugins.example-Debug-41bf097536d27469e3fe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 35,
+					"projectIndex" : 11,
+					"source" : "plugins/example"
+				},
+				{
+					"build" : "plugins/example/ExampleGLPlugin",
+					"jsonFile" : "directory-plugins.example.ExampleGLPlugin-Debug-6d80cb892b8ec5e0cba7.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 89,
+					"projectIndex" : 11,
+					"source" : "plugins/example/ExampleGLPlugin"
+				},
+				{
+					"build" : "plugins/example/ExampleIOPlugin",
+					"jsonFile" : "directory-plugins.example.ExampleIOPlugin-Debug-84636ee0e9b6b8818514.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 89,
+					"projectIndex" : 11,
+					"source" : "plugins/example/ExampleIOPlugin"
+				},
+				{
+					"build" : "plugins/example/ExamplePlugin",
+					"jsonFile" : "directory-plugins.example.ExamplePlugin-Debug-87ac3e136993ab95bb45.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 89,
+					"projectIndex" : 11,
+					"source" : "plugins/example/ExamplePlugin"
+				},
+				{
+					"build" : "qCC",
+					"childIndexes" : 
+					[
+						94,
+						95,
+						96,
+						97,
+						98
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-qCC-Debug-5ba748ad786557414132.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "qCC",
+					"targetIndexes" : 
+					[
+						8,
+						9
+					]
+				},
+				{
+					"build" : "qCC/db_tree",
+					"jsonFile" : "directory-qCC.db_tree-Debug-0c0f2cff7f386d6594d9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 93,
+					"projectIndex" : 0,
+					"source" : "qCC/db_tree"
+				},
+				{
+					"build" : "qCC/pluginManager",
+					"jsonFile" : "directory-qCC.pluginManager-Debug-cf5ca3abf71bd044913d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 93,
+					"projectIndex" : 0,
+					"source" : "qCC/pluginManager"
+				},
+				{
+					"build" : "qCC/slam",
+					"jsonFile" : "directory-qCC.slam-Debug-67e50de8c20d63cafcad.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 93,
+					"projectIndex" : 0,
+					"source" : "qCC/slam"
+				},
+				{
+					"build" : "qCC/extern/QCustomPlot",
+					"jsonFile" : "directory-qCC.extern.QCustomPlot-Debug-74927084a50fe01050ad.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 93,
+					"projectIndex" : 19,
+					"source" : "qCC/extern/QCustomPlot",
+					"targetIndexes" : 
+					[
+						20,
+						21
+					]
+				},
+				{
+					"build" : "qCC/translations",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-qCC.translations-Debug-ab711e667e32913da830.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 93,
+					"projectIndex" : 0,
+					"source" : "qCC/translations",
+					"targetIndexes" : 
+					[
+						36,
+						37,
+						38,
+						39,
+						40
+					]
+				},
+				{
+					"build" : "ccViewer",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-ccViewer-Debug-14e4ba3d590c2cf47bdf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 20,
+					"source" : "ccViewer",
+					"targetIndexes" : 
+					[
+						32,
+						33
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						7,
+						8,
+						11,
+						19,
+						20
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						93,
+						94,
+						95,
+						96,
+						98
+					],
+					"name" : "PointCloudSuper",
+					"targetIndexes" : 
+					[
+						8,
+						9,
+						36,
+						37,
+						38,
+						39,
+						40
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"name" : "CCAppCommon",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						9,
+						10,
+						11
+					],
+					"name" : "CC_FBO_LIB",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						6,
+						7
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						12,
+						13,
+						14
+					],
+					"name" : "CCPluginStub",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						15,
+						16,
+						17,
+						18
+					],
+					"name" : "CCPluginAPI",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						6
+					],
+					"directoryIndexes" : 
+					[
+						19,
+						20,
+						21
+					],
+					"name" : "QCC_DB_LIB",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						12,
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						22,
+						23,
+						24
+					],
+					"name" : "CCCoreLib",
+					"parentIndex" : 5,
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						25,
+						26,
+						27
+					],
+					"name" : "QCC_GL_LIB",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						14,
+						15
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						9,
+						10
+					],
+					"directoryIndexes" : 
+					[
+						28,
+						29,
+						30,
+						31
+					],
+					"name" : "QCC_IO_LIB",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						16,
+						17
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						32,
+						33
+					],
+					"name" : "dxflib",
+					"parentIndex" : 8,
+					"targetIndexes" : 
+					[
+						34
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						34
+					],
+					"name" : "shapelib",
+					"parentIndex" : 8,
+					"targetIndexes" : 
+					[
+						35
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						12,
+						13,
+						14,
+						17
+					],
+					"directoryIndexes" : 
+					[
+						35,
+						36,
+						37,
+						38,
+						39,
+						40,
+						41,
+						46,
+						47,
+						48,
+						49,
+						50,
+						51,
+						52,
+						53,
+						54,
+						55,
+						60,
+						61,
+						62,
+						63,
+						64,
+						65,
+						66,
+						67,
+						79,
+						80,
+						88,
+						89,
+						90,
+						91,
+						92
+					],
+					"name" : "CloudComparePlugins",
+					"parentIndex" : 0
+				},
+				{
+					"directoryIndexes" : 
+					[
+						42,
+						43,
+						44,
+						45
+					],
+					"name" : "QCORE_IO_PLUGIN",
+					"parentIndex" : 11,
+					"targetIndexes" : 
+					[
+						18,
+						19
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						56,
+						57,
+						58,
+						59
+					],
+					"name" : "QBROOM_PLUGIN",
+					"parentIndex" : 11,
+					"targetIndexes" : 
+					[
+						10,
+						11
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						15,
+						16
+					],
+					"directoryIndexes" : 
+					[
+						68,
+						69,
+						70,
+						71
+					],
+					"name" : "QPCL_PLUGIN",
+					"parentIndex" : 11,
+					"targetIndexes" : 
+					[
+						24,
+						27
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						72,
+						73,
+						74,
+						75
+					],
+					"name" : "QPCL_PLUGIN_UTILS_LIB",
+					"parentIndex" : 14,
+					"targetIndexes" : 
+					[
+						25,
+						26
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						76,
+						77,
+						78
+					],
+					"name" : "QPCL_IO_PLUGIN",
+					"parentIndex" : 14,
+					"targetIndexes" : 
+					[
+						22,
+						23
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						18
+					],
+					"directoryIndexes" : 
+					[
+						81,
+						85,
+						86,
+						87
+					],
+					"name" : "QRANSAC_SD_PLUGIN",
+					"parentIndex" : 11,
+					"targetIndexes" : 
+					[
+						28,
+						29
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						82,
+						83,
+						84
+					],
+					"name" : "QRANSAC_SD_PRIM_SHAPES_LIB",
+					"parentIndex" : 17,
+					"targetIndexes" : 
+					[
+						30,
+						31
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						97
+					],
+					"name" : "QCustomPlot",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						20,
+						21
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						99
+					],
+					"name" : "ccViewer",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						32,
+						33
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "CCAppCommon::@26f598574133c18a1168",
+					"jsonFile" : "target-CCAppCommon-Debug-6a7211666f2e5da17ab6.json",
+					"name" : "CCAppCommon",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "CCAppCommon_autogen::@26f598574133c18a1168",
+					"jsonFile" : "target-CCAppCommon_autogen-Debug-ffb517da1339f92d1b02.json",
+					"name" : "CCAppCommon_autogen",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 22,
+					"id" : "CCCoreLib::@42ec691b8e0b3f5e873c",
+					"jsonFile" : "target-CCCoreLib-Debug-938198965e5db2ea6282.json",
+					"name" : "CCCoreLib",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 15,
+					"id" : "CCPluginAPI::@2f9f92581ca6ea91c183",
+					"jsonFile" : "target-CCPluginAPI-Debug-918980b49a72a78f1837.json",
+					"name" : "CCPluginAPI",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 15,
+					"id" : "CCPluginAPI_autogen::@2f9f92581ca6ea91c183",
+					"jsonFile" : "target-CCPluginAPI_autogen-Debug-b5a80bab6c9bc3922377.json",
+					"name" : "CCPluginAPI_autogen",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "CCPluginStub::@a677cb67d8b05cd95089",
+					"jsonFile" : "target-CCPluginStub-Debug-62ca7eeb5eb7193124e4.json",
+					"name" : "CCPluginStub",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "CC_FBO_LIB::@ac6d0ab7b10365b95bd0",
+					"jsonFile" : "target-CC_FBO_LIB-Debug-6a071693aad5b8cf5884.json",
+					"name" : "CC_FBO_LIB",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "CC_FBO_LIB_autogen::@ac6d0ab7b10365b95bd0",
+					"jsonFile" : "target-CC_FBO_LIB_autogen-Debug-4af0205acaa6cf09abba.json",
+					"name" : "CC_FBO_LIB_autogen",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 93,
+					"id" : "PointCloudSuper::@851966aea8593276a3aa",
+					"jsonFile" : "target-PointCloudSuper-Debug-9204c86f57746d15964e.json",
+					"name" : "PointCloudSuper",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 93,
+					"id" : "PointCloudSuper_autogen::@851966aea8593276a3aa",
+					"jsonFile" : "target-PointCloudSuper_autogen-Debug-b0cafabbe9c6e05ee20c.json",
+					"name" : "PointCloudSuper_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 56,
+					"id" : "QBROOM_PLUGIN::@acf6d7d467d45af72888",
+					"jsonFile" : "target-QBROOM_PLUGIN-Debug-afb24e72b46f889a476a.json",
+					"name" : "QBROOM_PLUGIN",
+					"projectIndex" : 13
+				},
+				{
+					"directoryIndex" : 56,
+					"id" : "QBROOM_PLUGIN_autogen::@acf6d7d467d45af72888",
+					"jsonFile" : "target-QBROOM_PLUGIN_autogen-Debug-275710fec0d8a9ef32e2.json",
+					"name" : "QBROOM_PLUGIN_autogen",
+					"projectIndex" : 13
+				},
+				{
+					"directoryIndex" : 19,
+					"id" : "QCC_DB_LIB::@2ca00b815e3ca8dee633",
+					"jsonFile" : "target-QCC_DB_LIB-Debug-d8d1ad7253e2c7400c9e.json",
+					"name" : "QCC_DB_LIB",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 19,
+					"id" : "QCC_DB_LIB_autogen::@2ca00b815e3ca8dee633",
+					"jsonFile" : "target-QCC_DB_LIB_autogen-Debug-b72091dcbd469c6a95cd.json",
+					"name" : "QCC_DB_LIB_autogen",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 25,
+					"id" : "QCC_GL_LIB::@0b870fb8fd59128b8813",
+					"jsonFile" : "target-QCC_GL_LIB-Debug-a42ca21f2458567faffe.json",
+					"name" : "QCC_GL_LIB",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 25,
+					"id" : "QCC_GL_LIB_autogen::@0b870fb8fd59128b8813",
+					"jsonFile" : "target-QCC_GL_LIB_autogen-Debug-c581a10449531c75a1e2.json",
+					"name" : "QCC_GL_LIB_autogen",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 28,
+					"id" : "QCC_IO_LIB::@f7ba38e89cf41ec4e076",
+					"jsonFile" : "target-QCC_IO_LIB-Debug-5b2489dfabe08e5988b3.json",
+					"name" : "QCC_IO_LIB",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 28,
+					"id" : "QCC_IO_LIB_autogen::@f7ba38e89cf41ec4e076",
+					"jsonFile" : "target-QCC_IO_LIB_autogen-Debug-8c9b291022e8b2ecb47a.json",
+					"name" : "QCC_IO_LIB_autogen",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 42,
+					"id" : "QCORE_IO_PLUGIN::@281a3865f60465b67bda",
+					"jsonFile" : "target-QCORE_IO_PLUGIN-Debug-d9d79d5905fac3746080.json",
+					"name" : "QCORE_IO_PLUGIN",
+					"projectIndex" : 12
+				},
+				{
+					"directoryIndex" : 42,
+					"id" : "QCORE_IO_PLUGIN_autogen::@281a3865f60465b67bda",
+					"jsonFile" : "target-QCORE_IO_PLUGIN_autogen-Debug-e92c5c25a6ddc221cb27.json",
+					"name" : "QCORE_IO_PLUGIN_autogen",
+					"projectIndex" : 12
+				},
+				{
+					"directoryIndex" : 97,
+					"id" : "QCustomPlot::@28ca12648ff249b79a23",
+					"jsonFile" : "target-QCustomPlot-Debug-dd9d4111533d6edab781.json",
+					"name" : "QCustomPlot",
+					"projectIndex" : 19
+				},
+				{
+					"directoryIndex" : 97,
+					"id" : "QCustomPlot_autogen::@28ca12648ff249b79a23",
+					"jsonFile" : "target-QCustomPlot_autogen-Debug-bd0994e015e8598fc92e.json",
+					"name" : "QCustomPlot_autogen",
+					"projectIndex" : 19
+				},
+				{
+					"directoryIndex" : 76,
+					"id" : "QPCL_IO_PLUGIN::@4771ba332ce011e1caf1",
+					"jsonFile" : "target-QPCL_IO_PLUGIN-Debug-7ad16fae73ed078e49d0.json",
+					"name" : "QPCL_IO_PLUGIN",
+					"projectIndex" : 16
+				},
+				{
+					"directoryIndex" : 76,
+					"id" : "QPCL_IO_PLUGIN_autogen::@4771ba332ce011e1caf1",
+					"jsonFile" : "target-QPCL_IO_PLUGIN_autogen-Debug-5f800becb2a09f9418ef.json",
+					"name" : "QPCL_IO_PLUGIN_autogen",
+					"projectIndex" : 16
+				},
+				{
+					"directoryIndex" : 68,
+					"id" : "QPCL_PLUGIN::@1b43263860f8c1f68a6e",
+					"jsonFile" : "target-QPCL_PLUGIN-Debug-9ac13206e9f864d1524b.json",
+					"name" : "QPCL_PLUGIN",
+					"projectIndex" : 14
+				},
+				{
+					"directoryIndex" : 72,
+					"id" : "QPCL_PLUGIN_UTILS_LIB::@702eb8e6c0559fd39326",
+					"jsonFile" : "target-QPCL_PLUGIN_UTILS_LIB-Debug-ea9d4737da12081b79e1.json",
+					"name" : "QPCL_PLUGIN_UTILS_LIB",
+					"projectIndex" : 15
+				},
+				{
+					"directoryIndex" : 72,
+					"id" : "QPCL_PLUGIN_UTILS_LIB_autogen::@702eb8e6c0559fd39326",
+					"jsonFile" : "target-QPCL_PLUGIN_UTILS_LIB_autogen-Debug-5f67d5ef6dcea4da5e34.json",
+					"name" : "QPCL_PLUGIN_UTILS_LIB_autogen",
+					"projectIndex" : 15
+				},
+				{
+					"directoryIndex" : 68,
+					"id" : "QPCL_PLUGIN_autogen::@1b43263860f8c1f68a6e",
+					"jsonFile" : "target-QPCL_PLUGIN_autogen-Debug-957d4d5b24824bc4afbb.json",
+					"name" : "QPCL_PLUGIN_autogen",
+					"projectIndex" : 14
+				},
+				{
+					"directoryIndex" : 81,
+					"id" : "QRANSAC_SD_PLUGIN::@ce8f797d60155d0793cf",
+					"jsonFile" : "target-QRANSAC_SD_PLUGIN-Debug-03c726d06d7574c4b4cd.json",
+					"name" : "QRANSAC_SD_PLUGIN",
+					"projectIndex" : 17
+				},
+				{
+					"directoryIndex" : 81,
+					"id" : "QRANSAC_SD_PLUGIN_autogen::@ce8f797d60155d0793cf",
+					"jsonFile" : "target-QRANSAC_SD_PLUGIN_autogen-Debug-4dbb9ff6dde156bc110b.json",
+					"name" : "QRANSAC_SD_PLUGIN_autogen",
+					"projectIndex" : 17
+				},
+				{
+					"directoryIndex" : 82,
+					"id" : "QRANSAC_SD_PRIM_SHAPES_LIB::@84b863a648186a258cfe",
+					"jsonFile" : "target-QRANSAC_SD_PRIM_SHAPES_LIB-Debug-066887385ed59b7ebc53.json",
+					"name" : "QRANSAC_SD_PRIM_SHAPES_LIB",
+					"projectIndex" : 18
+				},
+				{
+					"directoryIndex" : 82,
+					"id" : "QRANSAC_SD_PRIM_SHAPES_LIB_autogen::@84b863a648186a258cfe",
+					"jsonFile" : "target-QRANSAC_SD_PRIM_SHAPES_LIB_autogen-Debug-dbccf37317eb8b35af4e.json",
+					"name" : "QRANSAC_SD_PRIM_SHAPES_LIB_autogen",
+					"projectIndex" : 18
+				},
+				{
+					"directoryIndex" : 99,
+					"id" : "ccViewer::@55006f52ab159c25f277",
+					"jsonFile" : "target-ccViewer-Debug-e326d02334ecbaa3076a.json",
+					"name" : "ccViewer",
+					"projectIndex" : 20
+				},
+				{
+					"directoryIndex" : 99,
+					"id" : "ccViewer_autogen::@55006f52ab159c25f277",
+					"jsonFile" : "target-ccViewer_autogen-Debug-de659c81fcc14b7d2547.json",
+					"name" : "ccViewer_autogen",
+					"projectIndex" : 20
+				},
+				{
+					"directoryIndex" : 32,
+					"id" : "dxflib::@3b0d4c7ad1e26df488a6",
+					"jsonFile" : "target-dxflib-Debug-b2264d5fa15e8923000c.json",
+					"name" : "dxflib",
+					"projectIndex" : 9
+				},
+				{
+					"directoryIndex" : 34,
+					"id" : "shapelib::@c4c16f537c8cfc960ba2",
+					"jsonFile" : "target-shapelib-Debug-8c26c07470f60d1f71f6.json",
+					"name" : "shapelib",
+					"projectIndex" : 10
+				},
+				{
+					"directoryIndex" : 98,
+					"id" : "translations::@97be295b198986917b89",
+					"jsonFile" : "target-translations-Debug-feac47a27885647a3b88.json",
+					"name" : "translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 98,
+					"id" : "translations_de::@97be295b198986917b89",
+					"jsonFile" : "target-translations_de-Debug-2176eed85d6650953412.json",
+					"name" : "translations_de",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 98,
+					"id" : "translations_fr::@97be295b198986917b89",
+					"jsonFile" : "target-translations_fr-Debug-51b69b2d2e3ef2add60a.json",
+					"name" : "translations_fr",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 98,
+					"id" : "translations_ja::@97be295b198986917b89",
+					"jsonFile" : "target-translations_ja-Debug-7e465179bc2e855a5d8d.json",
+					"name" : "translations_ja",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 98,
+					"id" : "translations_ru::@97be295b198986917b89",
+					"jsonFile" : "target-translations_ru-Debug-87a39428b1737d03959f.json",
+					"name" : "translations_ru",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/alexkity/source/cc/CloudCompare-master/build",
+		"source" : "/home/alexkity/source/cc/CloudCompare-master"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

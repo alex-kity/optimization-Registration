@@ -1,0 +1,2 @@
+/usr/bin/x86_64-linux-gnu-ar qc libCCPluginStubd.a CMakeFiles/CCPluginStub.dir/src/ccDefaultPluginInterface.cpp.o
+/usr/bin/x86_64-linux-gnu-ranlib libCCPluginStubd.a

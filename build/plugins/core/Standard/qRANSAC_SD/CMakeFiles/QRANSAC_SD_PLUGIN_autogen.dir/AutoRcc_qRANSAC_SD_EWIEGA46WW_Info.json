@@ -1,0 +1,23 @@
+{
+	"BUILD_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qRANSAC_SD/QRANSAC_SD_PLUGIN_autogen",
+	"CMAKE_BINARY_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qRANSAC_SD",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qRANSAC_SD",
+	"CMAKE_SOURCE_DIR" : "/home/alexkity/source/cc/CloudCompare-master",
+	"INCLUDE_DIR" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qRANSAC_SD/QRANSAC_SD_PLUGIN_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qRANSAC_SD/info.json",
+		"/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qRANSAC_SD/images/qRANSAC_SD.png"
+	],
+	"LOCK_FILE" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qRANSAC_SD/CMakeFiles/QRANSAC_SD_PLUGIN_autogen.dir/AutoRcc_qRANSAC_SD_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "qRANSAC_SD" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_qRANSAC_SD.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/x86_64-linux-gnu/qt5/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qRANSAC_SD/CMakeFiles/QRANSAC_SD_PLUGIN_autogen.dir/AutoRcc_qRANSAC_SD_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qRANSAC_SD/qRANSAC_SD.qrc",
+	"VERBOSITY" : 0
+}

@@ -1,0 +1,2 @@
+/usr/bin/x86_64-linux-gnu-ar qc libdxflibd.a CMakeFiles/dxflib.dir/src/dl_writer_ascii.cpp.o CMakeFiles/dxflib.dir/src/dl_dxf.cpp.o
+/usr/bin/x86_64-linux-gnu-ranlib libdxflibd.a

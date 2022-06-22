@@ -1,0 +1,77 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"plugins/core/Standard/qPCL/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "CCPluginStub::@a677cb67d8b05cd95089"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "CCPluginAPI::@2f9f92581ca6ea91c183"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "CCCoreLib::@42ec691b8e0b3f5e873c"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "QPCL_PLUGIN_UTILS_LIB::@702eb8e6c0559fd39326"
+		}
+	],
+	"id" : "QPCL_PLUGIN_autogen::@1b43263860f8c1f68a6e",
+	"isGeneratorProvided" : true,
+	"name" : "QPCL_PLUGIN_autogen",
+	"paths" : 
+	{
+		"build" : "plugins/core/Standard/qPCL",
+		"source" : "plugins/core/Standard/qPCL"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qPCL/CMakeFiles/QPCL_PLUGIN_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qPCL/CMakeFiles/QPCL_PLUGIN_autogen.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

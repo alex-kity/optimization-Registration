@@ -58,6 +58,13 @@ struct _MapMatch
 
 };
 
+enum CC_SUBSAMPLING_METHOD
+{
+    RANDOM  = 0,
+    SPACE   = 1,
+    OCTREE  = 2,
+};
+
 namespace Ui {
 class CSlamLadirDialog;
 }
@@ -67,6 +74,7 @@ class MainWindow;
 class ccHObject;
 class ClidarCompute;
 class CAppConfig;
+class CDataChange;
 class CSlamLadirDialog :public ccOverlayDialog
 {
     Q_OBJECT
@@ -137,6 +145,16 @@ public:
     std::string
     GetFileNameTnt(){return m_filenametnt;}
 
+
+    ///
+    /// \brief GetGlobalOptimization
+    /// \return
+    ///
+    std::shared_ptr<CDataChange> 
+    GetGlobalOptimization(){
+        return  g_CDataChange ;
+    }
+
     ///
     /// \brief GetLogger
     /// \return
@@ -158,6 +176,42 @@ public:
     /// \return
     ///
     _MapMatch DataSpit(int first, int second);
+
+
+
+    ///
+    /// \brief SetResampleGui
+    /// \param cloud
+    /// \return
+    ///
+    std::vector<ccPointCloud *>  SetResampleGui(ccPointCloud* cloud);
+
+
+
+    ///
+    /// \brief SetResample
+    /// \param cloud
+    /// \return
+    ///
+    std::vector<ccPointCloud *>  SetResample(ccPointCloud* cloud);
+
+
+    ///
+    /// \brief getSampledCloud
+    /// \param value
+    /// \param samplingMethod
+    /// \param cloud
+    /// \param m_sfMin
+    /// \param m_sfMax
+    /// \return
+    ///
+    template <typename Type>
+    CCCoreLib::ReferenceCloud* getSampledCloud(Type value,CC_SUBSAMPLING_METHOD samplingMethod ,
+                                               ccGenericPointCloud* cloud, ScalarType m_sfMin,ScalarType m_sfMax);
+
+
+
+    
 
 signals:
     void
@@ -182,11 +236,14 @@ private:
     QString m_pointDir = nullptr;
     std::string m_filename = "0";
     std::string m_filenametnt = "0";
-    std::vector<lygs::trajectoryData> m_vecs ;
-    std::map<std::string,lygs::trajectoryData> g_trajectoryMap;
+    std::vector<lygs::SensorTrajectoryData> m_vecs ;
+    std::map<std::string,lygs::SensorTrajectoryData> g_trajectoryMap;
     QStringList m_selectedFiles;
+    int m_currentOptimizationType = 0;
+
 
     std::shared_ptr<spdlog::logger> my_logger = nullptr;
+    std::shared_ptr<CDataChange> g_CDataChange = nullptr;
 
 private:
     ///

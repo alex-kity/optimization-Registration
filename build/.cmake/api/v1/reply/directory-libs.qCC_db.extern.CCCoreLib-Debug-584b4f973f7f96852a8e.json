@@ -1,0 +1,102 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"libs/qCC_db/extern/CCCoreLib/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 75,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 243,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 253,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 280,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "include/CCCoreLib",
+			"paths" : 
+			[
+				"build/libs/qCC_db/extern/CCCoreLib/exports/CCCoreLibExport.h"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"libs/qCC_db/extern/CCCoreLib/libCCCoreLibd.so"
+			],
+			"targetId" : "CCCoreLib::@42ec691b8e0b3f5e873c",
+			"targetIndex" : 2,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/CCCoreLib",
+			"exportName" : "CCCoreLib-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "CCCoreLib::@42ec691b8e0b3f5e873c",
+					"index" : 2
+				}
+			],
+			"paths" : 
+			[
+				"libs/qCC_db/extern/CCCoreLib/CMakeFiles/Export/lib/cmake/CCCoreLib/CCCoreLibTargets.cmake"
+			],
+			"type" : "export"
+		},
+		{
+			"backtrace" : 4,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/CCCoreLib",
+			"paths" : 
+			[
+				"build/libs/qCC_db/extern/CCCoreLib/CCCoreLibConfigVersion.cmake",
+				"build/libs/qCC_db/extern/CCCoreLib/CCCoreLibConfig.cmake"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "libs/qCC_db/extern/CCCoreLib",
+		"source" : "libs/qCC_db/extern/CCCoreLib"
+	}
+}

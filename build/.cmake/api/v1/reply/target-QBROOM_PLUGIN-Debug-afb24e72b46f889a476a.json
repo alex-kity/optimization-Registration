@@ -1,0 +1,617 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "plugins/core/Standard/qBroom/libQBROOM_PLUGINd.so"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"AddPlugin",
+			"install",
+			"_InstallSharedTarget",
+			"InstallPlugins",
+			"target_link_libraries",
+			"add_definitions",
+			"include",
+			"target_include_directories",
+			"target_sources",
+			"add_subdirectory"
+		],
+		"files" : 
+		[
+			"plugins/cmake/Plugins.cmake",
+			"plugins/core/Standard/qBroom/CMakeLists.txt",
+			"cmake/Install.cmake",
+			"qCC/CMakeLists.txt",
+			"cmake/CMakeExternalLibs.cmake",
+			"CMakeLists.txt",
+			"plugins/core/Standard/qBroom/include/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 6,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 43,
+				"parent" : 1
+			},
+			{
+				"file" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 3,
+				"line" : 215,
+				"parent" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 142,
+				"parent" : 4
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 241,
+				"parent" : 5
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 94,
+				"parent" : 1
+			},
+			{
+				"file" : 5
+			},
+			{
+				"command" : 7,
+				"file" : 5,
+				"line" : 76,
+				"parent" : 8
+			},
+			{
+				"file" : 4,
+				"parent" : 9
+			},
+			{
+				"command" : 6,
+				"file" : 4,
+				"line" : 44,
+				"parent" : 10
+			},
+			{
+				"file" : 6
+			},
+			{
+				"command" : 8,
+				"file" : 6,
+				"line" : 9,
+				"parent" : 12
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 80,
+				"parent" : 1
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 88,
+				"parent" : 1
+			},
+			{
+				"command" : 10,
+				"file" : 1,
+				"line" : 8,
+				"parent" : 0
+			},
+			{
+				"command" : 10,
+				"file" : 1,
+				"line" : 9,
+				"parent" : 0
+			},
+			{
+				"command" : 10,
+				"file" : 1,
+				"line" : 10,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -fopenmp -g -fPIC"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-fPIC"
+				},
+				{
+					"fragment" : "-std=c++14"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_CGAL_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_FLOAT"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_CORE_LIB_USES_QT_CONCURRENT"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_DXF_SUPPORT"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "CC_SHP_SUPPORT"
+				},
+				{
+					"define" : "QBROOM_PLUGIN_EXPORTS"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_CONCURRENT_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_OPENGLEXTENSIONS_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_OPENGL_LIB"
+				},
+				{
+					"backtrace" : 11,
+					"define" : "QT_USE_QSTRINGBUILDER"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_WIDGETS_LIB"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/include"
+				},
+				{
+					"backtrace" : 13,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/plugins/core/Standard/qBroom/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db/extern/CCCoreLib/exports"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_db/extern/CCCoreLib/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/CCPluginAPI/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/CCPluginStub/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_glWindow/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_db/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/CCFbo/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/extern/dxflib/src"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/alexkity/source/cc/CloudCompare-master/libs/qCC_io/extern/shapelib"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtCore"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtGui"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGLExtensions"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					2
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				6,
+				7,
+				12
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 7,
+			"id" : "CC_FBO_LIB::@ac6d0ab7b10365b95bd0"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "CCPluginStub::@a677cb67d8b05cd95089"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "CCPluginAPI::@2f9f92581ca6ea91c183"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "QCC_DB_LIB::@2ca00b815e3ca8dee633"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "CCCoreLib::@42ec691b8e0b3f5e873c"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "QCC_GL_LIB::@0b870fb8fd59128b8813"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "QCC_IO_LIB::@f7ba38e89cf41ec4e076"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "dxflib::@3b0d4c7ad1e26df488a6"
+		},
+		{
+			"backtrace" : 7,
+			"id" : "shapelib::@c4c16f537c8cfc960ba2"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "QBROOM_PLUGIN_autogen::@acf6d7d467d45af72888"
+		}
+	],
+	"id" : "QBROOM_PLUGIN::@acf6d7d467d45af72888",
+	"install" : 
+	{
+		"destinations" : 
+		[
+			{
+				"backtrace" : 6,
+				"path" : "lib/cloudcompare/plugins"
+			},
+			{
+				"backtrace" : 6,
+				"path" : "lib/cloudcompare/plugins"
+			}
+		],
+		"prefix" : 
+		{
+			"path" : "/usr/local"
+		}
+	},
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/alexkity/source/cc/CloudCompare-master/build/libs/CCPluginAPI:/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_glWindow:/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_io:/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db:/home/alexkity/source/cc/CloudCompare-master/build/libs/qCC_db/extern/CCCoreLib:/home/alexkity/source/cc/CloudCompare-master/build/libs/CCFbo:",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "../../../../libs/CCPluginAPI/libCCPluginAPId.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "../../../../libs/CCPluginStub/libCCPluginStubd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../../libs/qCC_glWindow/libQCC_GL_LIBd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../../libs/qCC_io/libQCC_IO_LIBd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../../libs/qCC_io/extern/dxflib/libdxflibd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../../libs/qCC_io/extern/shapelib/libshapelibd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../../libs/qCC_db/libQCC_DB_LIBd.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "../../../../libs/qCC_db/extern/CCCoreLib/libCCCoreLibd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libCGAL.so.11.0.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libgmp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libgmpxx.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libmpfr.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libboost_thread.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libboost_system.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Concurrent.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../../libs/CCFbo/libCC_FBO_LIBd.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5OpenGL.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5OpenGLExtensions.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.5.1",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Core.so.5.5.1",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "QBROOM_PLUGIN",
+	"nameOnDisk" : "libQBROOM_PLUGINd.so",
+	"paths" : 
+	{
+		"build" : "plugins/core/Standard/qBroom",
+		"source" : "plugins/core/Standard/qBroom"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				6,
+				7,
+				12
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				8,
+				9
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				3,
+				4,
+				5,
+				10,
+				11
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				13
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/mocs_compilation.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 14,
+			"path" : "plugins/core/Standard/qBroom/qBroom.qrc",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 15,
+			"path" : "plugins/core/Standard/qBroom/info.json",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 16,
+			"path" : "plugins/core/Standard/qBroom/include/qBroom.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 16,
+			"path" : "plugins/core/Standard/qBroom/include/qBroomDisclaimerDialog.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 16,
+			"path" : "plugins/core/Standard/qBroom/include/qBroomDlg.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 17,
+			"compileGroupIndex" : 0,
+			"path" : "plugins/core/Standard/qBroom/src/qBroom.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 17,
+			"compileGroupIndex" : 0,
+			"path" : "plugins/core/Standard/qBroom/src/qBroomDlg.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 18,
+			"path" : "plugins/core/Standard/qBroom/ui/broomDlg.ui",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 18,
+			"path" : "plugins/core/Standard/qBroom/ui/disclaimerDlg.ui",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/include/ui/ui_broomDlg.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/include/ui/ui_disclaimerDlg.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/EWIEGA46WW/qrc_qBroom.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/plugins/core/Standard/qBroom/QBROOM_PLUGIN_autogen/EWIEGA46WW/qrc_qBroom.cpp.rule",
+			"sourceGroupIndex" : 3
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

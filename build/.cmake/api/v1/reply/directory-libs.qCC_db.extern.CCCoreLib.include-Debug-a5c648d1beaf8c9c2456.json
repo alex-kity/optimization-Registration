@@ -1,0 +1,99 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"libs/qCC_db/extern/CCCoreLib/include/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 66,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "include/CCCoreLib",
+			"paths" : 
+			[
+				"libs/qCC_db/extern/CCCoreLib/include/AutoSegmentationTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/BoundingBox.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCConst.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCCoreLib.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCGeom.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCMiscTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCPlatform.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCShareable.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCToolbox.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CCTypes.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ChamferDistanceTransform.h",
+				"libs/qCC_db/extern/CCCoreLib/include/CloudSamplingTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ConjugateGradient.h",
+				"libs/qCC_db/extern/CCCoreLib/include/Delaunay2dMesh.h",
+				"libs/qCC_db/extern/CCCoreLib/include/DgmOctree.h",
+				"libs/qCC_db/extern/CCCoreLib/include/DgmOctreeReferenceCloud.h",
+				"libs/qCC_db/extern/CCCoreLib/include/DistanceComputationTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ErrorFunction.h",
+				"libs/qCC_db/extern/CCCoreLib/include/FastMarching.h",
+				"libs/qCC_db/extern/CCCoreLib/include/FastMarchingForPropagation.h",
+				"libs/qCC_db/extern/CCCoreLib/include/Garbage.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericCloud.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericDistribution.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericIndexedCloud.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericIndexedCloudPersist.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericIndexedMesh.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericMesh.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericOctree.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericProgressCallback.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GenericTriangle.h",
+				"libs/qCC_db/extern/CCCoreLib/include/GeometricalAnalysisTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/Grid3D.h",
+				"libs/qCC_db/extern/CCCoreLib/include/Jacobi.h",
+				"libs/qCC_db/extern/CCCoreLib/include/KdTree.h",
+				"libs/qCC_db/extern/CCCoreLib/include/LocalModel.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ManualSegmentationTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/MathTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/MeshSamplingTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/Neighbourhood.h",
+				"libs/qCC_db/extern/CCCoreLib/include/NormalDistribution.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ParallelSort.h",
+				"libs/qCC_db/extern/CCCoreLib/include/PointCloud.h",
+				"libs/qCC_db/extern/CCCoreLib/include/PointCloudTpl.h",
+				"libs/qCC_db/extern/CCCoreLib/include/PointProjectionTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/Polyline.h",
+				"libs/qCC_db/extern/CCCoreLib/include/RayAndBox.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ReferenceCloud.h",
+				"libs/qCC_db/extern/CCCoreLib/include/RegistrationTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/SaitoSquaredDistanceTransform.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ScalarField.h",
+				"libs/qCC_db/extern/CCCoreLib/include/ScalarFieldTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/SimpleMesh.h",
+				"libs/qCC_db/extern/CCCoreLib/include/SimpleTriangle.h",
+				"libs/qCC_db/extern/CCCoreLib/include/SquareMatrix.h",
+				"libs/qCC_db/extern/CCCoreLib/include/StatisticalTestingTools.h",
+				"libs/qCC_db/extern/CCCoreLib/include/TrueKdTree.h",
+				"libs/qCC_db/extern/CCCoreLib/include/WeibullDistribution.h"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "libs/qCC_db/extern/CCCoreLib/include",
+		"source" : "libs/qCC_db/extern/CCCoreLib/include"
+	}
+}

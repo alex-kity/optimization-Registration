@@ -11508,7 +11508,7 @@ void MainWindow::on_actionoptimization_triggered()
 
 void MainWindow::on_actionSetLadirPer_triggered()
 {
-    g_CDataChange.reset(new CDataChange());
+    
     //    if(m_pSlamLadirDialog == nullptr)
     //    {
     //Qt MDI框架
@@ -11520,6 +11520,7 @@ void MainWindow::on_actionSetLadirPer_triggered()
     //    {
     //自定义对象m_colorDlg传入点云pCloud
     m_pSlamLadirDialog = new CSlamLadirDialog(qWin,this);
+    g_CDataChange = m_pSlamLadirDialog->GetGlobalOptimization();
     //        m_UI->verticalLayout_option->addWidget(m_pSlamLadirDialog);
     //        m_UI->verticalLayout_option->addStretch(1);
 

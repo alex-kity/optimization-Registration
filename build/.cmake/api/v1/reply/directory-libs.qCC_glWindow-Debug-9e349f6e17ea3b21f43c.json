@@ -1,0 +1,60 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install",
+			"_InstallSharedTarget",
+			"InstallSharedLibrary"
+		],
+		"files" : 
+		[
+			"cmake/Install.cmake",
+			"libs/qCC_glWindow/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 18,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 33,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 241,
+				"parent" : 2
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 3,
+			"component" : "Runtime",
+			"destination" : "/usr/local/lib",
+			"paths" : 
+			[
+				"libs/qCC_glWindow/libQCC_GL_LIBd.so"
+			],
+			"targetId" : "QCC_GL_LIB::@0b870fb8fd59128b8813",
+			"targetIndex" : 14,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "libs/qCC_glWindow",
+		"source" : "libs/qCC_glWindow"
+	}
+}

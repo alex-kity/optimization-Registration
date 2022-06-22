@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/QCORE_IO_PLUGIN_autogen.dir/AutogenUsed.txt"
+  "CMakeFiles/QCORE_IO_PLUGIN_autogen.dir/ParseCache.txt"
+  "QCORE_IO_PLUGIN_autogen"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/QCORE_IO_PLUGIN_autogen/EWIEGA46WW/qrc_qCoreIO.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/QCORE_IO_PLUGIN_autogen/EWIEGA46WW/qrc_qCoreIO.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/QCORE_IO_PLUGIN_autogen/mocs_compilation.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/QCORE_IO_PLUGIN_autogen/mocs_compilation.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/HeightProfileFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/HeightProfileFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/MAFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/MAFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/MascaretFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/MascaretFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/OFFFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/OFFFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/ObjFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/ObjFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PDMS/PDMSFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PDMS/PDMSFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PDMS/PdmsParser.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PDMS/PdmsParser.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PDMS/PdmsTools.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PDMS/PdmsTools.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PTXFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/PTXFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/STLFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/STLFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/SimpleBinFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/SimpleBinFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/VTKFilter.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/VTKFilter.cpp.o.d"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/qCoreIO.cpp.o"
+  "CMakeFiles/QCORE_IO_PLUGIN.dir/src/qCoreIO.cpp.o.d"
+  "QCORE_IO_PLUGIN_autogen/EWIEGA46WW/qrc_qCoreIO.cpp"
+  "libQCORE_IO_PLUGINd.pdb"
+  "libQCORE_IO_PLUGINd.so"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/QCORE_IO_PLUGIN.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

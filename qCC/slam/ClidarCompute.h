@@ -55,7 +55,7 @@
 using namespace CCCoreLib;
 
 namespace lygs {
-struct trajectoryData;
+struct SensorTrajectoryData;
 }
 
 // version 1.1
@@ -138,7 +138,7 @@ public:
     /// \param func
     ///
     static void
-    GetPointDataSelf1(std::vector<  lygs::trajectoryData> _vecs,
+    GetPointDataSelf1(std::vector<  lygs::SensorTrajectoryData> _vecs,
                       std::vector<std::pair<unsigned,unsigned>> &match,
                       std::function<int(int,std::vector<std::pair<uint32_t, double>> ,
                                         std::vector<std::pair<unsigned,unsigned>> & )> func);
@@ -150,7 +150,7 @@ public:
     /// \param match
     ///
     static void
-    GetPointDataSelf(std::vector<  lygs::trajectoryData> _vecs,
+    GetPointDataSelf(std::vector<  lygs::SensorTrajectoryData> _vecs,
                      std::vector<std::pair<unsigned,unsigned>> &match);
 
 
@@ -160,7 +160,7 @@ public:
     /// \param match
     ///
     static void
-    GetPointData(std::vector<  lygs::trajectoryData> _vecs,
+    GetPointData(std::vector<  lygs::SensorTrajectoryData> _vecs,
                  std::vector<std::pair<unsigned,unsigned>> &match);
 
 
