@@ -330,7 +330,7 @@
 //	ccPointCloud m_refPoints;
 
 //	//! Dedicated window
-//	ccGLWindow* m_win;
+//	ccGLWindow* m_win;sunsun
 
 //	//! Whether the dialog is paused or not
 //	bool m_paused;

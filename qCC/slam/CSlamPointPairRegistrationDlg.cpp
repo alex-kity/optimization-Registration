@@ -1,48 +1,48 @@
-////##########################################################################
+//##########################################################################
 
 
-//#include "CSlamPointPairRegistrationDlg.h"
+#include "CSlamPointPairRegistrationDlg.h"
 
-////Local
-//#include "mainwindow.h"
-//#include "ccAskThreeDoubleValuesDlg.h"
+//Local
+#include "mainwindow.h"
+#include "ccAskThreeDoubleValuesDlg.h"
 
-////common
-//#include <ccPickingHub.h>
+//common
+#include <ccPickingHub.h>
 
-////qCC_gl
-//#include <ccGLWindow.h>
+//qCC_gl
+#include <ccGLWindow.h>
 
-////qCC_db
-//#include <ccGenericPointCloud.h>
-//#include <cc2DLabel.h>
-//#include <ccPointCloud.h>
-//#include <ccProgressDialog.h>
-//#include <ccSphere.h>
+//qCC_db
+#include <ccGenericPointCloud.h>
+#include <cc2DLabel.h>
+#include <ccPointCloud.h>
+#include <ccProgressDialog.h>
+#include <ccSphere.h>
 
-////qCC_io
-//#include <ccGlobalShiftManager.h>
+//qCC_io
+#include <ccGlobalShiftManager.h>
 
-////CC_FBO
-//#include <ccGlFilter.h>
+//CC_FBO
+#include <ccGlFilter.h>
 
-////CCCoreLib
-//#include <RegistrationTools.h>
-//#include <GeometricalAnalysisTools.h>
+//CCCoreLib
+#include <RegistrationTools.h>
+#include <GeometricalAnalysisTools.h>
 
-////Qt
-//#include <QMdiSubWindow>
-//#include <QMessageBox>
-//#include <QToolButton>
-//#include <QSettings>
+//Qt
+#include <QMdiSubWindow>
+#include <QMessageBox>
+#include <QToolButton>
+#include <QSettings>
 
-////default position of each columns in the aligned and ref. table widgets
-//static const int XYZ_COL_INDEX			= 0;
-//static const int RMS_COL_INDEX			= 3;
-//static const int DEL_BUTTON_COL_INDEX	= 4;
+//default position of each columns in the aligned and ref. table widgets
+static const int XYZ_COL_INDEX			= 0;
+static const int RMS_COL_INDEX			= 3;
+static const int DEL_BUTTON_COL_INDEX	= 4;
 
-////minimum number of pairs to let the user click on the align button
-//static const unsigned MIN_PAIRS_COUNT = 3;
+//minimum number of pairs to let the user click on the align button
+static const unsigned MIN_PAIRS_COUNT = 3;
 
 /////
 ///// \brief CSlamPointPairRegistrationDlg::CSlamPointPairRegistrationDlg

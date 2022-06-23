@@ -62,7 +62,7 @@ class ccStdPluginInterface;
 class ccTracePolylineTool;
 class ColorChangeTool;
 class CSlamLadirDialog;
-class CDataChange;
+class CBackOptimization;
 struct dbTreeSelectionInfo;
 
 namespace Ui {
@@ -704,7 +704,7 @@ private:
 
     ccHObject* m_ladirnewGroup = nullptr;
 
-    std::shared_ptr<CDataChange> g_CDataChange = nullptr;
+    std::shared_ptr<CBackOptimization> g_CDataChange = nullptr;
 
 };
 

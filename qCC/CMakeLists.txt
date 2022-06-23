@@ -116,6 +116,7 @@ target_link_libraries( ${PROJECT_NAME}
     /usr/lib/x86_64-linux-gnu/libtbb.so.2
     -lgtsam
     ${Boost_LIBRARIES}
+#    Geographic
 #    ${PCL_LIBRARIES}
 #    -lgtsams
 )

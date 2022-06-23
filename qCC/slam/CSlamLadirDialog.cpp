@@ -2,9 +2,16 @@
 #include "ui_CSlamLadirDialog.h"
 #include "ClidarCompute.h"
 #include "CDataChange.h"
-#include "ccSubsamplingDlg.h" //Aurelien BEY
+#include "ccSubsamplingDlg.h" //Aurelien BEY"
 
 
+#include "CObjCCAlgorithm.h"
+
+
+CObjCCAlgorithm* CObjCCAlgorithm::single = nullptr;
+CObjCCAlgorithm::CRelease CObjCCAlgorithm::release;
+pthread_mutex_t CObjCCAlgorithm::mutex = PTHREAD_MUTEX_INITIALIZER;
+CObjCCAlgorithm * m_pCObjCCAlgorithm = CObjCCAlgorithm::getInstance();
 static CAppConfig g_CAppConfig;
 
 
@@ -29,7 +36,7 @@ CSlamLadirDialog::CSlamLadirDialog(QWidget *parent, MainWindow* _pMainWindow ) :
     my_logger->info("ladir data, {}",1);
 
 
-    g_CDataChange.reset(new CDataChange());
+    g_CDataChange.reset(new CBackOptimization());
 
 }
 
@@ -42,230 +49,6 @@ CSlamLadirDialog::~CSlamLadirDialog()
 {
 
     delete ui;
-}
-
-
-
-///
-/// \brief CSlamLadirDialog::getSampledCloud
-/// \param value
-/// \param samplingMethod
-/// \param cloud
-/// \param m_sfMin
-/// \param m_sfMax
-/// \return
-///
-template <typename Type>
-CCCoreLib::ReferenceCloud* CSlamLadirDialog::getSampledCloud(Type value,CC_SUBSAMPLING_METHOD samplingMethod ,ccGenericPointCloud* cloud, ScalarType m_sfMin,ScalarType m_sfMax)
-{ 
-
-    CCCoreLib::GenericProgressCallback* progressCb/*=0*/;
-    ccProgressDialog pDlg(false, this);
-    pDlg.setAutoClose(false);
-
-    pDlg.setMethodTitle(tr("Subsampling"));
-
-    progressCb = &pDlg;
-
-
-    if (!cloud || cloud->size() == 0)
-    {
-        ccLog::Warning("[ccSubsamplingDlg::getSampledCloud] Invalid input cloud!");
-        return nullptr;
-    }
-
-    switch (samplingMethod)
-    {
-    case RANDOM:
-    {
-        assert(value >= 0);
-        unsigned count = static_cast<unsigned>(value);
-        return CCCoreLib::CloudSamplingTools::subsampleCloudRandomly(	cloud,
-                                                                        count,
-                                                                        progressCb);
-    }
-        break;
-
-    case SPACE:
-    {
-        ccOctree::Shared octree = cloud->getOctree();
-        if (!octree)
-            octree = cloud->computeOctree(progressCb);
-        if (octree)
-        {
-            PointCoordinateType minDist = static_cast<PointCoordinateType>(value);
-            CCCoreLib::CloudSamplingTools::SFModulationParams modParams;
-            modParams.enabled = true;
-            if (modParams.enabled)
-            {
-                double deltaSF = static_cast<double>(m_sfMax) - m_sfMin;
-                assert(deltaSF >= 0);
-                if ( CCCoreLib::GreaterThanEpsilon( deltaSF ) )
-                {
-                    double sfMinSpacing = minDist;
-                    double sfMaxSpacing = minDist;
-                    modParams.a = (sfMaxSpacing - sfMinSpacing) / deltaSF;
-                    modParams.b = sfMinSpacing - modParams.a * m_sfMin;
-                }
-                else
-                {
-                    modParams.a = 0.0;
-                    modParams.b = m_sfMin;
-                }
-            }
-            return CCCoreLib::CloudSamplingTools::resampleCloudSpatially(	cloud,
-                                                                            minDist,
-                                                                            modParams,
-                                                                            octree.data(),
-                                                                            progressCb);
-        }
-        else
-        {
-            ccLog::Warning(QString("[ccSubsamplingDlg::getSampledCloud] Failed to compute octree for cloud '%1'").arg(cloud->getName()));
-        }
-    }
-        break;
-
-    case OCTREE:
-    {
-        ccOctree::Shared octree = cloud->getOctree();
-        if (!octree)
-            octree = cloud->computeOctree(progressCb);
-        if (octree)
-        {
-            assert(octree_t >= 0);
-            unsigned char level = static_cast<unsigned char>(value);
-            return CCCoreLib::CloudSamplingTools::subsampleCloudWithOctreeAtLevel(	cloud,
-                                                                                    level,
-                                                                                    CCCoreLib::CloudSamplingTools::NEAREST_POINT_TO_CELL_CENTER,
-                                                                                    progressCb,
-                                                                                    octree.data());
-        }
-        else
-        {
-            ccLog::Warning(QString("[ccSubsamplingDlg::getSampledCloud] Failed to compute octree for cloud '%1'").arg(cloud->getName()));
-        }
-    }
-        break;
-    }
-
-    //something went wrong!
-    return nullptr;
-}
-
-
-
-
-std::vector<ccPointCloud *>  CSlamLadirDialog::SetResample(ccPointCloud* cloud)
-{
-
-    CC_SUBSAMPLING_METHOD samplingMethod =  CC_SUBSAMPLING_METHOD::SPACE;
-    int random = 100.0;
-    float space_t = 0.01f;
-    int octree_t = 1000000;
-
-    std::vector<ccPointCloud *> resultingClouds;
-    //find candidates
-    std::vector<ccPointCloud*> clouds;
-    unsigned maxPointCount = 0;
-    double maxCloudRadius = 0;
-    ScalarType sfMin = CCCoreLib::NAN_VALUE;
-    ScalarType sfMax = CCCoreLib::NAN_VALUE;
-    {
-        clouds.push_back(cloud);
-
-        maxPointCount = std::max<unsigned>(maxPointCount, cloud->size());
-        maxCloudRadius = std::max<double>(maxCloudRadius, cloud->getOwnBB().getDiagNorm());
-
-        //we also look for the min and max sf values
-        ccScalarField* sf = cloud->getCurrentDisplayedScalarField();
-        if (sf)
-        {
-            if (!ccScalarField::ValidValue(sfMin) || sfMin > sf->getMin())
-                sfMin = sf->getMin();
-            if (!ccScalarField::ValidValue(sfMax) || sfMax < sf->getMax())
-                sfMax = sf->getMax();
-        }
-
-
-
-    }
-
-    if (clouds.empty())
-    {
-        ccConsole::Error(tr("Select at least one point cloud!"));
-        return resultingClouds;
-    }
-
-
-    //process clouds
-
-    // ccHObject::Container resultingClouds;
-    {
-
-        bool errors = false;
-
-        QElapsedTimer eTimer;
-        eTimer.start();
-
-        for (size_t i = 0; i < clouds.size(); ++i)
-        {
-            ccPointCloud* cloud = clouds[i];
-
-            CCCoreLib::ReferenceCloud *sampledCloud = getSampledCloud<float>(space_t,samplingMethod,cloud,sfMin,sfMax);
-            
-            if (!sampledCloud)
-            {
-                ccConsole::Warning(tr("[Subsampling] Failed to subsample cloud '%1'!").arg(cloud->getName()));
-                errors = true;
-                continue;
-            }
-
-            int warnings = 0;
-            ccPointCloud *newPointCloud = cloud->partialClone(sampledCloud,&warnings);
-
-            delete sampledCloud;
-            sampledCloud = nullptr;
-
-            if (newPointCloud)
-            {
-                newPointCloud->setName(cloud->getName() + QString(".subsampled"));
-                newPointCloud->copyGlobalShiftAndScale(*cloud);
-                newPointCloud->setDisplay(cloud->getDisplay());
-                newPointCloud->prepareDisplayForRefresh();
-                if (cloud->getParent())
-                    cloud->getParent()->addChild(newPointCloud);
-                cloud->setEnabled(false);
-
-                newPointCloud->prepareDisplayForRefresh();
-                resultingClouds.push_back(newPointCloud);
-
-
-
-                if (warnings)
-                {
-                    ccLog::Warning(tr("[Subsampling] Not enough memory: colors, normals or scalar fields may be missing!"));
-                    errors = true;
-                }
-            }
-            else
-            {
-                ccLog::Error(tr("Not enough memory!"));
-                break;
-            }
-        }
-
-        ccLog::Print("[Subsampling] Timing: %3.3f s.",eTimer.elapsed()/1000.0);
-
-        if (errors)
-        {
-            ccLog::Error(tr("Errors occurred (see console)"));
-        }
-    }
-
-
-    return resultingClouds;
-
 }
 
 
@@ -393,6 +176,40 @@ std::vector<ccPointCloud *>  CSlamLadirDialog::SetResampleGui(ccPointCloud* clou
 }
 
 
+
+
+
+
+
+
+void CSlamLadirDialog::on_pushButton_test_clicked()
+{
+     QString dir = "/home/alexlyg/file/2022-01-14-16-15-03/key_frames/";
+
+
+    QStringList filename1{
+            "1642148136.989636.pcd"
+    };
+
+     QStringList filename2{
+        "1642148137.089613.pcd"
+    };
+
+    //src is change
+    ccPointCloud* transcloud = loadPointCloud("1",filename1,dir,g_CAppConfig.currentOpenDlgFilter);
+
+    ccPointCloud* dstcloud = loadPointCloud("2",filename2,dir,g_CAppConfig.currentOpenDlgFilter);
+
+    ccGLMatrix transMat;
+    m_pCObjCCAlgorithm->AutoICPRegister(transcloud,dstcloud,transMat);
+
+
+    m_pMainWindow->addToDB(transcloud, true, true, false);
+    m_pMainWindow->addToDB(dstcloud, true, true, false);
+}
+
+
+
 ///
 /// \brief CSlamLadirDialog::initForm
 ///
@@ -413,8 +230,8 @@ void CSlamLadirDialog::initForm()
         if(!fileName.isEmpty())
         {
             m_filenametnt = fileName.toStdString();
-            std::map<std::string,lygs::SensorTrajectoryData> trajectorys;
-            std::vector<lygs::SensorTrajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
+            std::map<std::string,SensorTrajectoryData> trajectorys;
+            std::vector<SensorTrajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
 
             //    m_pMainWindow->ADDRecently(fileName);
             //show trajectorydata
@@ -488,7 +305,7 @@ void CSlamLadirDialog::on_load_path_clicked()
         {
             for (int i = 0; i < m_vecs.size(); i++)
             {
-                lygs::SensorTrajectoryData lidarSe3 = m_vecs[i];
+                SensorTrajectoryData lidarSe3 = m_vecs[i];
                 Eigen::Matrix4f Roi2w = ClidarCompute::getSE3Mat(lidarSe3.yaw * (180.0 / M_PI), lidarSe3.pitch * (180.0 / M_PI), lidarSe3.roll * (180.0 / M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
                 ccGLMatrix transTemp = ClidarCompute::FromEigenMat(Roi2w);
                 m_IndextrajectoryMap[i] = transTemp;
@@ -639,7 +456,7 @@ ccPointCloud*  CSlamLadirDialog::changeMat(ccPointCloud* obj,std::string strfile
     if(g_trajectoryMap.count(str) == 1)
     {
 
-        lygs::SensorTrajectoryData lidarSe3 = g_trajectoryMap[strfilename.substr(0, strfilename.size() - 4)];
+        SensorTrajectoryData lidarSe3 = g_trajectoryMap[strfilename.substr(0, strfilename.size() - 4)];
         Eigen::Matrix4f Roi2w = ClidarCompute::getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
 
         ccGLMatrix transTemp = ClidarCompute::FromEigenMat(Roi2w);
@@ -670,6 +487,36 @@ ccPointCloud*  CSlamLadirDialog::changeMat(ccPointCloud* obj,std::string strfile
 void CSlamLadirDialog::loadpoint(ccHObject *newGroups, const QString objname,	const QStringList& filenames, QString dir,
                                  QString fileFilter/*=QString()*/,
                                  ccGLWindow* destWin/*=0*/ )
+{
+    ccPointCloud* firstCloud = loadPointCloud(objname,filenames,dir,fileFilter,destWin);
+
+    if(firstCloud!=nullptr)
+    {
+        std::vector<ccPointCloud *> resultingClouds =m_pCObjCCAlgorithm->SetResample(firstCloud);
+        for(int i = 0;i<resultingClouds.size();i++)
+        {
+            newGroups->addChild(resultingClouds[i]);
+
+        }
+    }
+
+}
+
+
+
+
+///
+/// \brief CSlamLadirDialog::loadPointCloud
+/// \param newGroups
+/// \param objname
+/// \param filenames
+/// \param dir
+/// \param fileFilter
+/// \param destWin
+///
+ccPointCloud * CSlamLadirDialog::loadPointCloud(const QString objname,	const QStringList& filenames, QString dir,
+                                                QString fileFilter/*=QString()*/,
+                                                ccGLWindow* destWin/*=0*/ )
 {
 
     std::vector<ccPointCloud*> _vecpointcloud;
@@ -756,27 +603,24 @@ void CSlamLadirDialog::loadpoint(ccHObject *newGroups, const QString objname,	co
     }
     //    baseMesh->addChild(baseVertices);
 
+    ccPointCloud *pointclouds = nullptr;
     if(!_vecpointcloud.empty())
     {
 
-        ccPointCloud* firstCloud = new ccPointCloud(objname);
+        pointclouds = new ccPointCloud(objname);
 
         for(int i = 0;i<_vecpointcloud.size();i++)
         {
-            *firstCloud += _vecpointcloud[i];
+            *pointclouds += _vecpointcloud[i];
 
-        }
-        
-        std::vector<ccPointCloud *> resultingClouds = SetResample(firstCloud);
-        for(int i = 0;i<resultingClouds.size();i++)
-        {
-            newGroups->addChild(resultingClouds[i]);
+        };
 
-        }
-
+        return pointclouds;
     }
-
-
+    else
+    {
+        pointclouds = nullptr;
+    }
 }
 
 
@@ -935,7 +779,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 //    if(g_trajectoryMap.count(str) == 1)
 //    {
 
-//        lygs::SensorTrajectoryData lidarSe3 = g_trajectoryMap[strfilename.substr(0, strfilename.size() - 4)];
+//        SensorTrajectoryData lidarSe3 = g_trajectoryMap[strfilename.substr(0, strfilename.size() - 4)];
 //        Eigen::Matrix4f Roi2w = getSE3Mat(lidarSe3.yaw*(180.0/M_PI), lidarSe3.pitch*(180.0/M_PI), lidarSe3.roll*(180.0/M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
 
 //        ccGLMatrix transTemp = ClidarCompute::FromEigenMat(Roi2w);
@@ -946,13 +790,6 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
 //    }
 //}
-
-
-
-
-
-
-
 
 
 

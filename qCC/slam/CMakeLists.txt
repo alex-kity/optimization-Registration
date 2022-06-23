@@ -8,6 +8,8 @@ set(header_list
    ${CMAKE_CURRENT_SOURCE_DIR}/ClidarCompute.h
    #${CMAKE_CURRENT_SOURCE_DIR}/clygnanoflann.hpp
    ${CMAKE_CURRENT_SOURCE_DIR}/CSlamPointPairRegistrationDlg.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/CObjCCAlgorithm.h
+   
 
 
    PARENT_SCOPE
@@ -20,6 +22,7 @@ set(source_list
    ${CMAKE_CURRENT_SOURCE_DIR}/CDataChange.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/ClidarCompute.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/CSlamPointPairRegistrationDlg.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/CObjCCAlgorithm.cpp
 
    PARENT_SCOPE
 )

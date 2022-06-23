@@ -43,6 +43,7 @@
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
+//#include "CObjCCAlgorithm.h"
 
 using namespace CCCoreLib;
 using namespace lygs;
@@ -58,12 +59,7 @@ struct _MapMatch
 
 };
 
-enum CC_SUBSAMPLING_METHOD
-{
-    RANDOM  = 0,
-    SPACE   = 1,
-    OCTREE  = 2,
-};
+
 
 namespace Ui {
 class CSlamLadirDialog;
@@ -74,7 +70,7 @@ class MainWindow;
 class ccHObject;
 class ClidarCompute;
 class CAppConfig;
-class CDataChange;
+class CBackOptimization;
 class CSlamLadirDialog :public ccOverlayDialog
 {
     Q_OBJECT
@@ -89,6 +85,7 @@ public:
     explicit
     CSlamLadirDialog(QWidget *parent = nullptr, MainWindow *_pMainWindow = nullptr);
     ~CSlamLadirDialog();
+
 
     ///
     /// \brief SetShowCloudPoint
@@ -112,6 +109,20 @@ public:
     loadpoint(ccHObject* newGroups,const QString objname, const QStringList& filenames, QString dir = "",
                     QString fileFilter = QString(),
                    ccGLWindow* destWin = nullptr );
+
+    ///
+    /// \brief loadPointCloud
+    /// \param objname
+    /// \param filenames
+    /// \param dir
+    /// \param fileFilter
+    /// \param destWin
+    /// \return
+    ///
+    ccPointCloud *
+    loadPointCloud(const QString objname,	const QStringList& filenames, QString dir,
+                                     QString fileFilter/*=QString()*/,
+                                     ccGLWindow* destWin/*=0*/ = nullptr );
 
     ////
     /// \brief loadpointPCD
@@ -150,7 +161,7 @@ public:
     /// \brief GetGlobalOptimization
     /// \return
     ///
-    std::shared_ptr<CDataChange> 
+    std::shared_ptr<CBackOptimization>
     GetGlobalOptimization(){
         return  g_CDataChange ;
     }
@@ -161,6 +172,8 @@ public:
     ///
     std::shared_ptr<spdlog::logger>
     GetLogger(){return  my_logger;}
+
+
 
     ///
     /// \brief m_IndextrajectoryMap
@@ -195,22 +208,6 @@ public:
     ///
     std::vector<ccPointCloud *>  SetResample(ccPointCloud* cloud);
 
-
-    ///
-    /// \brief getSampledCloud
-    /// \param value
-    /// \param samplingMethod
-    /// \param cloud
-    /// \param m_sfMin
-    /// \param m_sfMax
-    /// \return
-    ///
-    template <typename Type>
-    CCCoreLib::ReferenceCloud* getSampledCloud(Type value,CC_SUBSAMPLING_METHOD samplingMethod ,
-                                               ccGenericPointCloud* cloud, ScalarType m_sfMin,ScalarType m_sfMax);
-
-
-
     
 
 signals:
@@ -230,20 +227,22 @@ signals:
 private slots:
     void
     on_load_path_clicked();
+    void on_pushButton_test_clicked();
+
 private:
     Ui::CSlamLadirDialog *ui;
     MainWindow * m_pMainWindow = nullptr;
     QString m_pointDir = nullptr;
     std::string m_filename = "0";
     std::string m_filenametnt = "0";
-    std::vector<lygs::SensorTrajectoryData> m_vecs ;
-    std::map<std::string,lygs::SensorTrajectoryData> g_trajectoryMap;
+    std::vector<SensorTrajectoryData> m_vecs ;
+    std::map<std::string,SensorTrajectoryData> g_trajectoryMap;
     QStringList m_selectedFiles;
     int m_currentOptimizationType = 0;
 
 
     std::shared_ptr<spdlog::logger> my_logger = nullptr;
-    std::shared_ptr<CDataChange> g_CDataChange = nullptr;
+    std::shared_ptr<CBackOptimization> g_CDataChange = nullptr;
 
 private:
     ///
@@ -256,6 +255,7 @@ private:
     /// \brief DataClear
     ///
     void DataClear();
+
 
 };
 

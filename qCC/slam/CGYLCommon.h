@@ -47,6 +47,14 @@ public:
 };
 
 
+struct SensorTrajectoryData {
+    std::string name;
+    long double time;
+    float x, y, z;
+    float roll, pitch, yaw;
+    float latitude, longitude, altitude;
+
+};
 
 
 namespace lygs{
@@ -60,14 +68,6 @@ namespace lygs{
 //    float latitude, longitude, altitude;
 
 //}trajectoryData, *trajectoryDataPtr;
- struct SensorTrajectoryData {
-    std::string name;
-    long double time;
-    float x, y, z;
-    float roll, pitch, yaw;
-    float latitude, longitude, altitude;
-
-};
 
 
 
@@ -252,7 +252,7 @@ public:
             string timeStr = res[0];
 
             std::string str = res[i++];
-            str.erase(std::remove(str.begin(),str.end(),'.'),str.end());
+            // str.erase(std::remove(str.begin(),str.end(),'.'),str.end());
             para.name = timeStr;
             para.time = stringToNum<long double>(str);
             para.x = atof(res[i++].c_str());
