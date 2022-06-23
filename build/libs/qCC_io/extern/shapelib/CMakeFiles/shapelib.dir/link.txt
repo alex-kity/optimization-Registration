@@ -1,2 +1,0 @@
-/usr/bin/x86_64-linux-gnu-ar qc libshapelibd.a CMakeFiles/shapelib.dir/shptree.c.o CMakeFiles/shapelib.dir/shpopen.c.o CMakeFiles/shapelib.dir/safileio.c.o CMakeFiles/shapelib.dir/dbfopen.c.o
-/usr/bin/x86_64-linux-gnu-ranlib libshapelibd.a
