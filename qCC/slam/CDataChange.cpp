@@ -1,5 +1,7 @@
 #include "CDataChange.h"
 #include "CGYLCommon.h"
+#include "spdlog/spdlog.h"
+#include <QApplication>
 
 CBackOptimization::CBackOptimization(){
     parameters.relinearizeThreshold = 0.1;
@@ -33,6 +35,8 @@ std::vector<std::string> CBackOptimization::split(const std::string &s, const st
 
 void CBackOptimization::loadTrajectory(std::string name){
 
+    _cloudKeyPoses6D.clear();
+    _cloudKeyTTL3D.clear();
     std::ifstream infile;
     int id = 0;
     std::string line;
@@ -82,8 +86,14 @@ void CBackOptimization::loadTrajectory(std::string name){
                 std::cout<<"id"<< pose.id <<std::endl;
                 break;
             }
+
+            qApp->processEvents();
         }
         // ROS_INFO("_cloudKeyPoses6D.size=%lu",_cloudKeyPoses6D.size());
+        std::cout<<"loadTrajectory errot"<< std::endl;
+        std::cout<<"cloudKeyPoses6D.size= "<< _cloudKeyPoses6D.size()<< std::endl;
+
+        spdlog::info("cloudKeyPoses6D.size= : {}",_cloudKeyPoses6D.size());
     }
 }
 
@@ -138,6 +148,7 @@ void CBackOptimization::addKeyFrameFactor(PointTypePose key_frame_pose)
 
     gtSAMgraph.resize(0);
     initialEstimate.clear();
+    // qApp->processEvents();
 }
 
 void CBackOptimization::addGpsFactor(GpsTTLCovS ttl)
@@ -157,6 +168,7 @@ void CBackOptimization::addGpsFactor(GpsTTLCovS ttl)
     //isam->update();
     gtSAMgraph.resize(0);
     last_gps_id = ttl.id;
+    // qApp->processEvents();
 }
 
 void CBackOptimization::addLoopClosureFactor(PointTypePose key_frame_pose, int closest_frame_id)

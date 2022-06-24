@@ -56,6 +56,7 @@
 #include <map>
 #include <string>
 #include <mutex>
+#include "RegistrationTools.h"
 
 
 enum CC_SUBSAMPLING_METHOD
@@ -64,6 +65,25 @@ enum CC_SUBSAMPLING_METHOD
     SPACE   = 1,
     OCTREE  = 2,
 };
+
+
+typedef struct _ICPPERDATA
+{
+    double minRMSDecrease ;
+    unsigned maxIterationCount;
+    unsigned randomSamplingLimit;
+    bool removeFarthestPoints ;
+    bool useDataSFAsWeights ;
+    bool useModelSFAsWeights ;
+    bool adjustScale  ;
+    int transformationFilters	;
+    unsigned finalOverlap ;
+    int method;
+    int maxThreadCount ;
+    bool bisREname = true; 
+
+}ICPPERDATA;
+
 
 
 using namespace CCCoreLib;
@@ -154,7 +174,7 @@ public:
     /// \param transcloud
     /// \param dstcloud
     ///
-    void AutoICPRegister(ccPointCloud *transcloud, ccPointCloud *dstcloud, ccGLMatrix transMat);
+    double AutoICPRegister(ICPPERDATA _icpperdata_t,ccPointCloud* transcloud,ccPointCloud* dstcloud,ccGLMatrix transMat);
 };
 
 

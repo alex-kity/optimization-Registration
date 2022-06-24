@@ -305,55 +305,39 @@ std::vector<ccPointCloud *>  CObjCCAlgorithm::SetResample(ccPointCloud* cloud)
 
 
 
-
-
-
-void CObjCCAlgorithm::AutoICPRegister(ccPointCloud* transcloud,ccPointCloud* dstcloud,ccGLMatrix transMat)
+double CObjCCAlgorithm::AutoICPRegister(ICPPERDATA _icpperdata_t,ccPointCloud* transcloud,ccPointCloud* dstcloud,ccGLMatrix transMat)
 {
 
     ccHObject* data = static_cast<ccHObject*>(transcloud);
     ccHObject* model = static_cast<ccHObject*>(dstcloud);
 
-    // ccRegistrationDlg rDlg(data, model, this);
-    // if (!rDlg.exec())
-    //     return;
-
-    // //DGM (23/01/09): model and data order may have changed!
-    // model = rDlg.getModelEntity();
-    // data = rDlg.getDataEntity();
-
-    double minRMSDecrease ;
-    unsigned maxIterationCount;
-    unsigned randomSamplingLimit;
-    bool removeFarthestPoints ;
-    bool useDataSFAsWeights ;
-    bool useModelSFAsWeights ;
-    bool adjustScale  ;
-    int transformationFilters	;
-    unsigned finalOverlap ;
+    double minRMSDecrease = _icpperdata_t.minRMSDecrease;
+    unsigned maxIterationCount = _icpperdata_t.maxIterationCount;
+    unsigned randomSamplingLimit = _icpperdata_t.randomSamplingLimit;
+    bool removeFarthestPoints  = _icpperdata_t.removeFarthestPoints;
+    bool useDataSFAsWeights  = _icpperdata_t.useDataSFAsWeights;
+    bool useModelSFAsWeights  = _icpperdata_t.useModelSFAsWeights;
+    bool adjustScale   = _icpperdata_t.adjustScale;
+    int transformationFilters	 = _icpperdata_t.transformationFilters;
+    unsigned finalOverlap  = _icpperdata_t.finalOverlap;
     CCCoreLib::ICPRegistrationTools::CONVERGENCE_TYPE method;
-    int maxThreadCount ;
 
+    if(_icpperdata_t.method == 0)
+    {
+        method = CCCoreLib::ICPRegistrationTools::CONVERGENCE_TYPE::MAX_ERROR_CONVERGENCE ;
+    }
+    else{
+        method = CCCoreLib::ICPRegistrationTools::CONVERGENCE_TYPE::MAX_ITER_CONVERGENCE;
+    }
 
-    minRMSDecrease = 1e-05;
-    maxIterationCount= 20;
-    randomSamplingLimit= 50000;
-    removeFarthestPoints= true;
-    useDataSFAsWeights= false;
-    useModelSFAsWeights= false;
-    adjustScale= false;
-    transformationFilters= false;
-    transformationFilters= false;
-    finalOverlap= 100;
-    method= CCCoreLib::ICPRegistrationTools::CONVERGENCE_TYPE::MAX_ERROR_CONVERGENCE ;
-    maxThreadCount= 8;
+    int maxThreadCount  = _icpperdata_t.maxThreadCount;
 
 
     //   double minRMSDecrease = rDlg.getMinRMSDecrease();
     if (std::isnan(minRMSDecrease))
     {
         ccLog::Error(QString("Invalid minimum RMS decrease value"));
-        return;
+        return 0.0f;
     }
     if (minRMSDecrease < ccRegistrationDlg::GetAbsoluteMinRMSDecrease())
     {
@@ -361,20 +345,6 @@ void CObjCCAlgorithm::AutoICPRegister(ccPointCloud* transcloud,ccPointCloud* dst
         ccLog::Error(QString("Minimum RMS decrease value is too small.\n%1 will be used instead (numerical accuracy limit).").arg(minRMSDecrease, 0, 'E', 1));
         // rDlg.setMinRMSDecrease(minRMSDecrease);
     }
-
-
-    //    std::cout<<"minRMSDecrease: "<<minRMSDecrease<<std::endl;
-    //    std::cout<<"maxIterationCount: "<<maxIterationCount<<std::endl;
-    //    std::cout<<"randomSamplingLimit: "<<randomSamplingLimit<<std::endl;
-    //    std::cout<<"removeFarthestPoints: "<<removeFarthestPoints<<std::endl;
-    //    std::cout<<"useDataSFAsWeights: "<<useDataSFAsWeights<<std::endl;
-    //    std::cout<<"useModelSFAsWeights: "<<useModelSFAsWeights<<std::endl;
-    //    std::cout<<"adjustScale: "<<adjustScale<<std::endl;
-    //    std::cout<<"transformationFilters: "<<transformationFilters<<std::endl;
-    //    std::cout<<"transformationFilters: "<<transformationFilters<<std::endl;
-    //    std::cout<<"finalOverlap: "<<finalOverlap<<std::endl;
-    //    std::cout<<"method: "<<method<<std::endl;
-    //    std::cout<<"maxThreadCount: "<<maxThreadCount<<std::endl;
 
 
     double finalError = 0.0;
@@ -529,7 +499,15 @@ void CObjCCAlgorithm::AutoICPRegister(ccPointCloud* transcloud,ccPointCloud* dst
             }
 
             data->prepareDisplayForRefresh_recursive();
-            data->setName(data->getName() + QString(".registered"));
+            if(_icpperdata_t.bisREname)
+            {
+                data->setName(data->getName() + QString(".registered"));
+
+            }
+            else
+            {
+                data->setName(data->getName());
+            }
             // zoomOn(data);
 
         }
@@ -540,6 +518,7 @@ void CObjCCAlgorithm::AutoICPRegister(ccPointCloud* transcloud,ccPointCloud* dst
     }
 
 
+    return finalError;
 }
 
 

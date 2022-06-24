@@ -34,6 +34,7 @@
 #include <ccPointCloud.h>
 #include <mainwindow.h>
 #include <QThread>
+#include "ccHObject.h"
 
 //QCC_glWindow
 #include <ccGLWidget.h>
@@ -56,6 +57,11 @@ struct _MapMatch
     QStringList matchinglist;
 
     QString name;
+
+    bool isSame = false;
+
+    int matchedid = 0;
+    int matchedingid = 0;
 
 };
 
@@ -93,44 +99,8 @@ public:
     ///
     void
     SetShowCloudPoint(std::vector<std::pair<unsigned, unsigned> > match,
-                      std::function<_MapMatch(int,int)> func);
+                      std::function<_MapMatch(int,int,bool)> func, bool isSame = false);
 
-
-    ///
-    /// \brief loadpoint
-    /// \param newGroups
-    /// \param objname
-    /// \param filenames
-    /// \param dir
-    /// \param fileFilter
-    /// \param destWin
-    ///
-    void
-    loadpoint(ccHObject* newGroups,const QString objname, const QStringList& filenames, QString dir = "",
-                    QString fileFilter = QString(),
-                   ccGLWindow* destWin = nullptr );
-
-    ///
-    /// \brief loadPointCloud
-    /// \param objname
-    /// \param filenames
-    /// \param dir
-    /// \param fileFilter
-    /// \param destWin
-    /// \return
-    ///
-    ccPointCloud *
-    loadPointCloud(const QString objname,	const QStringList& filenames, QString dir,
-                                     QString fileFilter/*=QString()*/,
-                                     ccGLWindow* destWin/*=0*/ = nullptr );
-
-    ////
-    /// \brief loadpointPCD
-    /// \param objname
-    /// \param filenames
-    ///
-    void
-    loadpointPCD(const QString objname, const QStringList &filenames);
 
     ///
     /// \brief changeMat
@@ -181,6 +151,45 @@ public:
     std::map<int,ccGLMatrix> m_IndextrajectoryMap;
 
 
+private:
+
+    ///
+    /// \brief loadpoint
+    /// \param newGroups
+    /// \param objname
+    /// \param filenames
+    /// \param dir
+    /// \param fileFilter
+    /// \param destWin
+    ///
+    void
+    loadpoint(ccHObject* newGroups,const QString objname, const QStringList& filenames, QString dir = "",
+                    QString fileFilter = QString(),
+                   ccGLWindow* destWin = nullptr );
+
+    ///
+    /// \brief loadPointCloud
+    /// \param objname
+    /// \param filenames
+    /// \param dir
+    /// \param fileFilter
+    /// \param destWin
+    /// \return
+    ///
+    ccPointCloud *
+    loadPointCloud(const QString objname,	const QStringList& filenames, QString dir,
+                                     QString fileFilter/*=QString()*/,
+                                     ccGLWindow* destWin/*=0*/ = nullptr );
+
+    ////
+    /// \brief loadpointPCD
+    /// \param objname
+    /// \param filenames
+    ///
+    void
+    loadpointPCD(const QString objname, const QStringList &filenames);
+
+
 
     ///
     /// \brief DataSpit
@@ -188,7 +197,21 @@ public:
     /// \param second
     /// \return
     ///
-    _MapMatch DataSpit(int first, int second);
+    _MapMatch ReserveDirDataSpit(int first, int second,bool isSameDir = false);
+
+    ///
+    /// \brief SameDirDataSpit
+    /// \param first
+    /// \param second
+    /// \return
+    ///
+    _MapMatch SameDirDataSpit(int first,int second);
+
+
+    ///
+    /// \brief ShowTrajectorydata
+    ///
+    void ShowTrajectorydata();
 
 
 
@@ -208,13 +231,14 @@ public:
     ///
     std::vector<ccPointCloud *>  SetResample(ccPointCloud* cloud);
 
+    ///
+    void GetResultRegister(ccGLMatrix finalTrans,int m_strfirstID,int m_strsecondID);
+
     
 
 signals:
     void
     SignalsLoadPath(QList<QVector3D> _vec);
-    void
-    SignalsTestLoadPath(QList<QVector3D> _vec);
     void
     SignalsResample();
     void
@@ -243,6 +267,8 @@ private:
 
     std::shared_ptr<spdlog::logger> my_logger = nullptr;
     std::shared_ptr<CBackOptimization> g_CDataChange = nullptr;
+
+    ccHObject* m_ladirnewGroup = nullptr;
 
 private:
     ///

@@ -151,6 +151,7 @@ public:
     ///
     static void
     GetPointDataSelf(std::vector<  SensorTrajectoryData> _vecs,
+                    std::vector<std::pair<unsigned, unsigned>> samematch,
                      std::vector<std::pair<unsigned,unsigned>> &match);
 
 

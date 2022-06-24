@@ -184,14 +184,14 @@ std::vector<ccPointCloud *>  CSlamLadirDialog::SetResampleGui(ccPointCloud* clou
 
 void CSlamLadirDialog::on_pushButton_test_clicked()
 {
-     QString dir = "/home/alexlyg/file/2022-01-14-16-15-03/key_frames/";
+    QString dir = "/home/alexlyg/file/2022-01-14-16-15-03/key_frames/";
 
 
     QStringList filename1{
-            "1642148136.989636.pcd"
+        "1642148136.989636.pcd"
     };
 
-     QStringList filename2{
+    QStringList filename2{
         "1642148137.089613.pcd"
     };
 
@@ -201,7 +201,23 @@ void CSlamLadirDialog::on_pushButton_test_clicked()
     ccPointCloud* dstcloud = loadPointCloud("2",filename2,dir,g_CAppConfig.currentOpenDlgFilter);
 
     ccGLMatrix transMat;
-    m_pCObjCCAlgorithm->AutoICPRegister(transcloud,dstcloud,transMat);
+
+    ICPPERDATA _icpperdata_t;
+
+    _icpperdata_t.minRMSDecrease = 1e-05;
+    _icpperdata_t.maxIterationCount= 20;
+    _icpperdata_t.randomSamplingLimit= 50000;
+    _icpperdata_t.removeFarthestPoints= true;
+    _icpperdata_t.useDataSFAsWeights= false;
+    _icpperdata_t.useModelSFAsWeights= false;
+    _icpperdata_t.adjustScale= false;
+    _icpperdata_t.transformationFilters= false;
+    _icpperdata_t.finalOverlap= 100;
+    _icpperdata_t.method= 0 ;
+    _icpperdata_t.maxThreadCount= 8;
+    _icpperdata_t.bisREname = false;
+
+    m_pCObjCCAlgorithm->AutoICPRegister(_icpperdata_t,transcloud,dstcloud,transMat);
 
 
     m_pMainWindow->addToDB(transcloud, true, true, false);
@@ -219,7 +235,29 @@ void CSlamLadirDialog::initForm()
     connect(ui->pushButtonpointresi,&QPushButton::clicked,this,[=](){emit SignalsRegisterPoint();});
     connect(ui->btnclose,&QPushButton::clicked,this,[=](){this->close();});
     connect(ui->m_btnTransFrom,&QPushButton::clicked,this,[=](){emit SignalsTransFrom();});
-    connect(ui->SavePath,&QPushButton::clicked,this,[=](){emit SignalsSavePath();});
+    connect(ui->SavePath,&QPushButton::clicked,this,[=](){
+        QString _pointDir = QFileDialog::getExistingDirectory(
+                    nullptr, "choose src Directory",
+                    "/");
+
+        if (_pointDir.isEmpty())
+        {
+            _pointDir = nullptr;
+            return;
+        }
+
+        try
+        {
+            if(g_CDataChange!=nullptr)
+                g_CDataChange->graphOptimizerAndSavePoses(_pointDir.toStdString());
+        }
+        catch (const std::bad_alloc&)
+        {
+            ccLog::Error(tr("Based on Optimization"));
+        }
+
+    });
+
     connect(ui->btn_TestPath,&QPushButton::clicked,this,[=](){
         //get trajectory data
         lygs::CGYLCommon _CGYLCommon;
@@ -229,7 +267,6 @@ void CSlamLadirDialog::initForm()
 
         if(!fileName.isEmpty())
         {
-            m_filenametnt = fileName.toStdString();
             std::map<std::string,SensorTrajectoryData> trajectorys;
             std::vector<SensorTrajectoryData>  m_vecs = _CGYLCommon.readTrajectoryToxian1(fileName.toStdString(),trajectorys);
 
@@ -244,7 +281,40 @@ void CSlamLadirDialog::initForm()
 
                 _vec3d.push_back(vec);
             }
-            emit SignalsTestLoadPath(_vec3d);
+
+            ccPointCloud* pclCloud = new ccPointCloud(fileName);
+            ccHObject* ladirnewGroup = nullptr;
+            //Sphere
+            if(ladirnewGroup==nullptr)
+            {
+                ladirnewGroup = new ccHObject(QString::fromLocal8Bit("ladir-path-dnt"));
+            }
+
+
+            //pointcloud
+            int num = _vec3d.size();
+            pclCloud->reserve(static_cast<unsigned>(num));
+
+            for (int i = 0; i < num; i++)
+            {
+                pclCloud->addPoint(CCVector3f(_vec3d[i].x(), _vec3d[i].y(), _vec3d[i].z()));
+            }
+            pclCloud->setPointSize(3);
+            ladirnewGroup->addChild(pclCloud);
+            //        //obj
+            //        for (int i = 0;i<_vec.size();i++) {
+            //            ccGenericPrimitive* primitive = nullptr;
+            //            ccGLMatrix transMat;
+            //            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+
+            //            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
+            //                            static_cast<PointCoordinateType>(0.3),
+            //                            static_cast<PointCoordinateType>(0.3));
+            //            primitive = new ccBox(dims,&transMat);
+            //            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
+            //            newGroup->addChild(primitive);
+            //        }
+            m_pMainWindow->addToDB(m_ladirnewGroup, true, true, false);
 
         }
     });
@@ -277,87 +347,6 @@ void CSlamLadirDialog::DataClear()
     m_selectedFiles.clear();
     m_IndextrajectoryMap.clear();
 }
-
-
-
-///
-/// \brief CSlamLadirDialog::on_load_path_clicked
-///
-void CSlamLadirDialog::on_load_path_clicked()
-{
-    //get trajectory data
-    
-    lygs::CGYLCommon _CGYLCommon;
-    QFileDialog _FileDialog;
-    _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
-    QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
-
-
-    if(!fileName.isEmpty())
-    {
-        m_filename = fileName.toStdString();
-        spdlog::info("trajectory : {}",m_filename);
-        //        m_recentFiles->addFilePath( fileName );
-        DataClear();
-        m_vecs = _CGYLCommon.readTrajectoryToxian1(m_filename,g_trajectoryMap);
-
-        std::function<void()> fun_type = [=]()
-        {
-            for (int i = 0; i < m_vecs.size(); i++)
-            {
-                SensorTrajectoryData lidarSe3 = m_vecs[i];
-                Eigen::Matrix4f Roi2w = ClidarCompute::getSE3Mat(lidarSe3.yaw * (180.0 / M_PI), lidarSe3.pitch * (180.0 / M_PI), lidarSe3.roll * (180.0 / M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
-                ccGLMatrix transTemp = ClidarCompute::FromEigenMat(Roi2w);
-                m_IndextrajectoryMap[i] = transTemp;
-            }
-
-            //    m_pMainWindow->ADDRecently(fileName);
-            // show trajectorydata
-            QList<QVector3D> _vec3d;
-            QVector3D vec;
-            for (int i = 0; i < m_vecs.size(); i++)
-            {
-                vec.setX(m_vecs[i].x);
-                vec.setY(m_vecs[i].y);
-                vec.setZ(m_vecs[i].z);
-                _vec3d.push_back(vec);
-            }
-            emit SignalsLoadPath(_vec3d);
-
-            /// 1
-            std::vector<std::pair<unsigned, unsigned>> match;
-            ClidarCompute::GetPointDataSelf(m_vecs, match);
-            //        ClidarCompute::GetPointDataSelf1(m_vecs,match, ClidarCompute::Index_Iter);
-
-            if (!match.empty())
-            {
-                /// 2
-                std::function<_MapMatch(int, int)> func =
-                        std::bind(&CSlamLadirDialog::DataSpit, this,std::placeholders::_1,std::placeholders::_2);
-                SetShowCloudPoint(match, func);
-            }
-        };
-
-        //if ONCE point cloud , we registrae twice
-        if(m_currentOptimizationType == 0)
-        {
-            
-            fun_type();
-
-        }
-        else if(m_currentOptimizationType == 1)
-        {
-            //if the same point cloud , we registrae twice
-            // fun_type();
-        }
-
-        ui->widget_option->show();
-
-    }
-
-}
-
-
 
 
 
@@ -630,11 +619,11 @@ ccPointCloud * CSlamLadirDialog::loadPointCloud(const QString objname,	const QSt
 /// \param second
 /// \return
 ///
-_MapMatch CSlamLadirDialog::DataSpit(int first,int second)
+_MapMatch CSlamLadirDialog::ReserveDirDataSpit(int first,int second,bool isSameDir)
 {
     _MapMatch _MapMatch_t;
-    std::string flagname ;
     QString strtype = ".pcd";
+    QStringList selectedFilesMatched ,selectedFilesMatching;
 
     std::function<QStringList(int ,int)> funcConvert = [=](int index_t,int step) mutable->QStringList
     {
@@ -655,35 +644,218 @@ _MapMatch CSlamLadirDialog::DataSpit(int first,int second)
         return selectedFilesMatched;
     };
 
-    //1
-    int index = first + g_CAppConfig.firstsatrt;
-    QStringList selectedFilesMatched = funcConvert(index,g_CAppConfig.firststep);
-    //2
-    index = second+ g_CAppConfig.secondsatrt;
-    QStringList selectedFilesMatching = funcConvert(index,g_CAppConfig.secondstep);
+
+    if(isSameDir)
+    {
+        //1
+        int index = first ;
+        selectedFilesMatched = funcConvert(index,1);
+        //2
+        index = second;
+        selectedFilesMatching = funcConvert(index,10);
+        _MapMatch_t.isSame = true;
+    }
+    else
+    {
+
+        //1
+        int index = first + g_CAppConfig.firstsatrt;
+        selectedFilesMatched = funcConvert(index,g_CAppConfig.firststep);
+        //2
+        index = second+ g_CAppConfig.secondsatrt;
+        selectedFilesMatching = funcConvert(index,g_CAppConfig.secondstep);
+        _MapMatch_t.isSame = false;
+    }
 
 
-    flagname = "N-" +std::to_string(second)+"-"+std::to_string(first);
 
-    _MapMatch_t.name = QString(QString::fromLocal8Bit(flagname.c_str()));
+    _MapMatch_t.matchedid = first;
+
+    _MapMatch_t.matchedingid = second;
+
+    _MapMatch_t.name = "Reserve-" +QString::number(second)+"-"+QString::number(first);
 
     _MapMatch_t.matched = QString(QString::fromLocal8Bit(g_CAppConfig.Matched.c_str())) +
-            QString::number(second)  + _MapMatch_t.name;
+            QString::number(first)  + _MapMatch_t.name;
     _MapMatch_t.matchedlist = selectedFilesMatched;
 
     _MapMatch_t.matching = QString(QString::fromLocal8Bit(g_CAppConfig.Matching.c_str())) +
-            QString::number(first)  + _MapMatch_t.name;
+            QString::number(second)  + _MapMatch_t.name;
     _MapMatch_t.matchinglist = selectedFilesMatching;
+
 
     return _MapMatch_t;
 }
+
+
+
+
+
+
+
+
+///
+/// \brief CSlamLadirDialog::on_load_path_clicked
+///
+void CSlamLadirDialog::on_load_path_clicked()
+{    
+    lygs::CGYLCommon _CGYLCommon;
+    QFileDialog _FileDialog;
+    _FileDialog.setStyleSheet("color: rgb(241, 241, 241);");
+    QString fileName = _FileDialog.getOpenFileName(nullptr,QStringLiteral("trajectory！"),"F:",QStringLiteral("file(*txt)"));
+
+    if(!fileName.isEmpty())
+    {
+        m_filename = fileName.toStdString();
+        spdlog::info("trajectory : {}",m_filename);
+        //        m_recentFiles->addFilePath( fileName );
+        DataClear();
+        bool isOpt = false;
+
+        if(isOpt)
+        {
+            m_vecs = _CGYLCommon.readTrajectoryToxian1(m_filename,g_trajectoryMap);
+        }
+        else
+        {   
+            spdlog::info("111111");
+            g_CDataChange->loadTrajectory(m_filename);
+            spdlog::info("22222");
+            g_CDataChange->GetTrajectOptData(m_vecs,g_trajectoryMap);
+            spdlog::info("33333");
+        }
+        spdlog::info("vecs size : {}",m_vecs.size());
+        ShowTrajectorydata();
+
+        std::function<void()> fun_type = [=]()
+        {
+            for (int i = 0; i < m_vecs.size(); i++)
+            {
+                SensorTrajectoryData lidarSe3 = m_vecs[i];
+                Eigen::Matrix4f Roi2w = ClidarCompute::getSE3Mat(lidarSe3.yaw * (180.0 / M_PI), lidarSe3.pitch * (180.0 / M_PI), lidarSe3.roll * (180.0 / M_PI), lidarSe3.x, lidarSe3.y, lidarSe3.z, "ypr");
+                ccGLMatrix transTemp = ClidarCompute::FromEigenMat(Roi2w);
+                m_IndextrajectoryMap[i] = transTemp;
+            }
+
+            try
+            {
+                spdlog::info("Optimization : loadTrajectory");
+                // if(g_CDataChange!=nullptr)
+                //     g_CDataChange->loadTrajectory(m_pSlamLadirDialog->GetFileName());
+            }
+            catch (const std::bad_alloc&)
+            {
+                ccLog::Error(tr("Based on Optimization"));
+            }
+
+
+            /// 1
+            std::vector<std::pair<unsigned, unsigned>> samematch;
+            std::vector<std::pair<unsigned, unsigned>> reservematch;
+            std::function<_MapMatch(int, int,bool)> func;
+            ClidarCompute::GetPointDataSelf(m_vecs,samematch ,reservematch);
+            //        ClidarCompute::GetPointDataSelf1(m_vecs,match, ClidarCompute::Index_Iter);
+
+            if (!reservematch.empty())
+            {
+                /// 2
+                func = std::bind(&CSlamLadirDialog::ReserveDirDataSpit, this,std::placeholders::_1,
+                                 std::placeholders::_2,false);
+                SetShowCloudPoint(reservematch, func,false);
+            }
+            else if(samematch.empty())
+            {
+                
+                /// 2
+                func = std::bind(&CSlamLadirDialog::ReserveDirDataSpit, this,std::placeholders::_1,
+                                 std::placeholders::_2,true);
+                SetShowCloudPoint(samematch, func,true);
+                //                std::function<_MapMatch(int, int)> func =
+                //                        std::bind(&CSlamLadirDialog::SameDirDataSpit, this,std::placeholders::_1,std::placeholders::_2);
+                //                SetShowCloudPoint(samematch, func);
+            }
+        };
+
+        //if ONCE point cloud , we registrae twice
+        if(m_currentOptimizationType == 0)
+        {
+            fun_type();
+        }
+        // if many data about tranject
+        else if(m_currentOptimizationType == 1)
+        {
+            //if the same point cloud , we registrae twice
+            // fun_type();
+        }
+
+        ui->widget_option->show();
+
+    }
+    else
+    {
+        return;
+    }
+
+}
+
+
+void CSlamLadirDialog::ShowTrajectorydata()
+{
+    //    m_pMainWindow->ADDRecently(fileName);
+    {
+        // show trajectorydata
+
+
+        ccPointCloud* pclCloud = new ccPointCloud(QString::fromLocal8Bit(m_filename.c_str()));
+
+        //Sphere
+        if(m_ladirnewGroup==nullptr)
+        {
+            m_ladirnewGroup = new ccHObject(QString::fromLocal8Bit("ladir path"));
+        }
+
+        //pointcloud
+        int num = m_vecs.size();
+        pclCloud->reserve(static_cast<unsigned>(num));
+
+        for (int i = 0; i < num; i++)
+        {
+            pclCloud->addPoint(CCVector3f(m_vecs[i].x, m_vecs[i].y, m_vecs[i].z));
+        }
+        pclCloud->setPointSize(3);
+        m_ladirnewGroup->addChild(pclCloud);
+
+
+        //        //obj
+        //        for (int i = 0;i<_vec.size();i++) {
+        //            ccGenericPrimitive* primitive = nullptr;
+        //            ccGLMatrix transMat;
+        //            transMat.setTranslation(CCVector3f(_vec[i].x(), _vec[i].y(), _vec[i].z()));
+
+        //            CCVector3 dims(	static_cast<PointCoordinateType>(0.3),
+        //                            static_cast<PointCoordinateType>(0.3),
+        //                            static_cast<PointCoordinateType>(0.3));
+        //            primitive = new ccBox(dims,&transMat);
+        //            //            primitive = new ccSphere(static_cast<PointCoordinateType>(10.0f), &transMat);
+        //            newGroup->addChild(primitive);
+        //        }
+
+        m_pMainWindow->addToDB(m_ladirnewGroup, true, true, false);
+    }
+
+}
+
+
+
+
+
 
 ///
 /// \brief CSlamLadirDialog::SetShowCloudPoint
 /// \param match
 ///
 void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned>> match,
-                                         std::function<_MapMatch(int,int)> func)
+                                         std::function<_MapMatch(int,int,bool)> func,bool isSame)
 {
     if (m_pointDir == nullptr || m_pointDir.isEmpty())
     {
@@ -735,7 +907,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         if(!m_vecs.empty())
         {
 
-            _showVecpointlist.push_back(func(iter->first,iter->second));
+            _showVecpointlist.push_back(func(iter->first,iter->second,isSame));
             // _showVecpointlist.push_back(DataSpit(iter->first,iter->second));
         }
     }
@@ -745,16 +917,70 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         return;
     else
     {
+        ccGLMatrix transMat;
+        ICPPERDATA _icpperdata_t;
         int num = _showVecpointlist.size()+1;
         m_pProgressDialog.setRange(0,num); //设置进度对话框的步进范围
+        double dManualRegistration = 0.0f;
+        double dminRMSRegistration = 0.35;
+        long double g_dprice = 0.001;
+
+        _icpperdata_t.minRMSDecrease = 1e-05;
+        _icpperdata_t.maxIterationCount= 20;
+        _icpperdata_t.randomSamplingLimit= 50000;
+        _icpperdata_t.removeFarthestPoints= true;
+        _icpperdata_t.useDataSFAsWeights= false;
+        _icpperdata_t.useModelSFAsWeights= false;
+        _icpperdata_t.adjustScale= false;
+        _icpperdata_t.transformationFilters= false;
+        _icpperdata_t.finalOverlap= 100;
+        _icpperdata_t.method= 0 ;
+        _icpperdata_t.maxThreadCount= 8;
+        _icpperdata_t.bisREname = false;
+
 
         for (int i = 0;i<_showVecpointlist.size();i++) {
             m_pProgressDialog.setValue(i);
             _MapMatch _MapMatch_t = _showVecpointlist[i];
-            ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
-            loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-            loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-            m_pMainWindow->addToDB(newGroups, true, true, false);
+
+            if(_MapMatch_t.isSame)
+            {
+
+                ccPointCloud* transcloud = loadPointCloud(_MapMatch_t.matched,_MapMatch_t.matchedlist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+                ccPointCloud* dstcloud = loadPointCloud(_MapMatch_t.matching,_MapMatch_t.matchinglist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+                dManualRegistration = m_pCObjCCAlgorithm->AutoICPRegister(_icpperdata_t,transcloud,dstcloud,transMat);
+
+                if(dManualRegistration-dminRMSRegistration>g_dprice)
+                {
+                    m_pMainWindow->addToDB(transcloud, true, true, false);
+                    m_pMainWindow->addToDB(dstcloud, true, true, false);
+                    GetResultRegister(transMat,_MapMatch_t.matchedid,_MapMatch_t.matchedingid);
+                }
+                else
+                {
+                    ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
+                    std::function<void(ccPointCloud *)> funcpoint = [=](ccPointCloud *firstCloud)
+                    {
+                        std::vector<ccPointCloud *> resultingClouds = m_pCObjCCAlgorithm->SetResample(firstCloud);
+                        for(int i = 0;i<resultingClouds.size();i++)
+                        {
+                            newGroups->addChild(resultingClouds[i]);
+                        }
+                    };
+                    funcpoint(transcloud);
+                    funcpoint(dstcloud);
+                    m_pMainWindow->addToDB(newGroups, true, true, false);
+
+                }
+
+            }
+            else
+            {
+                ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
+                loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+                loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+                m_pMainWindow->addToDB(newGroups, true, true, false);
+            }
 
             if(m_pProgressDialog.wasCanceled())
                 return;
@@ -765,8 +991,79 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
     m_pProgressDialog.close();
     //    delete m_pProgressDialog;
+}
+
+
+
+
+void CSlamLadirDialog::GetResultRegister(ccGLMatrix finalTrans,int m_strfirstID,int m_strsecondID)
+{
+    try {
+
+        float phi_rad = 0.0;
+        float theta_rad = 0.0;
+        float psi_rad = 0.0;
+        CCVector3 t3D;
+        ccGLMatrix finalTransCorrected = finalTrans;
+
+        //将相对量变化为绝对直
+        if(m_strsecondID!=0)
+        {
+
+            ccGLMatrix tempTrans = m_IndextrajectoryMap[m_strsecondID];
+
+            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+            finalTrans = finalTrans * tempTrans ;
+
+            tempTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+            finalTrans.getParameters(phi_rad,theta_rad,psi_rad,t3D);
+            finalTransCorrected.initFromParameters(phi_rad,theta_rad,psi_rad,t3D);
+
+
+            PointTypePose key_frame_pose;
+
+            key_frame_pose.id = m_strsecondID;
+            key_frame_pose.yaw = phi_rad;
+            key_frame_pose.pitch = theta_rad;
+            key_frame_pose.roll = psi_rad;
+
+            key_frame_pose.x = t3D.x;
+            key_frame_pose.y = t3D.y;
+            key_frame_pose.z = t3D.z;
+
+
+            try
+            {
+                if(g_CDataChange!=nullptr)
+                    g_CDataChange->addLoopClosureFactor(key_frame_pose, m_strfirstID);
+            }
+            catch (const std::bad_alloc&)
+            {
+                ccLog::Error(tr("Based on Optimization"));
+            }
+
+
+        }
+
+    }
+    catch (const std::bad_alloc&)
+    {
+        ccLog::Error(tr("Not enough memory"));
+    }
+
+
 
 }
+
+
+
+
+
+
+
 
 
 

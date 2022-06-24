@@ -169,7 +169,8 @@ Eigen::Matrix4f ClidarCompute::getSE3Mat(float yaw, float pitch, float roll, flo
 /// \param match
 ///
 void ClidarCompute::GetPointDataSelf(std::vector<  SensorTrajectoryData> _vecs,
-                                     std::vector<std::pair<unsigned,unsigned>> &match)
+                                    std::vector<std::pair<unsigned, unsigned>> samematch,
+                                     std::vector<std::pair<unsigned,unsigned>> &reservematch)
 {
     lyg::PointCloud<double> tmpCloud1 = TrajectoryDataToPointCloud<SensorTrajectoryData>(_vecs);
 
@@ -203,9 +204,17 @@ void ClidarCompute::GetPointDataSelf(std::vector<  SensorTrajectoryData> _vecs,
                 {
                     //perform
                     std::cout<<i<<"perform = "<<iter->first<<std::endl;
-                    //get result
-                    match.push_back(std::make_pair(i, iter->first));
 
+                    if (fabs(_vecs[i].yaw - _vecs[iter->first].yaw)<0.1)
+                    {
+                        /* get result */
+                        samematch.push_back(std::make_pair(i, iter->first));
+                    }
+                    else
+                    {
+                        /* get result */
+                       reservematch.push_back(std::make_pair(i, iter->first));
+                    }
                     i = i+g_CAppConfig.jumpfram;
                     break;
                 }
