@@ -194,7 +194,7 @@ std::vector<ccPointCloud *>  CObjCCAlgorithm::SetResample(ccPointCloud* cloud)
 
     CC_SUBSAMPLING_METHOD samplingMethod =  CC_SUBSAMPLING_METHOD::SPACE;
     int random = 100.0;
-    float space_t = 0.01f;
+    float space_t = 0.1f;
     int octree_t = 1000000;
 
     std::vector<ccPointCloud *> resultingClouds;
@@ -513,7 +513,7 @@ double CObjCCAlgorithm::AutoICPRegister(ICPPERDATA _icpperdata_t,ccPointCloud* t
         }
         // rmsString
         //pop-up summary
-         QMessageBox::information(nullptr, QString("Registration info"), summary.join("\n"));
+        //  QMessageBox::information(nullptr, QString("Registration info"), summary.join("\n"));
         // forceConsoleDisplay();
     }
 

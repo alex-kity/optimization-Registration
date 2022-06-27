@@ -621,6 +621,7 @@ ccPointCloud * CSlamLadirDialog::loadPointCloud(const QString objname,	const QSt
 ///
 _MapMatch CSlamLadirDialog::ReserveDirDataSpit(int first,int second,bool isSameDir)
 {
+    //big small
     _MapMatch _MapMatch_t;
     QString strtype = ".pcd";
     QStringList selectedFilesMatched ,selectedFilesMatching;
@@ -658,7 +659,7 @@ _MapMatch CSlamLadirDialog::ReserveDirDataSpit(int first,int second,bool isSameD
     else
     {
 
-        //1
+        //1 da
         int index = first + g_CAppConfig.firstsatrt;
         selectedFilesMatched = funcConvert(index,g_CAppConfig.firststep);
         //2
@@ -717,12 +718,9 @@ void CSlamLadirDialog::on_load_path_clicked()
             m_vecs = _CGYLCommon.readTrajectoryToxian1(m_filename,g_trajectoryMap);
         }
         else
-        {   
-            spdlog::info("111111");
+        {
             g_CDataChange->loadTrajectory(m_filename);
-            spdlog::info("22222");
             g_CDataChange->GetTrajectOptData(m_vecs,g_trajectoryMap);
-            spdlog::info("33333");
         }
         spdlog::info("vecs size : {}",m_vecs.size());
         ShowTrajectorydata();
@@ -740,6 +738,7 @@ void CSlamLadirDialog::on_load_path_clicked()
             try
             {
                 spdlog::info("Optimization : loadTrajectory");
+                //2022/0624
                 // if(g_CDataChange!=nullptr)
                 //     g_CDataChange->loadTrajectory(m_pSlamLadirDialog->GetFileName());
             }
@@ -756,6 +755,17 @@ void CSlamLadirDialog::on_load_path_clicked()
             ClidarCompute::GetPointDataSelf(m_vecs,samematch ,reservematch);
             //        ClidarCompute::GetPointDataSelf1(m_vecs,match, ClidarCompute::Index_Iter);
 
+            spdlog::info("reservematch: {}",reservematch.size());
+            spdlog::info("samematch: {}",samematch.size());
+
+            if(!samematch.empty())
+            {
+                /// 2
+                func = std::bind(&CSlamLadirDialog::ReserveDirDataSpit, this,std::placeholders::_1,
+                                 std::placeholders::_2,true);
+                SetShowCloudPoint(samematch, func,true);
+            }
+
             if (!reservematch.empty())
             {
                 /// 2
@@ -763,17 +773,7 @@ void CSlamLadirDialog::on_load_path_clicked()
                                  std::placeholders::_2,false);
                 SetShowCloudPoint(reservematch, func,false);
             }
-            else if(samematch.empty())
-            {
-                
-                /// 2
-                func = std::bind(&CSlamLadirDialog::ReserveDirDataSpit, this,std::placeholders::_1,
-                                 std::placeholders::_2,true);
-                SetShowCloudPoint(samematch, func,true);
-                //                std::function<_MapMatch(int, int)> func =
-                //                        std::bind(&CSlamLadirDialog::SameDirDataSpit, this,std::placeholders::_1,std::placeholders::_2);
-                //                SetShowCloudPoint(samematch, func);
-            }
+
         };
 
         //if ONCE point cloud , we registrae twice
@@ -902,6 +902,7 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
 
     std::vector<_MapMatch> _showVecpointlist;
     std::vector<std::pair<unsigned,unsigned>>::iterator iter;
+    spdlog::info("match : {}",match.size());
     for(iter = match.begin(); iter!= match.end(); iter++)
     {
         if(!m_vecs.empty())
@@ -911,6 +912,8 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
             // _showVecpointlist.push_back(DataSpit(iter->first,iter->second));
         }
     }
+    spdlog::info("issame : {}",_showVecpointlist.size());
+
 
 
     if (m_selectedFiles.isEmpty())
@@ -942,45 +945,74 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
         for (int i = 0;i<_showVecpointlist.size();i++) {
             m_pProgressDialog.setValue(i);
             _MapMatch _MapMatch_t = _showVecpointlist[i];
+            ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
+            std::function<void(ccPointCloud *)> funcpoint = [=](ccPointCloud *firstCloud)
+            {
+                std::vector<ccPointCloud *> resultingClouds = m_pCObjCCAlgorithm->SetResample(firstCloud);
+                for(int i = 0;i<resultingClouds.size();i++)
+                {
+                    newGroups->addChild(resultingClouds[i]);
+                }
+            };
 
+            ccPointCloud* transcloud = loadPointCloud(_MapMatch_t.matched,_MapMatch_t.matchedlist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+            ccPointCloud* dstcloud = loadPointCloud(_MapMatch_t.matching,_MapMatch_t.matchinglist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+            dManualRegistration = m_pCObjCCAlgorithm->AutoICPRegister(_icpperdata_t,transcloud,dstcloud,transMat);
+
+            spdlog::info("matchedingid : {}",_MapMatch_t.matchedingid);
+            spdlog::info("matchedid : {}",_MapMatch_t.matchedid);
             if(_MapMatch_t.isSame)
             {
-
-                ccPointCloud* transcloud = loadPointCloud(_MapMatch_t.matched,_MapMatch_t.matchedlist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-                ccPointCloud* dstcloud = loadPointCloud(_MapMatch_t.matching,_MapMatch_t.matchinglist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-                dManualRegistration = m_pCObjCCAlgorithm->AutoICPRegister(_icpperdata_t,transcloud,dstcloud,transMat);
-
-                if(dManualRegistration-dminRMSRegistration>g_dprice)
+                if(dManualRegistration-dminRMSRegistration<g_dprice)
                 {
-                    m_pMainWindow->addToDB(transcloud, true, true, false);
-                    m_pMainWindow->addToDB(dstcloud, true, true, false);
-                    GetResultRegister(transMat,_MapMatch_t.matchedid,_MapMatch_t.matchedingid);
+                    newGroups->setName(newGroups->getName()+"_same_autoregister");
+                    // GetResultRegister(transMat,_MapMatch_t.matchedid,_MapMatch_t.matchedingid);
+                    GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+                    delete transcloud;
+                    delete dstcloud;
+                    delete newGroups;
+
                 }
                 else
                 {
-                    ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
-                    std::function<void(ccPointCloud *)> funcpoint = [=](ccPointCloud *firstCloud)
-                    {
-                        std::vector<ccPointCloud *> resultingClouds = m_pCObjCCAlgorithm->SetResample(firstCloud);
-                        for(int i = 0;i<resultingClouds.size();i++)
-                        {
-                            newGroups->addChild(resultingClouds[i]);
-                        }
-                    };
+                    newGroups->setName(newGroups->getName()+"_same");
                     funcpoint(transcloud);
                     funcpoint(dstcloud);
                     m_pMainWindow->addToDB(newGroups, true, true, false);
-
+                    newGroups->setVisible(false); //hide the cloud
+                    newGroups->setEnabled(false);
                 }
 
-            }
-            else
+            }else
             {
-                ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
-                loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-                loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+                if(dManualRegistration-dminRMSRegistration<g_dprice)
+                {
+                    newGroups->setName(newGroups->getName()+"_reserve_autoregister");
+                    GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+
+                }
+                else
+                {
+                    newGroups->setName(newGroups->getName()+"_reserve");
+                }
+
+                funcpoint(transcloud);
+                funcpoint(dstcloud);
                 m_pMainWindow->addToDB(newGroups, true, true, false);
+                newGroups->setVisible(false); //hide the cloud
+                newGroups->setEnabled(false);
             }
+
+
+            // else
+            // {
+            //     ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
+            //     loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+            //     loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+            //     m_pMainWindow->addToDB(newGroups, true, true, false);
+            //     newGroups->setVisible(false); //hide the cloud
+            //     newGroups->setEnabled(false);
+            // }
 
             if(m_pProgressDialog.wasCanceled())
                 return;

@@ -90,9 +90,6 @@ void CBackOptimization::loadTrajectory(std::string name){
             qApp->processEvents();
         }
         // ROS_INFO("_cloudKeyPoses6D.size=%lu",_cloudKeyPoses6D.size());
-        std::cout<<"loadTrajectory errot"<< std::endl;
-        std::cout<<"cloudKeyPoses6D.size= "<< _cloudKeyPoses6D.size()<< std::endl;
-
         spdlog::info("cloudKeyPoses6D.size= : {}",_cloudKeyPoses6D.size());
     }
 }
@@ -104,7 +101,8 @@ void CBackOptimization::GetTrajectOptData(std::vector<SensorTrajectoryData> &_ve
     SensorTrajectoryData pose;
 
     for (int i = 0; i < isamCurrentEstimate.size(); ++i)
-    {   pose.time  = _cloudKeyPoses6D[i].time;
+    {   
+        pose.time  = _cloudKeyPoses6D[i].time;
         pose.x     = isamCurrentEstimate.at<Pose3>(i).translation().x();
         pose.y     = isamCurrentEstimate.at<Pose3>(i).translation().y();
         pose.z     = isamCurrentEstimate.at<Pose3>(i).translation().z();
@@ -113,6 +111,7 @@ void CBackOptimization::GetTrajectOptData(std::vector<SensorTrajectoryData> &_ve
         pose.yaw   = isamCurrentEstimate.at<Pose3>(i).rotation().yaw();
 
         std::string timeStr = std::to_string(pose.time );
+        pose.name = timeStr;
         map_trajectorys[timeStr] = pose;
         _vecs.push_back(pose);
     }

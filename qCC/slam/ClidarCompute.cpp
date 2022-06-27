@@ -118,7 +118,7 @@ int ClidarCompute::Index_Iter(int i,std::vector<std::pair<uint32_t, double>> ret
             //get result
             match.push_back(std::make_pair(i, iter->first));
 
-            i = i+g_CAppConfig.jumpfram;
+            i = i+g_CAppConfig.jumpreserveframe;
             break;
         }
 
@@ -169,7 +169,7 @@ Eigen::Matrix4f ClidarCompute::getSE3Mat(float yaw, float pitch, float roll, flo
 /// \param match
 ///
 void ClidarCompute::GetPointDataSelf(std::vector<  SensorTrajectoryData> _vecs,
-                                    std::vector<std::pair<unsigned, unsigned>> samematch,
+                                    std::vector<std::pair<unsigned, unsigned>> &samematch,
                                      std::vector<std::pair<unsigned,unsigned>> &reservematch)
 {
     lyg::PointCloud<double> tmpCloud1 = TrajectoryDataToPointCloud<SensorTrajectoryData>(_vecs);
@@ -203,19 +203,25 @@ void ClidarCompute::GetPointDataSelf(std::vector<  SensorTrajectoryData> _vecs,
                 if((int)(i-iter->first)>g_CAppConfig.frontToBackfram)
                 {
                     //perform
-                    std::cout<<i<<"perform = "<<iter->first<<std::endl;
+                    std::cout<<":"<<abs(_vecs[i].yaw - _vecs[iter->first].yaw)<<std::endl;
 
-                    if (fabs(_vecs[i].yaw - _vecs[iter->first].yaw)<0.1)
+                    if (abs(_vecs[i].yaw - _vecs[iter->first].yaw)<0.1)
                     {
+                        std::cout<<i<<"perform  same = "<<iter->first<<":"<<abs(_vecs[i].yaw - _vecs[iter->first].yaw)<<std::endl;
+
                         /* get result */
+                        std::cout<<i<<"perform  not = "<<iter->first<<std::endl;
                         samematch.push_back(std::make_pair(i, iter->first));
+                        i = i+g_CAppConfig.jumpsameframe;
                     }
                     else
                     {
+                       std::cout<<i<<"perform  not = "<<iter->first<<std::endl;
                         /* get result */
                        reservematch.push_back(std::make_pair(i, iter->first));
+                       i = i+g_CAppConfig.jumpreserveframe;
                     }
-                    i = i+g_CAppConfig.jumpfram;
+                    
                     break;
                 }
 
@@ -310,7 +316,7 @@ void ClidarCompute::GetPointData(std::vector<  SensorTrajectoryData> _vecs, std:
 
                     match.push_back(std::make_pair(i, iter->first));
 
-                    i = i+g_CAppConfig.jumpfram;
+                    i = i+g_CAppConfig.jumpreserveframe;
                     break;
                 }
 

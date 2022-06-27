@@ -34,7 +34,8 @@ public:
 
     float dis = 20.0f;
     int frontToBackfram = 200;
-    int jumpfram = 200;
+    int jumpsameframe = 20;
+    int jumpreserveframe = 100;
     int firstsatrt = 10;
     int firststep = 30;
     int secondsatrt = -10;

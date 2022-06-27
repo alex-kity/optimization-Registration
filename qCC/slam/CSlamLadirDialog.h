@@ -51,10 +51,10 @@ using namespace lygs;
 struct _MapMatch
 {
     QString matched;
-    QStringList matchedlist;
+    QStringList matchedlist;  //big
 
     QString matching;
-    QStringList matchinglist;
+    QStringList matchinglist; //small
 
     QString name;
 
