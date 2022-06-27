@@ -946,6 +946,10 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
             m_pProgressDialog.setValue(i);
             _MapMatch _MapMatch_t = _showVecpointlist[i];
             ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
+            ccPointCloud* transcloud = loadPointCloud(_MapMatch_t.matched,_MapMatch_t.matchedlist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+            ccPointCloud* dstcloud = loadPointCloud(_MapMatch_t.matching,_MapMatch_t.matchinglist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+            dManualRegistration = m_pCObjCCAlgorithm->AutoICPRegister(_icpperdata_t,transcloud,dstcloud,transMat);
+
             std::function<void(ccPointCloud *)> funcpoint = [=](ccPointCloud *firstCloud)
             {
                 std::vector<ccPointCloud *> resultingClouds = m_pCObjCCAlgorithm->SetResample(firstCloud);
@@ -955,64 +959,62 @@ void CSlamLadirDialog::SetShowCloudPoint(std::vector<std::pair<unsigned,unsigned
                 }
             };
 
-            ccPointCloud* transcloud = loadPointCloud(_MapMatch_t.matched,_MapMatch_t.matchedlist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-            ccPointCloud* dstcloud = loadPointCloud(_MapMatch_t.matching,_MapMatch_t.matchinglist,m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-            dManualRegistration = m_pCObjCCAlgorithm->AutoICPRegister(_icpperdata_t,transcloud,dstcloud,transMat);
-
-            spdlog::info("matchedingid : {}",_MapMatch_t.matchedingid);
-            spdlog::info("matchedid : {}",_MapMatch_t.matchedid);
-            if(_MapMatch_t.isSame)
+            std::map<int,std::function<int()>> m_funmap;
+            m_funmap.insert(make_pair(0,[=]() mutable->int
             {
-                if(dManualRegistration-dminRMSRegistration<g_dprice)
+                if(newGroups != nullptr && transcloud !=nullptr && dstcloud !=nullptr)
                 {
-                    newGroups->setName(newGroups->getName()+"_same_autoregister");
-                    // GetResultRegister(transMat,_MapMatch_t.matchedid,_MapMatch_t.matchedingid);
-                    GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
-                    delete transcloud;
-                    delete dstcloud;
-                    delete newGroups;
-
-                }
-                else
-                {
-                    newGroups->setName(newGroups->getName()+"_same");
                     funcpoint(transcloud);
                     funcpoint(dstcloud);
                     m_pMainWindow->addToDB(newGroups, true, true, false);
-                    newGroups->setVisible(false); //hide the cloud
+                    newGroups->setVisible(false);
                     newGroups->setEnabled(false);
                 }
-
-            }else
+                return 1;
+            }));
+            m_funmap.insert(make_pair(1,[=]() mutable->int
             {
-                if(dManualRegistration-dminRMSRegistration<g_dprice)
-                {
-                    newGroups->setName(newGroups->getName()+"_reserve_autoregister");
-                    GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+                newGroups->setName(newGroups->getName()+"_same_autoregister");
+                GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+                delete transcloud;
+                delete dstcloud;
+                delete newGroups;
+                return 0;
+            }));
+            m_funmap.insert(make_pair(2,[=]() mutable ->int
+            {
+                newGroups->setName(newGroups->getName()+"_same");
+                return 1;
+            }));
+            m_funmap.insert(make_pair(3,[=]() mutable->int
+            {
+                newGroups->setName(newGroups->getName()+"_reserve_autoregister");
+                GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+                return 1;
+            }));
+            m_funmap.insert(make_pair(4,[=]() mutable ->int
+            {
+                newGroups->setName(newGroups->getName()+"_reserve");
+                return 1;
+            }));
 
-                }
-                else
-                {
-                    newGroups->setName(newGroups->getName()+"_reserve");
-                }
 
-                funcpoint(transcloud);
-                funcpoint(dstcloud);
-                m_pMainWindow->addToDB(newGroups, true, true, false);
-                newGroups->setVisible(false); //hide the cloud
-                newGroups->setEnabled(false);
-            }
+            int key = 1;
+            /* get key and perform */
+            if(_MapMatch_t.isSame && dManualRegistration-dminRMSRegistration < g_dprice)
+                key = 1;
+            else if(_MapMatch_t.isSame && dManualRegistration-dminRMSRegistration > g_dprice)
+                key = 2;
+            else if(!_MapMatch_t.isSame && dManualRegistration-dminRMSRegistration < g_dprice)
+                key = 3;
+            else if(!_MapMatch_t.isSame && dManualRegistration-dminRMSRegistration > g_dprice)
+                key = 4;
 
-
-            // else
-            // {
-            //     ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
-            //     loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-            //     loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,g_CAppConfig.currentOpenDlgFilter);
-            //     m_pMainWindow->addToDB(newGroups, true, true, false);
-            //     newGroups->setVisible(false); //hide the cloud
-            //     newGroups->setEnabled(false);
-            // }
+            spdlog::info("matchedingid : {}",_MapMatch_t.matchedingid);
+            spdlog::info("matchedid : {}",_MapMatch_t.matchedid);
+            spdlog::info("key : {}",key);
+            if(m_funmap[key]() == 1)
+                m_funmap[0]();
 
             if(m_pProgressDialog.wasCanceled())
                 return;
@@ -1066,7 +1068,8 @@ void CSlamLadirDialog::GetResultRegister(ccGLMatrix finalTrans,int m_strfirstID,
             key_frame_pose.y = t3D.y;
             key_frame_pose.z = t3D.z;
 
-
+            spdlog::info("{: } {: } {: } {: } {: } {: } {: }",key_frame_pose.id ,key_frame_pose.yaw,
+            key_frame_pose.pitch,key_frame_pose.roll,key_frame_pose.x,key_frame_pose.y,key_frame_pose.z);
             try
             {
                 if(g_CDataChange!=nullptr)
@@ -1122,7 +1125,58 @@ void CSlamLadirDialog::GetResultRegister(ccGLMatrix finalTrans,int m_strfirstID,
 
 
 
+// if(_MapMatch_t.isSame)
+// {
+//     if(dManualRegistration-dminRMSRegistration<g_dprice)
+//     {
+//         newGroups->setName(newGroups->getName()+"_same_autoregister");
+//         // GetResultRegister(transMat,_MapMatch_t.matchedid,_MapMatch_t.matchedingid);
+//         GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+//         delete transcloud;
+//         delete dstcloud;
+//         delete newGroups;
 
+//     }
+//     else
+//     {
+//         newGroups->setName(newGroups->getName()+"_same");
+//         funcpoint(transcloud);
+//         funcpoint(dstcloud);
+//         m_pMainWindow->addToDB(newGroups, true, true, false);
+//         newGroups->setVisible(false); //hide the cloud
+//         newGroups->setEnabled(false);
+//     }
+
+// }else
+// {
+//     if(dManualRegistration-dminRMSRegistration<g_dprice)
+//     {
+//         newGroups->setName(newGroups->getName()+"_reserve_autoregister");
+//         GetResultRegister(transMat,_MapMatch_t.matchedingid,_MapMatch_t.matchedid);
+
+//     }
+//     else
+//     {
+//         newGroups->setName(newGroups->getName()+"_reserve");
+//     }
+
+//     funcpoint(transcloud);
+//     funcpoint(dstcloud);
+//     m_pMainWindow->addToDB(newGroups, true, true, false);
+//     newGroups->setVisible(false); //hide the cloud
+//     newGroups->setEnabled(false);
+// }
+
+
+// else
+// {
+//     ccHObject* newGroups = new ccHObject(g_CAppConfig.MATCHName+QString::number(i));
+//     loadpoint(newGroups, _MapMatch_t.matched,_MapMatch_t.matchedlist , m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+//     loadpoint(newGroups, _MapMatch_t.matching,_MapMatch_t.matchinglist, m_pointDir,g_CAppConfig.currentOpenDlgFilter);
+//     m_pMainWindow->addToDB(newGroups, true, true, false);
+//     newGroups->setVisible(false); //hide the cloud
+//     newGroups->setEnabled(false);
+// }
 
 
 
