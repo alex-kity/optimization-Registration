@@ -1,5 +1,6 @@
 project( PointCloudSuper VERSION 2.12.0 )
 add_compile_options(-std=c++11)
+set(CMAKE_CXX_STANDARD 14)
 
 include( CMakePolicies NO_POLICY_SCOPE )
 
@@ -29,25 +30,14 @@ qt5_add_resources( generated_qrc_list ${qrc_list} )
 
 #option( DEVCHANGE ON )
 #if( DEVCHANGE )
-    #pcl
 
-    #find_package(PCL 1.2 REQUIRED)
-
-    #include_directories(${PCL_INCLUDE_DIRS})
-    #link_directories(${PCL_LIBRARY_DIRS})
-    #add_definitions(${PCL_DEFINITIONS})
 
     #find_package(GTSAM REQUIRED QUIET)
     ##link_directories(${PROTOBUF_LIBRARIES})
     #include_directories(${GTSAM_INCLUDE_DIR})
     ##link_directories(${GTSAM_LIBRARY_DIR})
 
-    #boost
-    set(Boost_INCLUDE_DIR /usr/local/boost/include)
-    set(Boost_LIBRARY_DIR /usr/local/boost/lib)
-    set(BOOST_ROOT "/usr/local/boost/")
-    find_package(Boost REQUIRED system)
-    link_directories(${Boost_LIBRARY_DIR})
+
 
 
 
@@ -71,6 +61,54 @@ qt5_add_resources( generated_qrc_list ${qrc_list} )
     #$ sudo cp /usr/local/lib/libxxx.so usr/lib
 
 
+
+
+    # #boost
+    set(Boost_INCLUDE_DIR /usr/local/boost/include)
+    set(Boost_LIBRARY_DIR /usr/local/boost/lib)
+    set(BOOST_ROOT "/usr/local/boost/")
+    find_package(Boost REQUIRED system)
+    link_directories(${Boost_LIBRARY_DIR})
+
+	#pcl
+	find_package(PCL 1.2 REQUIRED)
+	include_directories(${PCL_INCLUDE_DIRS})
+	link_directories(${PCL_LIBRARY_DIRS})
+	add_definitions(${PCL_DEFINITIONS})
+
+	# #pcl
+	# # find_package(PCL 1.7 REQUIRED)
+	# find_package(PCL 1.7 REQUIRED COMPONENTS common io)
+	# include_directories(${PCL_INCLUDE_DIRS})
+	# link_directories(${PCL_LIBRARY_DIRS})
+	# add_definitions(${PCL_DEFINITIONS})
+	# #pcl
+	# find_package(PCL 1.7 REQUIRED)
+	# # find_package(PCL 1.7 REQUIRED COMPONENTS common io)
+	# include_directories(${PCL_INCLUDE_DIRS})
+	# link_directories(${PCL_LIBRARY_DIRS})
+	# add_definitions(${PCL_DEFINITIONS})
+
+	# find_package( PCL 1.7 REQUIRED )
+	# target_include_directories( ${PROJECT_NAME}
+	# PUBLIC
+	#     ${PCL_INCLUDE_DIRS}
+	# 	)
+	# if( CMAKE_VERSION VERSION_LESS 3.13 )
+	# 	link_directories( ${PCL_LIBRARY_DIRS} )
+	# else()
+	# 	target_link_directories( ${PROJECT_NAME}
+	# 	PUBLIC
+	# 	    ${PCL_LIBRARY_DIRS}
+	# )
+	# endif()
+
+	# target_link_libraries( ${PROJECT_NAME}
+	# ${PCL_LIBRARIES}
+	# )
+
+
+
 #endif()
 
 
@@ -86,11 +124,7 @@ if( MSVC )
 elseif( APPLE )
 	add_executable( ${PROJECT_NAME} MACOSX_BUNDLE ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${txt_list} )
 else()
-        add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list}
-#            ${PCL_LIBRARIES}
-#            ${PROTOBUF_LIBRARIES}
-
-            )
+    add_executable( ${PROJECT_NAME} ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list} ${txt_list}  )
 endif()
 
 if( WIN32 )
@@ -116,6 +150,8 @@ target_link_libraries( ${PROJECT_NAME}
     /usr/lib/x86_64-linux-gnu/libtbb.so.2
     -lgtsam
     ${Boost_LIBRARIES}
+	${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FEATURE_LIBRARIES} ${PCL_LIBRARIES}
+	-lboost_system
 #    Geographic
 #    ${PCL_LIBRARIES}
 #    -lgtsams

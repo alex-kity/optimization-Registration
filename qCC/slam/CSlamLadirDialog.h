@@ -232,8 +232,9 @@ private:
     std::vector<ccPointCloud *>  SetResample(ccPointCloud* cloud);
 
     ///
-    void GetResultRegister(ccGLMatrix finalTrans,int m_strfirstID,int m_strsecondID);
+    bool GetResultRegister(ccGLMatrix finalTrans,int m_strfirstID,int m_strsecondID);
 
+    double DistanceResultRegister(ccGLMatrix finalTrans,int m_strfirstID,int m_strsecondID  );
     
 
 signals:

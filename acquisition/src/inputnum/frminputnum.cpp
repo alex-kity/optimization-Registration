@@ -314,7 +314,8 @@ void frmInputNum::btnClicked()
 		insertValue(value);
 	}
 }
-
+#include <qvariant.h>
+#include <qstringbuilder.h>
 void frmInputNum::insertValue(QString value)
 {
 	if (currentEditType == "QLineEdit") {
@@ -332,7 +333,8 @@ void frmInputNum::insertValue(QString value)
         QAbstractItemModel *model = currentView->model();
         QModelIndex index = model->index(currentRow, currentColumn);
         QString str = model->data(index).toString();
-        model->setData(index, str + value);
+        str = str + value;
+        model->setData(index, str);
     }
 }
 

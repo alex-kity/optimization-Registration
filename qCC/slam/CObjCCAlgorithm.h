@@ -59,6 +59,34 @@
 #include "RegistrationTools.h"
 
 
+
+
+
+
+// pcl
+#pragma warning(disable:4996)
+#include <pcl/registration/ia_ransac.h>//采样一致性
+#include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/features/fpfh.h>
+#include <pcl/search/kdtree.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/filters/voxel_grid.h>//
+#include <pcl/filters/filter.h>//
+#include <pcl/registration/icp.h>//icp配准
+#include <pcl/visualization/pcl_visualizer.h>//可视化
+#include <time.h>//时间
+using pcl::NormalEstimation;
+using pcl::search::KdTree;
+
+
+
+
+
+
+
 enum CC_SUBSAMPLING_METHOD
 {
     RANDOM  = 0,
@@ -84,6 +112,10 @@ typedef struct _ICPPERDATA
 
 }ICPPERDATA;
 
+typedef struct _NDTPERDATA
+{
+
+}NDTPERDATA;
 
 
 using namespace CCCoreLib;
@@ -152,7 +184,7 @@ public:
     /// \param cloud
     /// \return
     ///
-    std::vector<ccPointCloud *>  SetResample(ccPointCloud* cloud);
+    std::vector<ccPointCloud *>  SetResample(ccPointCloud* cloud,float space_t = 0.1f);
 
 
     ///
@@ -174,7 +206,17 @@ public:
     /// \param transcloud
     /// \param dstcloud
     ///
-    double AutoICPRegister(ICPPERDATA _icpperdata_t,ccPointCloud* transcloud,ccPointCloud* dstcloud,ccGLMatrix transMat);
+    double AutoICPRegister(ICPPERDATA _icpperdata_t, ccPointCloud* transcloud, ccPointCloud* dstcloud, ccGLMatrix &transMat);
+
+
+    double 
+    FPFHfeature(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src_o, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_tgt_o);
+
+    void 
+    testPerform();
+
+    double AutoNDTRegister(NDTPERDATA _icpperdata_t,ccPointCloud* transcloud,ccPointCloud* dstcloud,ccGLMatrix& transMat);
+    double AutoFPFHRegister(NDTPERDATA _icpperdata_t,ccPointCloud* transcloud,ccPointCloud* dstcloud,ccGLMatrix& transMat);
 };
 
 

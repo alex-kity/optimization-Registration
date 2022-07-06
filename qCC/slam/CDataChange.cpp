@@ -92,6 +92,7 @@ void CBackOptimization::loadTrajectory(std::string name){
         // ROS_INFO("_cloudKeyPoses6D.size=%lu",_cloudKeyPoses6D.size());
         spdlog::info("cloudKeyPoses6D.size= : {}",_cloudKeyPoses6D.size());
     }
+    // graphOptimizerAndSavePoses("/home/alexlyg/file/0624/1558");
 }
 
 void CBackOptimization::GetTrajectOptData(std::vector<SensorTrajectoryData> &_vecs, std::map<std::string, SensorTrajectoryData> &map_trajectorys)
@@ -102,6 +103,7 @@ void CBackOptimization::GetTrajectOptData(std::vector<SensorTrajectoryData> &_ve
 
     for (int i = 0; i < isamCurrentEstimate.size(); ++i)
     {   
+
         pose.time  = _cloudKeyPoses6D[i].time;
         pose.x     = isamCurrentEstimate.at<Pose3>(i).translation().x();
         pose.y     = isamCurrentEstimate.at<Pose3>(i).translation().y();
@@ -109,6 +111,15 @@ void CBackOptimization::GetTrajectOptData(std::vector<SensorTrajectoryData> &_ve
         pose.roll  = isamCurrentEstimate.at<Pose3>(i).rotation().roll();
         pose.pitch = isamCurrentEstimate.at<Pose3>(i).rotation().pitch();
         pose.yaw   = isamCurrentEstimate.at<Pose3>(i).rotation().yaw();
+
+
+        _cloudKeyPoses6D[i].x = pose.x;
+        _cloudKeyPoses6D[i].y = pose.y;
+        _cloudKeyPoses6D[i].z = pose.z;
+        _cloudKeyPoses6D[i].roll  = pose.roll;
+        _cloudKeyPoses6D[i].pitch = pose.pitch;
+        _cloudKeyPoses6D[i].yaw   = pose.yaw;
+
 
         std::string timeStr = std::to_string(pose.time );
         pose.name = timeStr;
@@ -158,7 +169,7 @@ void CBackOptimization::addGpsFactor(GpsTTLCovS ttl)
 
     //return;
     gtsam::Vector Vector3(3);
-    Vector3 << std::max(ttl.cov_x, 0.1), std::max(ttl.cov_y, 0.1), std::max(ttl.cov_z, 0.1);
+    Vector3 << std::max(ttl.cov_x, 0.3), std::max(ttl.cov_y, 0.3), std::max(ttl.cov_z, 0.5);
     noiseModel::Diagonal::shared_ptr gps_noise = noiseModel::Diagonal::Variances(Vector3);
     gtsam::GPSFactor gps_factor(ttl.id, gtsam::Point3(ttl.x, ttl.y, ttl.z), gps_noise);
     gtSAMgraph.add(gps_factor);
@@ -172,12 +183,18 @@ void CBackOptimization::addGpsFactor(GpsTTLCovS ttl)
 
 void CBackOptimization::addLoopClosureFactor(PointTypePose key_frame_pose, int closest_frame_id)
 {
-    noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Variances((Vector(6) <<  1.0, 1.0, M_PI*M_PI, 1e-8, 1e-8, 1e-8).finished());;
+
+    PointTypePose history_frame_pose = _cloudKeyPoses6D[closest_frame_id];
+    // if(std::abs(history_frame_pose.x-key_frame_pose.x)>0.01&&
+    // std::abs(history_frame_pose.y-key_frame_pose.y)>0.01&&
+    // std::abs(history_frame_pose.y-key_frame_pose.y))
+
+
+
+    noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Variances((Vector(6) <<  0.01, 0.01, 0.01, 1e-2, 1e-2, 1e-2).finished());;
 
     gtsam::Pose3 poseFrom = Pose3(Rot3::RzRyRx(key_frame_pose.roll, key_frame_pose.pitch, key_frame_pose.yaw),
                                   Point3(key_frame_pose.x, key_frame_pose.y, key_frame_pose.z));
-
-    PointTypePose history_frame_pose = _cloudKeyPoses6D[closest_frame_id];
 
     gtsam::Pose3 poseTo = Pose3(Rot3::RzRyRx(history_frame_pose.roll, history_frame_pose.pitch, history_frame_pose.yaw),
                                 Point3(history_frame_pose.x, history_frame_pose.y, history_frame_pose.z));
@@ -187,6 +204,7 @@ void CBackOptimization::addLoopClosureFactor(PointTypePose key_frame_pose, int c
     isam->update(gtSAMgraph);
     isam->update();
     gtSAMgraph.resize(0);
+
 }
 
 void CBackOptimization::saveKeyPose(std::ofstream &ofs, const PointTypePose &pose)

@@ -114,10 +114,13 @@ private:
     gtsam::ISAM2Params parameters;
 
 
-    std::vector<PointTypePose> _cloudKeyPoses6D;
-    std::vector<GpsTTLCovS> _cloudKeyTTL3D;
+
     PointTypePose _last_key_frame_pose;
     int last_gps_id;
+
+public:
+    std::vector<PointTypePose> _cloudKeyPoses6D;
+    std::vector<GpsTTLCovS> _cloudKeyTTL3D;
 
 
 };

@@ -32,14 +32,22 @@ class CAppConfig
 {
 public:
 
-    float dis = 20.0f;
+    float dis = 30.0f;
     int frontToBackfram = 200;
     int jumpsameframe = 20;
-    int jumpreserveframe = 100;
+    int jumpreserveframe = 20;
+    // int firstsatrt = 10;
+    // int firststep = 30;
+    // int firstsatrt = 5;
+    // int firststep = 5;
+    // int firstsatrt = 5;
+    // int firststep = 15;
     int firstsatrt = 10;
-    int firststep = 30;
-    int secondsatrt = -10;
-    int secondstep = 30;
+    int firststep = 10;
+    // int firstsatrt = 2;
+    // int firststep = 2;
+    int secondsatrt = -15;
+    int secondstep = 35;
     std::string Matched = "Matched";
     std::string Matching = "Matching";
     QString MATCHName = "MATCH_";
@@ -59,18 +67,6 @@ struct SensorTrajectoryData {
 
 
 namespace lygs{
-
-
-//typedef struct _trajectoryData {
-//    std::string name;
-//    long double time;
-//    float x, y, z;
-//    float roll, pitch, yaw;
-//    float latitude, longitude, altitude;
-
-//}trajectoryData, *trajectoryDataPtr;
-
-
 
 
 /** operator "<" for std::sort() */
@@ -243,10 +239,10 @@ public:
         {
             myfile >> temp;
             vector<string> res = splittoxian(temp, ",");
-            if(res.size() < 7){
-                std::cout<<"loadTrajectory errot"<< std::endl;
-                return _SensorTrajectoryDatav;
-            }
+//            if(res.size() < 7){
+//                std::cout<<"loadTrajectory errot"<< std::endl;
+//                return _SensorTrajectoryDatav;
+//            }
 
             int i = 0;
             SensorTrajectoryData para;
@@ -262,9 +258,9 @@ public:
             para.roll = atof(res[i++].c_str());
             para.pitch = atof(res[i++].c_str());
             para.yaw = atof(res[i++].c_str());
-            para.latitude    = atof(res[i++].c_str());
-            para.longitude   = atof(res[i++].c_str());
-            para.altitude    = atof(res[i++].c_str());
+//            para.latitude    = atof(res[i++].c_str());
+//            para.longitude   = atof(res[i++].c_str());
+//            para.altitude    = atof(res[i++].c_str());
             //        trajectorys.push_back(para);
             trajectorys[timeStr] = para;
             _SensorTrajectoryDatav.push_back(para);

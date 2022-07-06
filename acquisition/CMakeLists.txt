@@ -248,11 +248,11 @@ set(CMAKE_AUTORCC ON)
 
 
 include_directories(SYSTEM
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/core_common
-    ${CMAKE_SOURCE_DIR}/src/form
-    ${CMAKE_SOURCE_DIR}/src/inputnum
-    ${CMAKE_SOURCE_DIR}/src/usercontrol
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/core_common
+    ${PROJECT_SOURCE_DIR}/src/form
+    ${PROJECT_SOURCE_DIR}/src/inputnum
+    ${PROJECT_SOURCE_DIR}/src/usercontrol
 
 )
 include_directories( ${CloudComparePlugins_SOURCE_DIR} )
@@ -262,8 +262,9 @@ include_directories( ${CMAKE_CURRENT_BINARY_DIR}/src/form)
 include_directories( ${CMAKE_CURRENT_BINARY_DIR}/src/inputnum )
 include_directories( ${CMAKE_CURRENT_BINARY_DIR}/src/usercontrol)
 
-INCLUDE_DIRECTORIES("/home/alexkity/source/cc/CloudCompare-master/acquisition/src/include")
-
+#INCLUDE_DIRECTORIES("/home/alexkity/source/cc/CloudCompare-master/acquisition/src/include")
+message(${CMAKE_SOURCE_DIR}/src/usercontrol)
+message(${PROJECT_SOURCE_DIR})
 
 
 file( GLOB header_list *.h  )
@@ -291,4 +292,25 @@ qt5_add_resources( generated_qrc_list ${qrc_list} )
 add_executable(my_hello_world_node src/my_hello_world_node.cpp src/head.h ${header_list} ${source_list} ${generated_ui_list} ${generated_qrc_list})
 target_link_libraries(my_hello_world_node Qt5::Widgets ${catkin_LIBRARIES} ${CERES_LIBRARIES} ${OpenCV_LIBS}
     ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FEATURE_LIBRARIES} ${PCL_LIBRARIES}) 
+
+
+
+
+
+
+
+## >>> conda initialize >>>
+## !! Contents within this block are managed by 'conda init' !!
+#__conda_setup="$('/home/alexlyg/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+#else
+#    if [ -f "/home/alexlyg/anaconda3/etc/profile.d/conda.sh" ]; then
+#        . "/home/alexlyg/anaconda3/etc/profile.d/conda.sh"
+#    else
+#        export PATH="/home/alexlyg/anaconda3/bin:$PATH"
+#    fi
+#fi
+#unset __conda_setup
+## <<< conda initialize <<<
 
